@@ -5,15 +5,16 @@ import Avatar from '@mui/material/Avatar';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Typography from '@mui/material/Typography';
-// import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { parseJwt } from '../../utils';
 
 interface PropsMenu {
   handleCloseSession: () => void;
 }
 export const UserMenu = (props: PropsMenu) => {
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
-  // const navigate = useNavigate();
-  //   const  user = useSelector((state: RootState) => state.user);
+  const navigate = useNavigate();
+  const { IdUser } = parseJwt();
 
   function stringToColor(string: string) {
     let hash = 0;
@@ -80,15 +81,9 @@ export const UserMenu = (props: PropsMenu) => {
         onClose={handleCloseUserMenu}
       >
         <MenuItem onClick={handleCloseUserMenu}>
-          {/* <Typography
-            textAlign="center"
-            onClick={() => navigate(`perfil/${user.id}`)}
-          >
-            Mi Perfil
-          </Typography> */}
           <Typography
             textAlign="center"
-            onClick={() => {}} //TODO: Por mientras debe ir la funcion de arriba
+            onClick={() => navigate(`perfil/${IdUser}`)}
           >
             Mi Perfil
           </Typography>

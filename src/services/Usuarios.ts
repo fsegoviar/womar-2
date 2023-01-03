@@ -1,5 +1,6 @@
-import axios from 'axios';
-import { RegisterUser } from '../interfaces';
+import axios, { AxiosError, AxiosResponse } from 'axios';
+import { InfoUser, RegisterUser } from '../interfaces';
+import { useEffect, useState } from 'react';
 
 export const LoginLocal = (data: { email: string; password: string }) => {
   const fetchData = async () => {
@@ -113,7 +114,7 @@ export const LoginFacebook = (accessToken: string) => {
 export const RegistrarUsuarioLocal = (data: RegisterUser) => {
   const registerUserLocal = async () => {
     await axios.post(
-      `${process.env.REACT_APP_URL_BACKEND}/Usuarios/RegistrarUsuarioLocal`,
+      `${process.env.REACT_APP_URL_API}/Usuarios/RegistrarUsuarioLocal`,
       data,
       {
         headers: {
@@ -123,4 +124,53 @@ export const RegistrarUsuarioLocal = (data: RegisterUser) => {
     );
   };
   return { registerUserLocal };
+};
+
+export const ActualizarInfoUsuario = (data: any, token: string) => {
+  const actualizarInfoUsuario = async () => {
+    await axios.patch(
+      `${process.env.REACT_APP_URL_API}/Usuarios/ActualizarInfoUsuario`,
+      data,
+      {
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          Authorization: `Bearer ${token}`
+        }
+      }
+    );
+  };
+  return { actualizarInfoUsuario };
+};
+
+export const ObtenerInfoUsuario = (IdUser: string) => {
+  const [infoUser, setInfoUser] = useState<InfoUser>();
+  const [error, setError] = useState(false);
+  const [loading, setLoading] = useState(true);
+
+  const fetchData = async () => {
+    // const { IdUser } = parseJwt();
+
+    await axios
+      .get(
+        `${process.env.REACT_APP_URL_API}/Usuarios/ObtenerInfoUsuario/${IdUser}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('tokenWomar')}`
+          }
+        }
+      )
+      .then((response: AxiosResponse<InfoUser>) => setInfoUser(response.data))
+      .catch((error: AxiosError) => {
+        console.log('Error =>', error);
+        setError(true);
+      })
+      .finally(() => setLoading(false));
+  };
+
+  useEffect(() => {
+    fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  return { infoUser, error, loading };
 };

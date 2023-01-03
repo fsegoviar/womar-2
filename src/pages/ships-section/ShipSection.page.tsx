@@ -16,45 +16,13 @@ import { useNavigate } from 'react-router-dom';
 import { PageBase } from '../../components/PageBase';
 import { ObtenerPublicacionPorCategoria } from '../../services';
 import { DetailService } from '../../interfaces';
+import { filterShips } from '../../utils';
 
 export const ShipSectionPage = () => {
-  const filterOptions = [
-    {
-      value: 'naves_menores',
-      label: 'Naves Menores'
-    },
-    {
-      value: 'naves_mayores',
-      label: 'Naves Mayores'
-    },
-    {
-      value: 'sin_tripulacion',
-      label: 'Sin tripulación'
-    },
-    {
-      value: 'con_tripulacion',
-      label: 'Con tripulación'
-    },
-    {
-      value: 'rating',
-      label: 'Ordenar por Rating'
-    },
-    {
-      value: 'precio_mayor',
-      label: 'Ordenar por precio mayor'
-    },
-    {
-      value: 'precio_menor',
-      label: 'Ordenar por precio menor'
-    }
-  ];
-
   const [openModal, setOpenModal] = useState(false);
   const [serviceSelected, setServiceSelected] = useState<DetailService>();
   const navigate = useNavigate();
   const { publish: listShips } = ObtenerPublicacionPorCategoria('Naves');
-
-  console.log(listShips);
 
   const openModalContact = (service: DetailService) => {
     setOpenModal(true);
@@ -66,11 +34,8 @@ export const ShipSectionPage = () => {
   };
 
   const contactPage = (service: DetailService) => {
-    navigate('detalle', {
-      state: {
-        service
-      }
-    });
+    setOpenModal(false);
+    navigate(`detalle/${service.id}`);
   };
 
   return (
@@ -78,21 +43,19 @@ export const ShipSectionPage = () => {
       <Container
         maxWidth={'xl'}
         sx={{
-          minHeight: '90vh',
-          position: 'relative',
-          mt: 5
+          minHeight: '90vh'
         }}
       >
         <Grid container>
-          <Grid item xs={3}>
+          <Grid item xs={12} md={3}>
             <Card elevation={5} sx={{ mr: 4, p: 1, mt: 8 }}>
               <FilterSections
-                listFilter={filterOptions}
+                listFilter={filterShips}
                 actionFilter={handleSelectFilter}
               />
             </Card>
           </Grid>
-          <Grid item xs={9}>
+          <Grid item xs={12} md={9}>
             <Grid container sx={{ my: 5 }} spacing={2}>
               <Grid item xs={12}>
                 <Typography variant="h4" sx={{ fontWeight: 'bold' }}>
@@ -117,18 +80,9 @@ export const ShipSectionPage = () => {
               ) : (
                 <h1>No existen publicaciones para esta sección</h1>
               )}
-              <Grid
-                item
-                xs={12}
-                sx={{
-                  display: 'flex',
-                  justifyContent: 'end',
-                  alignItems: 'center',
-                  my: 5
-                }}
-              >
+              <section className="my-10 flex flex-col justify-center items-center w-full md:flex-row ">
                 <ContainCategories />
-              </Grid>
+              </section>
             </Grid>
           </Grid>
         </Grid>
@@ -139,12 +93,9 @@ export const ShipSectionPage = () => {
         >
           <Fade timeout={400} in={openModal}>
             <Box
+              className="flex justify-center items-center w-full"
               sx={{
-                width: '100%',
-                height: '100vh',
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center'
+                height: '100vh'
               }}
             >
               <Box>

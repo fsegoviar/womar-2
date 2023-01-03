@@ -69,20 +69,7 @@ export const Navbar = () => {
               }}
               onClick={() => navigate('/')}
             ></Box>
-            {localStorage.getItem('tokenWomar') && (
-              <Box
-                sx={{
-                  display: { xs: 'none', md: 'flex' }
-                }}
-              >
-                {/* <ButtonSubmit
-                  onClick={() => navigate('/publicar')}
-                  sx={{ boxShadow: 'inset 0 0 0 2px #FFFFFF', mx: 3 }}
-                >
-                  Mis publicaciones
-                </ButtonSubmit> */}
-              </Box>
-            )}
+
             {/* Barra de busqueda */}
             <Box
               sx={{
@@ -114,8 +101,21 @@ export const Navbar = () => {
                   </BtnSubmit>
                 </>
               ) : (
-                // Boton de menu usuario para editar perfil y cerrar sesión
-                <UserMenu handleCloseSession={handleCloseSession} />
+                <>
+                  <Box
+                    sx={{
+                      display: { xs: 'none', md: 'flex' }
+                    }}
+                  >
+                    <BtnSubmit
+                      onClick={() => navigate('/publicar')}
+                      sx={{ boxShadow: 'inset 0 0 0 2px #FFFFFF', mx: 3 }}
+                    >
+                      Mis publicaciones
+                    </BtnSubmit>
+                    <UserMenu handleCloseSession={handleCloseSession} />
+                  </Box>
+                </>
               )}
             </Box>
           </Toolbar>

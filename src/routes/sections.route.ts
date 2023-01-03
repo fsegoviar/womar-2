@@ -1,6 +1,7 @@
 import React from 'react';
 import { IRoutes } from './interface';
 import {
+  DetailServicePage,
   MaritimePersonnelPage,
   OtherServicesPage,
   ShipSectionPage
@@ -9,7 +10,13 @@ import {
 export const SectionsRoutes: IRoutes[] = [
   {
     path: '/naves',
-    element: React.createElement(ShipSectionPage)
+    element: React.createElement(ShipSectionPage),
+    children: [
+      {
+        path: 'detalle',
+        element: React.createElement(DetailServicePage)
+      }
+    ]
   },
   {
     path: '/personal_maritimo',

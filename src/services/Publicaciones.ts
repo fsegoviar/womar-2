@@ -81,3 +81,36 @@ export const EditarPublicacion = (data: any, token: string) => {
 
   return { fetchData };
 };
+
+export const ObtenerPublicacion = (id: string) => {
+  const [error, setError] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [detailService, setDetailService] = useState<DetailService>();
+
+  const fetchData = async () => {
+    await axios
+      .get(
+        `${process.env.REACT_APP_URL_API}/Publicaciones/ObtenerPublicacion/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('tokenWomar')}`
+          }
+        }
+      )
+      .then((response: any) => {
+        setDetailService(response.data);
+      })
+      .catch((error: AxiosError) => {
+        console.log(error);
+        setError(true);
+      })
+      .finally(() => setLoading(false));
+  };
+
+  useEffect(() => {
+    fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  return { detailService, loading, error };
+};
