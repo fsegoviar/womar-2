@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Tooltip from '@mui/material/Tooltip';
 import IconButton from '@mui/material/IconButton';
 import Avatar from '@mui/material/Avatar';
@@ -7,14 +7,25 @@ import MenuItem from '@mui/material/MenuItem';
 import Typography from '@mui/material/Typography';
 import { useNavigate } from 'react-router-dom';
 import { parseJwt } from '../../utils';
+import { ObtenerInfoUsuario } from '../../services';
 
 interface PropsMenu {
   handleCloseSession: () => void;
 }
 export const UserMenu = (props: PropsMenu) => {
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
+  const [urlImgUser, setUrlImgUser] = useState('');
   const navigate = useNavigate();
   const { IdUser } = parseJwt();
+  const { infoUser } = ObtenerInfoUsuario(IdUser);
+
+  useEffect(() => {
+    console.log(infoUser);
+
+    if (infoUser?.urlImgPerfil) {
+      setUrlImgUser(infoUser.urlImgPerfil);
+    }
+  }, [infoUser]);
 
   function stringToColor(string: string) {
     let hash = 0;
@@ -57,11 +68,24 @@ export const UserMenu = (props: PropsMenu) => {
     <>
       <Tooltip title="Configuraciones">
         <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-          <Avatar
-            {...stringAvatar('Felipe Segovia')}
-            sx={{ bgcolor: '#0bafdd' }}
-            src="/static/images/avatar/2.jpg"
-          ></Avatar>
+          {urlImgUser !== '' && infoUser && (
+            <Avatar
+              src={urlImgUser}
+              sx={{
+                width: '50px',
+                height: '50px'
+              }}
+            ></Avatar>
+          )}
+          {infoUser && urlImgUser === '' && (
+            <Avatar
+              {...stringAvatar(
+                `${infoUser?.nombre} ${infoUser?.apellidoPaterno} ${infoUser?.apellidoMaterno}`
+              )}
+              sx={{ bgcolor: '#0bafdd' }}
+              src="/static/images/avatar/2.jpg"
+            ></Avatar>
+          )}
         </IconButton>
       </Tooltip>
       <Menu

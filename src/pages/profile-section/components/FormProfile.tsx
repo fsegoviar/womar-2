@@ -101,6 +101,7 @@ export const FormProfile = ({
             accept="image/*"
             onChange={handleChangeImage}
             className="w-full cursor-pointer opacity-0"
+            style={{ height: '100%' }}
           />
         </Box>
         <InputForm
