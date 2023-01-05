@@ -10,12 +10,13 @@ import { DialogRegister } from '../DialogRegister';
 import { RegisterUser } from '../../interfaces';
 import { AxiosError } from 'axios';
 import { RegistrarUsuarioLocal } from '../../services';
+import { parseJwt } from '../../utils';
 
 export const Navbar = () => {
   const navigate = useNavigate();
   const [openLogin, setOpenLogin] = useState(false);
   const [openRegisterLocal, setOpenRegisterLocal] = useState(false);
-
+  const { IdUser } = parseJwt();
   const [proveedor, setProveedor] = useState('');
   const [openRegisterExternal, setOpenRegisterExternal] = useState(false);
   const [isLogged, setIsLogged] = useState(
@@ -108,7 +109,7 @@ export const Navbar = () => {
                     }}
                   >
                     <BtnSubmit
-                      onClick={() => navigate('/publicar')}
+                      onClick={() => navigate(`/publicar/${IdUser}`)}
                       sx={{ boxShadow: 'inset 0 0 0 2px #FFFFFF', mx: 3 }}
                     >
                       Mis publicaciones

@@ -3,10 +3,15 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { InputForm } from '../../../styles/InputForm';
 import { Stack } from '@mui/material';
 import { SelectForm } from '../../../styles/SelectForm';
-import { ActualizarInfoUsuario, ObtenerComunas } from '../../../services';
+import {
+  ActualizarInfoUsuario,
+  CargarImagenUsuario,
+  ObtenerComunas
+} from '../../../services';
 import { AxiosError } from 'axios';
 import { InfoUser } from '../../../interfaces';
 import { BtnSubmit } from '../../../styles';
+import { useEffect, useState } from 'react';
 
 type TypeForm = {
   nombre: string;
@@ -24,12 +29,14 @@ export const FormProfile = ({
   rut,
   comuna,
   telefono,
+  urlImgPerfil,
   nombre
 }: InfoUser) => {
   const {
     register,
     handleSubmit,
     setValue,
+    getValues,
     formState: { errors }
   } = useForm<TypeForm>({
     defaultValues: {
@@ -41,22 +48,61 @@ export const FormProfile = ({
       telefono
     }
   });
+  const IdUsuario = id;
+  const [urlImage, setUrlImage] = useState('');
+  const [fileChange, setFileChange] = useState<File>();
+  const Imagen = new Blob([fileChange!], { type: 'image/png' });
   const { comunas } = ObtenerComunas();
+  const { cargarImagenUsuario } = CargarImagenUsuario({ IdUsuario, Imagen });
 
-  const onSubmit: SubmitHandler<TypeForm> = (data) => {
+  useEffect(() => {
+    setUrlImage(urlImgPerfil);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const onSubmit: SubmitHandler<TypeForm> = async (data) => {
     const { actualizarInfoUsuario } = ActualizarInfoUsuario(
       { id, ...data },
       String(localStorage.getItem('tokenWomar'))
     );
 
-    actualizarInfoUsuario()
+    await actualizarInfoUsuario()
       .then((response: any) => console.log('Datos guardados => ', response))
       .catch((error: AxiosError) => console.log('Error =>', error));
+
+    await cargarImagenUsuario()
+      .then((response: any) => console.log('Response =>', response))
+      .catch((error: AxiosError) => console.log('Error =>', error));
+  };
+
+  const handleChangeImage = (e: any) => {
+    setUrlImage(URL.createObjectURL(e.target.files[0]));
+    setFileChange(e.target.files[0]);
   };
 
   return (
     <Box component={'form'} onSubmit={handleSubmit(onSubmit)}>
       <Container>
+        <Box
+          className="relative bg-center bg-cover bg-no-repeat my-5 rounded-full m-auto"
+          sx={{
+            backgroundImage: `url(${urlImage})`,
+            width: '150px',
+            height: '150px'
+          }}
+        >
+          {!urlImage && (
+            <p className="absolute top-0 left-0 cursor-pointer">
+              Ingresa tu imagen de perfil aqui
+            </p>
+          )}
+          <input
+            type="file"
+            accept="image/*"
+            onChange={handleChangeImage}
+            className="w-full cursor-pointer opacity-0"
+          />
+        </Box>
         <InputForm
           error={!!errors.nombre}
           id="name"
@@ -91,6 +137,7 @@ export const FormProfile = ({
           <SelectForm
             style={{ width: '49%' }}
             placeholder="Dirección (opcional)"
+            value={getValues('comunaId')}
             onChange={(evnt) => {
               if (evnt.target.value) {
                 setValue('comunaId', evnt.target.value);

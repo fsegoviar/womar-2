@@ -10,6 +10,14 @@ export type DetailService = {
   id: number;
   estado: string;
   titulo: string;
+  comuna: {
+    id: number;
+    nombre: string;
+  };
+  categoria: {
+    id: number;
+    nombre: string;
+  };
   descripcion: string;
   locacion: string;
   puntuacion: number;

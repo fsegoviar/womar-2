@@ -1,0 +1,15 @@
+.image-gallery-slide.center {
+  display: flex !important;
+  justify-content: center !important;
+}
+
+.image-gallery-slide .image-gallery-image {
+  width: 450px !important;
+  height: 250px;
+  object-fit: contain;
+}
+
+.image-item img {
+  object-fit: contain !important;
+  height: 80px !important;
+}

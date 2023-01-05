@@ -10,12 +10,12 @@ import { DetailService } from '../../interfaces';
 import { DialogEditPublish } from './components/DialogEditPublish';
 import { DisabledPublish } from './components/DisabledPublish';
 import { BtnSubmit } from '../../styles';
-import { parseJwt } from '../../utils';
 import { PublishComponent } from './components/PublishComponent';
+import { useParams } from 'react-router-dom';
 
 export const PublishPage = () => {
   const [openModal, setOpenModal] = useState(false);
-  const { userId } = parseJwt();
+  const { userId } = useParams();
   const { publishUser } = ObtenerPublicacionDeUsuario(userId as string);
   const [publishSelected, setPublishSelected] = useState<DetailService>();
   const [openModalEdit, setOpenModalEdit] = useState(false);
@@ -109,7 +109,7 @@ export const PublishPage = () => {
           </Grid>
         </Grid>
       </Container>
-      <CreatePublish open={openModal} close={closeModal} />
+      <CreatePublish open={openModal} userId={userId!} close={closeModal} />
       {openModalEdit && (
         <DialogEditPublish
           open={openModalEdit}

@@ -83,7 +83,7 @@ export const UserMenu = (props: PropsMenu) => {
         <MenuItem onClick={handleCloseUserMenu}>
           <Typography
             textAlign="center"
-            onClick={() => navigate(`perfil/${IdUser}`)}
+            onClick={() => navigate(`/perfil/${IdUser}`)}
           >
             Mi Perfil
           </Typography>

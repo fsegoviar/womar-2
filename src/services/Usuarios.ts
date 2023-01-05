@@ -33,7 +33,7 @@ export const LoginLocal = (data: { email: string; password: string }) => {
  *    data:{
  *      id
  *      role
- *      token
+ *      tok
  *      urlImg
  *      userName
  *    },
@@ -173,4 +173,41 @@ export const ObtenerInfoUsuario = (IdUser: string) => {
   }, []);
 
   return { infoUser, error, loading };
+};
+
+export const CargarImagenUsuario = ({
+  IdUsuario,
+  Imagen
+}: {
+  IdUsuario: string;
+  Imagen: Blob;
+}) => {
+  let formData = new FormData();
+  formData.append('IdUsuario', IdUsuario);
+  formData.append('Imagen', Imagen);
+  let result: any = null;
+  let error = false;
+
+  const cargarImagenUsuario = async () => {
+    try {
+      const response = await axios.post(
+        `${process.env.REACT_APP_URL_API}/Usuarios/CargarImagenPerfil`,
+        formData,
+        {
+          headers: {
+            'Access-Control-Allow-Origin': '*',
+            Authorization: `Bearer ${localStorage.getItem('tokenWomar')}`,
+            'Content-Type': 'multipart/form-data'
+          }
+        }
+      );
+      result = response;
+    } catch (e) {
+      error = true;
+    }
+
+    return { result, error };
+  };
+
+  return { cargarImagenUsuario };
 };

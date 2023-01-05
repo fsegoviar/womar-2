@@ -30,7 +30,7 @@ root.render(
       <Route path={'/otros_servicios'} element={<OtherServicesPage />} />
       <Route path={'naves/detalle/:id'} element={<DetailServicePage />} />
       <Route path={'/administrador'} element={<AdminPage />} />
-      <Route path={'/publicar'} element={<PublishPage />} />
+      <Route path={'/publicar/:userId'} element={<PublishPage />} />
       <Route path={'*'} element={<h1>Pagina no encontrada</h1>} />
     </Routes>
   </BrowserRouter>

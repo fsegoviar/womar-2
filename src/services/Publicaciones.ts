@@ -1,6 +1,7 @@
 import axios, { AxiosError } from 'axios';
 import { useEffect, useState } from 'react';
 import { DetailService } from '../interfaces';
+import { CreatePublish } from '../interfaces/Publicacion';
 
 export const ObtenerPublicacionPorCategoria = (nombre: string) => {
   const [error, setError] = useState(false);
@@ -113,4 +114,59 @@ export const ObtenerPublicacion = (id: string) => {
   }, []);
 
   return { detailService, loading, error };
+};
+
+export const CrearPublicacion = (publish: CreatePublish) => {
+  let result: any = null;
+  let error = false;
+
+  const cargarPublicacion = async () => {
+    try {
+      const response = await axios.post(
+        `${process.env.REACT_APP_URL_API}/Publicaciones/CrearPublicacion`,
+        publish,
+        {
+          headers: {
+            'Access-Control-Allow-Origin': '*',
+            Authorization: `Bearer ${localStorage.getItem('tokenWomar')}`
+          }
+        }
+      );
+      result = response;
+    } catch (e) {
+      error = true;
+    }
+
+    return { result, error };
+  };
+
+  return { cargarPublicacion };
+};
+
+export const CargarImagen = (formData: FormData) => {
+  let result: any = null;
+  let error = false;
+
+  const cargarImagen = async () => {
+    try {
+      const response = await axios.post(
+        `${process.env.REACT_APP_URL_API}/Publicaciones/CargarImagen`,
+        formData,
+        {
+          headers: {
+            'Access-Control-Allow-Origin': '*',
+            Authorization: `Bearer ${localStorage.getItem('tokenWomar')}`,
+            'Content-Type': 'multipart/form-data'
+          }
+        }
+      );
+      result = response;
+    } catch (e) {
+      error = true;
+    }
+
+    return { result, error };
+  };
+
+  return { cargarImagen };
 };

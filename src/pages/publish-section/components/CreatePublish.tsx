@@ -21,11 +21,15 @@ import {
 } from '@mui/material';
 import { TransitionProps } from '@mui/material/transitions';
 import { InputForm } from '../../../styles/InputForm';
-import { ObtenerCategorias, ObtenerComunas } from '../../../services';
-import axios from 'axios';
+import {
+  CargarImagen,
+  CrearPublicacion,
+  ObtenerCategorias,
+  ObtenerComunas
+} from '../../../services';
 import { BtnSubmit, ButtonSubmitOutlined } from '../../../styles';
 import styled from '@emotion/styled';
-import { parseJwt } from '../../../utils';
+import './../styles.css';
 
 type CreatePublishType = {
   title: string;
@@ -40,6 +44,7 @@ type CreatePublishType = {
 type PropsDialog = {
   open: boolean;
   close: () => void;
+  userId: string;
 };
 
 const Transition = forwardRef(function Transition(
@@ -96,7 +101,6 @@ export const CreatePublish = (props: PropsDialog) => {
   const [caruselImg, setCarruselImg] = useState([]);
   const { comunas } = ObtenerComunas();
   const { categories } = ObtenerCategorias();
-  const { userId } = parseJwt();
   const [file, setFile] = useState<any[]>([]);
 
   const {
@@ -107,22 +111,19 @@ export const CreatePublish = (props: PropsDialog) => {
   } = useForm<CreatePublishType>();
   const maxNumber = 5;
 
-  const fetchUploadImage = async (id: string, blob: Blob) => {
+  const fetchUploadImage = async (
+    id: string,
+    blob: Blob,
+    isPrincipal: boolean
+  ) => {
     let formData = new FormData();
     formData.append('IdPublicacion', id);
     formData.append('Imagen', blob);
+    formData.append('IsPrincipal', String(isPrincipal));
 
-    await axios
-      .post(
-        'https://womarapi.azurewebsites.net/api/Publicaciones/CargarImagen',
-        formData,
-        {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-            Authorization: `Bearer ${localStorage.getItem('tokenWomar')}`
-          }
-        }
-      )
+    const { cargarImagen } = CargarImagen(formData);
+
+    await cargarImagen()
       .then((response: any) => {
         console.log('Respuesta OK =>', response);
       })
@@ -131,41 +132,28 @@ export const CreatePublish = (props: PropsDialog) => {
       });
   };
 
-  const onSubmit: SubmitHandler<CreatePublishType> = (data) => {
+  const onSubmit: SubmitHandler<CreatePublishType> = async (data) => {
     let listBlobs = file.map((f) => new Blob([f!], { type: 'image/png' }));
-    const fetchCreatePublish = async () => {
-      await axios
-        .post(
-          'https://womarapi.azurewebsites.net/api/Publicaciones/CrearPublicacion',
-          {
-            UsuarioId: userId,
-            CategoriaId: data.categoriaId,
-            ComunaId: data.comunaId,
-            Titulo: data.title,
-            Descripcion: data.description,
-            Precio: data.price
-          },
-          {
-            headers: {
-              'Access-Control-Allow-Origin': '*',
-              Authorization: `Bearer ${localStorage.getItem('tokenWomar')}`
-            }
-          }
-        )
-        .then((response: any) => {
-          console.log('Respuesta OK =>', response);
-          const idPublish = response.data.id;
-          console.log(`Listado Blobs`, listBlobs);
-          listBlobs.forEach(async (blob) => {
-            await fetchUploadImage(idPublish, blob);
-          });
-        })
-        .catch((response: any) => {
-          console.log('Respuesta ERROR =>', response);
+    const { cargarPublicacion } = CrearPublicacion({
+      usuarioId: String(props.userId),
+      categoriaId: data.categoriaId,
+      comunaId: data.comunaId,
+      titulo: data.title,
+      descripcion: data.description,
+      precio: data.price
+    });
+    await cargarPublicacion()
+      .then((response: any) => {
+        const idPublish = response.result.data.id;
+        listBlobs.forEach(async (blob, index) => {
+          index === 0
+            ? await fetchUploadImage(idPublish, blob, true)
+            : await fetchUploadImage(idPublish, blob, false);
         });
-    };
-
-    fetchCreatePublish();
+      })
+      .catch((response: any) => {
+        console.log('Respuesta ERROR =>', response);
+      });
   };
 
   const onChange = (
@@ -194,8 +182,7 @@ export const CreatePublish = (props: PropsDialog) => {
       imgUrls.push({
         original: URL.createObjectURL(image.file!),
         thumbnail: URL.createObjectURL(image.file!),
-        originalWidth: '100px',
-        originalHeight: '200px'
+        originalWidth: '100px'
       });
     });
     setValue('listImg', blobImg);
@@ -290,22 +277,37 @@ export const CreatePublish = (props: PropsDialog) => {
         </Grid>
         <Grid item xs={10}>
           <Box className="carousel-demo">
-            <Box className="card" sx={{ p: 2, height: '250px' }}>
+            <Box
+              className="card flex justify-center w-full"
+              sx={{
+                p: 2,
+                height: '270px'
+              }}
+            >
               {caruselImg.length > 0 ? (
-                <ImageGallery
-                  lazyLoad={true}
-                  showPlayButton={false}
-                  showNav={true}
-                  showThumbnails={false}
-                  showFullscreenButton={false}
-                  items={caruselImg}
-                />
+                <Box
+                  sx={{
+                    width: '350px',
+                    maxHeight: '100px'
+                  }}
+                >
+                  <ImageGallery
+                    lazyLoad={true}
+                    showPlayButton={false}
+                    showNav={true}
+                    showThumbnails={false}
+                    showFullscreenButton={false}
+                    items={caruselImg}
+                    additionalClass="img-defect"
+                  />
+                </Box>
               ) : (
                 <Box
                   sx={{
                     border: '2px solid #55C6E7',
                     borderRadius: '20px',
-                    height: '100%',
+                    height: '250px',
+                    width: '100%',
                     p: 2,
                     display: 'flex',
                     justifyContent: 'center',
