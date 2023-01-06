@@ -28,7 +28,7 @@ export const UserMenu = (props: PropsMenu) => {
       localStorage.removeItem('tokenWomar');
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [infoUser]);
+  }, []);
 
   function stringToColor(string: string) {
     let hash = 0;
