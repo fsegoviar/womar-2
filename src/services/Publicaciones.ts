@@ -86,7 +86,7 @@ export const EditarPublicacion = (data: any, token: string) => {
 export const ObtenerPublicacion = (id: string) => {
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [detailService, setDetailService] = useState<DetailService>();
+  const [detailService, setDetailService] = useState<any>();
 
   const fetchData = async () => {
     await axios

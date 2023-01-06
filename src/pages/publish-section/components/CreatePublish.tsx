@@ -74,10 +74,6 @@ const SelectForm = styled(Select)`
 
 const TextAreaForm = styled(TextField)`
   background: white;
-  //Color del placeholder
-  /*   & label.Mui-focused {
-    color: red;
-  } */
 
   & .MuiOutlinedInput-root {
     & fieldset {

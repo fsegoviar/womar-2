@@ -1,7 +1,7 @@
-import { Button, TextField } from '@mui/material';
 import { Box, Container, Stack } from '@mui/system';
 import axios from 'axios';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { BtnSubmit, InputForm } from '../../../styles';
 
 type FormContactType = {
   names: string;
@@ -42,14 +42,14 @@ export const FormContact = (state: any) => {
     <Box component={'form'} onSubmit={handleSubmit(onSubmit)}>
       <Container>
         <Stack direction="row" sx={{ mb: 1 }} spacing={2}>
-          <TextField
+          <InputForm
             error={!!errors.names}
             id="name"
             label="Nombres *"
             variant="outlined"
             {...register('names', { required: true })}
           />
-          <TextField
+          <InputForm
             error={!!errors.surname}
             id="surname1"
             label="Apellidos *"
@@ -57,45 +57,45 @@ export const FormContact = (state: any) => {
             {...register('surname', { required: true })}
           />
         </Stack>
-        <TextField
+        <InputForm
           id="phone"
           fullWidth
           type={'number'}
-          sx={{ mb: 1 }}
+          sx={{ mb: 1, width: '100% !important' }}
           label="Telefono (opcional)"
           variant="outlined"
           {...register('phone')}
         />
-        <TextField
+        <InputForm
           error={!!errors.email}
           id="email"
           type={'email'}
           fullWidth
-          sx={{ mb: 1 }}
+          sx={{ mb: 1, width: '100% !important' }}
           label="Correo electrónico *"
           variant="outlined"
           {...register('email', { required: true })}
         />
-        <TextField
+        <InputForm
           error={!!errors.message}
           id="message"
           type={'message'}
           fullWidth
           multiline
           rows={4}
-          sx={{ mb: 1 }}
+          sx={{ mb: 1, width: '100% !important' }}
           label="Mensaje"
           variant="outlined"
           {...register('message', { required: true })}
         />
-        <Button
+        <BtnSubmit
           sx={{ mt: 1, mb: 2 }}
           type={'submit'}
           fullWidth
           variant="contained"
         >
           Enviar
-        </Button>
+        </BtnSubmit>
       </Container>
     </Box>
   );

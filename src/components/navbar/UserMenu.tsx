@@ -17,14 +17,17 @@ export const UserMenu = (props: PropsMenu) => {
   const [urlImgUser, setUrlImgUser] = useState('');
   const navigate = useNavigate();
   const { IdUser } = parseJwt();
-  const { infoUser } = ObtenerInfoUsuario(IdUser);
+  const { infoUser, error } = ObtenerInfoUsuario(IdUser);
 
   useEffect(() => {
-    console.log(infoUser);
-
     if (infoUser?.urlImgPerfil) {
       setUrlImgUser(infoUser.urlImgPerfil);
     }
+
+    if (error) {
+      localStorage.removeItem('tokenWomar');
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [infoUser]);
 
   function stringToColor(string: string) {

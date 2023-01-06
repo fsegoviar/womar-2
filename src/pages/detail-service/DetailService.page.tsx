@@ -1,38 +1,33 @@
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
-import { Card, CardHeader, Typography } from '@mui/material';
+import { Card, Typography } from '@mui/material';
 import ImageGallery from 'react-image-gallery';
 import 'react-image-gallery/styles/css/image-gallery.css';
 import { PageBase } from '../../components/PageBase';
 import { FormContact } from './components/FormContact';
 import { useParams } from 'react-router-dom';
 import { ObtenerPublicacion } from '../../services';
+import { useEffect, useState } from 'react';
 export const DetailServicePage = () => {
   let { id } = useParams();
   const { detailService } = ObtenerPublicacion(String(id));
-
+  const [caruselImg, setCarruselImg] = useState([]);
   console.log(detailService);
 
-  const images = [
-    {
-      original:
-        'https://www.seabookings.com/photos/original/971-you-even-encounter-some-friendly-dolphins-1575397384-jpg',
-      thumbnail:
-        'https://www.seabookings.com/photos/original/971-you-even-encounter-some-friendly-dolphins-1575397384-jpg'
-    },
-    {
-      original:
-        'https://thumbs.dreamstime.com/b/spring-summer-land%E2%80%A6ountryside-grass-poland-water-leaves-58070004.jpg',
-      thumbnail:
-        'https://thumbs.dreamstime.com/b/spring-summer-land%E2%80%A6ountryside-grass-poland-water-leaves-58070004.jpg'
-    },
-    {
-      original:
-        'https://thumbs.dreamstime.com/b/sailing-boat-wide-angle-view-sea-instagram-toning-50855721.jpg',
-      thumbnail:
-        'https://thumbs.dreamstime.com/b/sailing-boat-wide-angle-view-sea-instagram-toning-50855721.jpg'
+  useEffect(() => {
+    let imgUrls: any[] = [];
+    if (detailService?.imagenes !== undefined) {
+      console.log(detailService.imagenes);
+
+      detailService.imagenes.forEach((imagen: any) => {
+        imgUrls.push({
+          original: imagen.urlImagen,
+          thumbnail: imagen.urlImagen
+        });
+      });
+      setCarruselImg(imgUrls as never[]);
     }
-  ];
+  }, [detailService]);
 
   return (
     <PageBase>
@@ -46,7 +41,7 @@ export const DetailServicePage = () => {
                 showNav={true}
                 thumbnailPosition={'left'}
                 showFullscreenButton={false}
-                items={images}
+                items={caruselImg}
               />
             </Grid>
             <Grid item xs={12} md={10} sx={{ mt: 2 }}>
@@ -69,7 +64,7 @@ export const DetailServicePage = () => {
           {detailService && (
             <Grid item xs={12} md={3} className="pt-10 md:p-0">
               <Card>
-                <CardHeader title={'Formulario de contacto'} />
+                <h4 className="font p-4 text-[20px]">Formulario de contacto</h4>
                 <FormContact {...detailService} />
               </Card>
             </Grid>
