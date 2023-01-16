@@ -37,8 +37,9 @@ export const Navbar = () => {
   };
 
   const handleOpenSession = (token: string) => {
-    setIsLogged(true);
     localStorage.setItem('tokenWomar', token);
+
+    setIsLogged(true);
   };
 
   //* Methods register

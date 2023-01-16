@@ -37,7 +37,7 @@
     "typescript": "^4.9.4"
   },
   "scripts": {
-    "dev": "set HTTPS=true && env-cmd -f .env.development react-scripts start",
+    "dev": "env-cmd -f .env.development react-scripts start",
     "build": "env-cmd -f .env.development react-scripts build"
   },
   "eslintConfig": {

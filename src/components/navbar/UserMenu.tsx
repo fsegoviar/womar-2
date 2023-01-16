@@ -24,11 +24,11 @@ export const UserMenu = (props: PropsMenu) => {
       setUrlImgUser(infoUser.urlImgPerfil);
     }
 
-    if (error) {
+    if (error || infoUser === undefined) {
       localStorage.removeItem('tokenWomar');
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [infoUser]);
 
   function stringToColor(string: string) {
     let hash = 0;
