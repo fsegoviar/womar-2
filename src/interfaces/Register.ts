@@ -7,7 +7,7 @@ interface RegisterUser {
   telefono: number;
   email: string;
   password: string;
-  roleName: string;
+  role: string;
 }
 
 interface RegisterExternalUser {
