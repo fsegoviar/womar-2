@@ -143,28 +143,27 @@ export const ActualizarInfoUsuario = (data: any, token: string) => {
 };
 
 export const ObtenerInfoUsuario = (IdUser: string) => {
-  const [infoUser, setInfoUser] = useState<InfoUser>();
-  const [error, setError] = useState(false);
-  const [loading, setLoading] = useState(true);
+  let result: any = null;
+  let error = false;
 
   const fetchData = async () => {
     // const { IdUser } = parseJwt();
-
-    await axios
-      .get(
-        `${process.env.REACT_APP_URL_API}/Usuarios/ObtenerInfoUsuario/${IdUser}`,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem('tokenWomar')}`
+    try {
+      const response = await axios
+        .get(
+          `${process.env.REACT_APP_URL_API}/Usuarios/ObtenerInfoUsuario/${IdUser}`,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem('tokenWomar')}`
+            }
           }
-        }
-      )
-      .then((response: AxiosResponse<InfoUser>) => setInfoUser(response.data))
-      .catch((error: AxiosError) => {
-        console.log('Error =>', error);
-        setError(true);
-      })
-      .finally(() => setLoading(false));
+        )
+      result = response.data;
+    } catch (_error) {
+      error = true;
+    }
+
+    return { result, error };
   };
 
   useEffect(() => {
@@ -172,7 +171,7 @@ export const ObtenerInfoUsuario = (IdUser: string) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  return { infoUser, error, loading };
+  return { fetchData };
 };
 
 export const CargarImagenUsuario = ({

@@ -15,20 +15,28 @@ interface PropsMenu {
 export const UserMenu = (props: PropsMenu) => {
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
   const [urlImgUser, setUrlImgUser] = useState('');
+  const [infoUser, setInfoUser] = useState<any>();
   const navigate = useNavigate();
   const { IdUser } = parseJwt();
-  const { infoUser, error } = ObtenerInfoUsuario(IdUser);
+  const { fetchData } = ObtenerInfoUsuario(IdUser);
 
   useEffect(() => {
-    if (infoUser?.urlImgPerfil) {
-      setUrlImgUser(infoUser.urlImgPerfil);
-    }
+    const fetch = async () => {
+      await fetchData().then((response: any) => {
+        if (response.result.urlImgPerfil) {
+          setUrlImgUser(response.result.urlImgPerfil);
+          setInfoUser(response.result);
+        }
 
-    if (error || infoUser === undefined) {
-      localStorage.removeItem('tokenWomar');
-    }
+        if (response.error) {
+          localStorage.removeItem('tokenWomar');
+        }
+      });
+    };
+
+    fetch();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [infoUser]);
+  }, []);
 
   function stringToColor(string: string) {
     let hash = 0;

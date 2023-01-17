@@ -24,6 +24,8 @@ export const ShipSectionPage = () => {
   const navigate = useNavigate();
   const { publish: listShips } = ObtenerPublicacionPorCategoria('Naves');
 
+  console.log('Publish', listShips);
+
   const openModalContact = (service: DetailService) => {
     setOpenModal(true);
     setServiceSelected(service);
@@ -59,7 +61,7 @@ export const ShipSectionPage = () => {
             <Grid container sx={{ my: 5 }} spacing={2}>
               <Grid item xs={12}>
                 <Typography variant="h4" sx={{ fontWeight: 'bold' }}>
-                  Embarcaciones
+                  Naves
                 </Typography>
                 <Divider />
               </Grid>

@@ -4,9 +4,22 @@ import { ObtenerInfoUsuario } from '../../services';
 import { FormProfile } from './components/FormProfile';
 import { useParams } from 'react-router-dom';
 import { Typography } from '@mui/material';
+import { useState, useEffect } from 'react';
+
 export const ProfilePage = () => {
   const { userId } = useParams();
-  const { infoUser } = ObtenerInfoUsuario(userId as string);
+  const [infoUser, setInfoUser] = useState<any>();
+  const { fetchData } = ObtenerInfoUsuario(userId as string);
+
+  useEffect(() => {
+    const fetch = async () => {
+      await fetchData().then((response: any) => {
+        setInfoUser(response.result);
+      });
+    };
+
+    fetch();
+  }, []);
 
   return (
     <PageBase>
