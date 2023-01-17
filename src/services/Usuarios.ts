@@ -1,6 +1,6 @@
-import axios, { AxiosError, AxiosResponse } from 'axios';
-import { InfoUser, RegisterUser } from '../interfaces';
-import { useEffect, useState } from 'react';
+import axios from 'axios';
+import { RegisterUser } from '../interfaces';
+import { useEffect } from 'react';
 
 export const LoginLocal = (data: { email: string; password: string }) => {
   const fetchData = async () => {
