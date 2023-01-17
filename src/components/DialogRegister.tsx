@@ -38,7 +38,7 @@ export const DialogRegister = (props: PropsRegister) => {
   const { comunas } = ObtenerComunas();
 
   useEffect(() => {
-    setValue('roleName', 'Cliente');
+    setValue('role', 'Cliente');
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
