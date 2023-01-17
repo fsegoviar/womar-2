@@ -17,14 +17,16 @@ import { PageBase } from '../../components/PageBase';
 import { ObtenerPublicacionPorCategoria } from '../../services';
 import { DetailService } from '../../interfaces';
 import { filterShips } from '../../utils';
+import { SkeletonLoader } from './components/SkeletonLoader';
 
 export const ShipSectionPage = () => {
   const [openModal, setOpenModal] = useState(false);
   const [serviceSelected, setServiceSelected] = useState<DetailService>();
   const navigate = useNavigate();
-  const { publish: listShips } = ObtenerPublicacionPorCategoria('Naves');
+  const { publish: listShips, loading } =
+    ObtenerPublicacionPorCategoria('Naves');
 
-  console.log('Publish', listShips);
+  console.log('Publish', loading);
 
   const openModalContact = (service: DetailService) => {
     setOpenModal(true);
@@ -65,7 +67,13 @@ export const ShipSectionPage = () => {
                 </Typography>
                 <Divider />
               </Grid>
-              {listShips!.length > 0 ? (
+              {loading && (
+                <Grid item xs={12}>
+                  <SkeletonLoader />
+                </Grid>
+              )}
+              {listShips!.length > 0 &&
+                !loading &&
                 listShips!.map((ship, index) => (
                   <Grid item xs={12} key={index} lg={6}>
                     <SmartPreviewService
@@ -78,8 +86,8 @@ export const ShipSectionPage = () => {
                       openContact={() => openModalContact(ship)}
                     />
                   </Grid>
-                ))
-              ) : (
+                ))}
+              {listShips.length === 0 && !loading && (
                 <h1>No existen publicaciones para esta sección</h1>
               )}
               <section className="my-10 flex flex-col justify-center items-center w-full md:flex-row ">
