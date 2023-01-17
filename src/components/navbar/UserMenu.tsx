@@ -25,8 +25,8 @@ export const UserMenu = (props: PropsMenu) => {
       await fetchData().then((response: any) => {
         if (response.result.urlImgPerfil) {
           setUrlImgUser(response.result.urlImgPerfil);
-          setInfoUser(response.result);
         }
+        setInfoUser(response.result);
 
         if (response.error) {
           localStorage.removeItem('tokenWomar');
