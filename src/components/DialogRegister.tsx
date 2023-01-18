@@ -3,7 +3,11 @@ import {
   CircularProgress,
   Container,
   Dialog,
+  FormControl,
+  InputLabel,
+  MenuItem,
   Paper,
+  Select,
   Slide,
   Stack
 } from '@mui/material';
@@ -13,14 +17,10 @@ import { useForm } from 'react-hook-form';
 import { RegisterUser } from '../interfaces';
 import { useEffect } from 'react';
 import { ObtenerComunas, RegistrarUsuarioLocal } from '../services';
-import {
-  BtnSubmit,
-  InputForm,
-  SelectForm,
-  ButtonSubmitOutlined
-} from '../styles';
+import { BtnSubmit, InputForm, ButtonSubmitOutlined } from '../styles';
 import { AxiosError } from 'axios';
 import Typography from '@mui/material/Typography';
+import styled from '@emotion/styled';
 
 const Transition = forwardRef(function Transition(
   props: TransitionProps & {
@@ -30,6 +30,22 @@ const Transition = forwardRef(function Transition(
 ) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
+
+const SelectForm = styled(Select)`
+  border-color: #0bafdd;
+  border-radius: 10px;
+  & .MuiOutlinedInput-input {
+    border-color: #0bafdd;
+  }
+
+  & .MuiOutlinedInput-notchedOutline {
+    border-color: #0bafdd;
+  }
+
+  &.Mui-focused fieldset {
+    border-color: #0bafdd;
+  }
+`;
 
 interface PropsRegister {
   open: boolean;
@@ -95,7 +111,7 @@ export const DialogRegister = (props: PropsRegister) => {
               error={!!errors.nombre}
               id="name"
               style={{ margin: '10px 0', width: '100%' }}
-              placeholder="Nombres *"
+              label="Nombres *"
               {...register('nombre', { required: true })}
             />
             <Stack
@@ -107,32 +123,44 @@ export const DialogRegister = (props: PropsRegister) => {
                 error={!!errors.apellidoPaterno}
                 style={{ margin: '10px 0', width: '49%' }}
                 id="surname1"
-                placeholder="Apellido Paterno *"
+                label="Apellido Paterno *"
                 {...register('apellidoPaterno', { required: true })}
               />
               <InputForm
                 error={!!errors.apellidoMaterno}
                 style={{ margin: '10px 0', width: '49%' }}
-                placeholder="Apellido Materno *"
-                {...register('apellidoMaterno', { required: true })}
+                label="Apellido Materno"
               />
             </Stack>
-            <SelectForm
-              style={{ width: '100%' }}
-              placeholder="Dirección (opcional)"
-              onChange={(evnt) => {
-                if (evnt.target.value) {
-                  setValue('comunaId', Number(evnt.target.value));
-                }
+            <FormControl
+              fullWidth
+              sx={{
+                p: 0,
+                m: 0,
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                mb: 1
               }}
             >
-              <option value={''}>Dirección (opcional)</option>
-              {comunas.map((comuna) => (
-                <option key={comuna.id} value={comuna.id}>
-                  {comuna.nombre}
-                </option>
-              ))}
-            </SelectForm>
+              <InputLabel>Dirección</InputLabel>
+              <SelectForm
+                style={{ width: '100%' }}
+                label="Dirección"
+                value={''}
+                onChange={(evnt) => {
+                  if (evnt.target.value) {
+                    setValue('comunaId', Number(evnt.target.value));
+                  }
+                }}
+              >
+                {comunas.map((comuna) => (
+                  <MenuItem key={comuna.id} value={comuna.id}>
+                    {comuna.nombre}
+                  </MenuItem>
+                ))}
+              </SelectForm>
+            </FormControl>
             <Stack
               direction="row"
               sx={{ my: 1, justifyContent: 'space-around' }}
@@ -140,7 +168,7 @@ export const DialogRegister = (props: PropsRegister) => {
             >
               <InputForm
                 id="dni"
-                placeholder="Rut (opcional)"
+                label="Rut"
                 style={{ margin: '10px 0', width: '49%' }}
                 onChange={(e: any) => {
                   setValue('rut', e.target.value);
@@ -150,7 +178,7 @@ export const DialogRegister = (props: PropsRegister) => {
                 id="phone"
                 type={'number'}
                 style={{ margin: '10px 0', width: '49%' }}
-                placeholder="Telefono (opcional)"
+                label="Telefono"
                 {...register('telefono')}
               />
             </Stack>
@@ -158,14 +186,14 @@ export const DialogRegister = (props: PropsRegister) => {
               error={!!errors.email}
               type={'email'}
               style={{ marginBottom: '10px', width: '100%' }}
-              placeholder="Correo electrónico *"
+              label="Correo electrónico *"
               {...register('email', { required: true })}
             />
             <InputForm
               error={!!errors.password}
               type={'password'}
               style={{ margin: '10px 0', width: '100%' }}
-              placeholder="Contraseña *"
+              label="Contraseña *"
               {...register('password', { required: true })}
             />
             <Box sx={{ float: 'right', '& > :not(style)': { m: 1 }, py: 1 }}>
