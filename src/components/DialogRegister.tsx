@@ -1,16 +1,26 @@
-import { Box, Container, Dialog, Paper, Slide, Stack } from '@mui/material';
+import {
+  Box,
+  CircularProgress,
+  Container,
+  Dialog,
+  Paper,
+  Slide,
+  Stack
+} from '@mui/material';
 import { TransitionProps } from '@mui/material/transitions';
 import { forwardRef, ReactElement, Ref, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { RegisterUser } from '../interfaces';
 import { useEffect } from 'react';
-import { ObtenerComunas } from '../services';
+import { ObtenerComunas, RegistrarUsuarioLocal } from '../services';
 import {
   BtnSubmit,
   InputForm,
   SelectForm,
   ButtonSubmitOutlined
 } from '../styles';
+import { AxiosError } from 'axios';
+import Typography from '@mui/material/Typography';
 
 const Transition = forwardRef(function Transition(
   props: TransitionProps & {
@@ -24,7 +34,7 @@ const Transition = forwardRef(function Transition(
 interface PropsRegister {
   open: boolean;
   handleClose: () => void;
-  onSubmit: (data: RegisterUser) => void;
+  setOpenRegisterLocal: (value: boolean) => void;
 }
 
 export const DialogRegister = (props: PropsRegister) => {
@@ -36,6 +46,7 @@ export const DialogRegister = (props: PropsRegister) => {
   } = useForm<RegisterUser>();
   const [open, setOpen] = useState(props.open);
   const { comunas } = ObtenerComunas();
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     setValue('role', 'Cliente');
@@ -45,6 +56,15 @@ export const DialogRegister = (props: PropsRegister) => {
   const handleClose = () => {
     setOpen(false);
     props.handleClose();
+  };
+
+  const onSubmitRegisterLocal = (data: RegisterUser) => {
+    const { registerUserLocal } = RegistrarUsuarioLocal(data);
+    setLoading(true);
+    registerUserLocal()
+      .then(() => props.setOpenRegisterLocal(false))
+      .catch((error: AxiosError) => console.log('Error =>', error))
+      .finally(() => setLoading(false));
   };
 
   return (
@@ -62,10 +82,13 @@ export const DialogRegister = (props: PropsRegister) => {
       }}
     >
       <Paper elevation={3} style={{ width: '400px' }}>
-        <h1 style={{ textAlign: 'center' }} className="font">
+        <h1
+          style={{ textAlign: 'center' }}
+          className="font text-xl mt-5 font-bold"
+        >
           Registrar usuario{' '}
         </h1>
-        <Box component={'form'} onSubmit={handleSubmit(props.onSubmit)}>
+        <Box component={'form'} onSubmit={handleSubmit(onSubmitRegisterLocal)}>
           <Container>
             <InputForm
               className="font"
@@ -156,6 +179,19 @@ export const DialogRegister = (props: PropsRegister) => {
           </Container>
         </Box>
       </Paper>
+      {loading && (
+        <Box
+          className="flex flex-col justify-center items-center absolute top-0 left-0"
+          sx={{
+            backgroundColor: '#FFFFFF',
+            width: '100%',
+            height: '100%'
+          }}
+        >
+          <CircularProgress color="primary" value={25} />
+          <Typography>Cargando...</Typography>
+        </Box>
+      )}
     </Dialog>
   );
 };

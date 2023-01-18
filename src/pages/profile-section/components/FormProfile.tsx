@@ -12,6 +12,7 @@ import { AxiosError } from 'axios';
 import { InfoUser } from '../../../interfaces';
 import { BtnSubmit } from '../../../styles';
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 type TypeForm = {
   nombre: string;
@@ -54,6 +55,7 @@ export const FormProfile = ({
   const Imagen = new Blob([fileChange!], { type: 'image/png' });
   const { comunas } = ObtenerComunas();
   const { cargarImagenUsuario } = CargarImagenUsuario({ IdUsuario, Imagen });
+  const navigate = useNavigate();
 
   useEffect(() => {
     setUrlImage(urlImgPerfil);
@@ -71,7 +73,7 @@ export const FormProfile = ({
       .catch((error: AxiosError) => console.log('Error =>', error));
 
     await cargarImagenUsuario()
-      .then((response: any) => console.log('Response =>', response))
+      .then(() => navigate('/'))
       .catch((error: AxiosError) => console.log('Error =>', error));
   };
 

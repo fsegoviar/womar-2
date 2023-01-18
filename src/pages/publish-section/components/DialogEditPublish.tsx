@@ -81,6 +81,11 @@ type PropsDialog = {
   close: (value: boolean) => void;
 };
 
+/* type ImageToEdit = {
+  id?: number;
+  url: string;
+}; */
+
 export const DialogEditPublish = (props: PropsDialog) => {
   const { comunas } = ObtenerComunas();
   const { categories } = ObtenerCategorias();
@@ -111,11 +116,11 @@ export const DialogEditPublish = (props: PropsDialog) => {
   }, []);
 
   const generateImgCarusel = () => {
-    props.publish.otrasImagenes.forEach((imgCarrusel) => {
+    props.publish.otrasImagenes.forEach((imgCarrusel: any) => {
       let newCarrusel: any[] = caruselImg;
       newCarrusel.push({
-        original: imgCarrusel,
-        thumbnail: imgCarrusel,
+        original: imgCarrusel.urlImagen,
+        thumbnail: imgCarrusel.urlImagen,
         originalWidth: '100px'
       });
       setCarruselImg(newCarrusel as never[]);
@@ -124,10 +129,10 @@ export const DialogEditPublish = (props: PropsDialog) => {
 
   const generateImgUploaded = () => {
     setCountImg(props.publish.otrasImagenes.length);
-    props.publish.otrasImagenes.forEach((img) => {
+    props.publish.otrasImagenes.forEach((img: any) => {
       let newListImg: ImageListType = images;
       newListImg.push({
-        dataURL: img
+        dataURL: img.urlImagen
       });
       setImages(newListImg as never[]);
     });

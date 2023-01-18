@@ -7,9 +7,6 @@ import { useNavigate } from 'react-router-dom';
 import { BtnSubmit } from '../../styles';
 import { DialogLogin } from './login';
 import { DialogRegister } from '../DialogRegister';
-import { RegisterUser } from '../../interfaces';
-import { AxiosError } from 'axios';
-import { RegistrarUsuarioLocal } from '../../services';
 import { parseJwt } from '../../utils';
 
 export const Navbar = () => {
@@ -43,12 +40,6 @@ export const Navbar = () => {
   };
 
   //* Methods register
-  const onSubmitRegisterLocal = (data: RegisterUser) => {
-    const { registerUserLocal } = RegistrarUsuarioLocal(data);
-    registerUserLocal()
-      .then(() => setOpenRegisterLocal(false))
-      .catch((error: AxiosError) => console.log('Error =>', error));
-  };
 
   const closeRegisterLocal = () => {
     setTimeout(() => {
@@ -136,7 +127,7 @@ export const Navbar = () => {
         <DialogRegister
           open={openRegisterLocal}
           handleClose={closeRegisterLocal}
-          onSubmit={onSubmitRegisterLocal}
+          setOpenRegisterLocal={setOpenRegisterLocal}
         />
       )}
     </>

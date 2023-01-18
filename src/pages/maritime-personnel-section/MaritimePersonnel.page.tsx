@@ -87,7 +87,7 @@ export const MaritimePersonnelPage = () => {
             <Grid container sx={{ my: 5 }} spacing={2}>
               <Grid item xs={12}>
                 <Typography variant="h4" sx={{ fontWeight: 'bold' }}>
-                  Embarcaciones
+                  Personal Marítimo
                 </Typography>
                 <Divider />
               </Grid>

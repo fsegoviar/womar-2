@@ -1,12 +1,14 @@
-import Card from "@mui/material/Card";
-import CardActions from "@mui/material/CardActions";
-import CardContent from "@mui/material/CardContent";
-import CardMedia from "@mui/material/CardMedia";
-import Typography from "@mui/material/Typography";
-import Rating from "@mui/material/Rating";
-import { FooterButton } from "./DetailServiceSubComponent/FooterButton";
-import { CarouselImages } from "./DetailServiceSubComponent/CarouselImages";
-import { DetailService } from "../interfaces";
+import Card from '@mui/material/Card';
+import CardActions from '@mui/material/CardActions';
+import CardContent from '@mui/material/CardContent';
+import CardMedia from '@mui/material/CardMedia';
+import Typography from '@mui/material/Typography';
+import Rating from '@mui/material/Rating';
+import { FooterButton } from './DetailServiceSubComponent/FooterButton';
+import { DetailService } from '../interfaces';
+import { Box } from '@mui/system';
+import ImageGallery from 'react-image-gallery';
+import { useEffect, useState } from 'react';
 
 type PropsComponent = {
   service: DetailService;
@@ -14,22 +16,53 @@ type PropsComponent = {
   contactPage: (element: DetailService) => void;
 };
 
+type PropsCarrusel = {
+  original: string;
+  thumbnail: string;
+};
+
 export const DetailServiceComponent = ({
   service,
   closeModal,
-  contactPage,
+  contactPage
 }: PropsComponent) => {
+  const [listCarrusel, setListCarrusel] = useState<PropsCarrusel[]>([]);
+
+  useEffect(() => {
+    service.otrasImagenes.forEach((element: any) => {
+      let newArray = listCarrusel;
+      newArray.push({
+        original: element.urlImagen,
+        thumbnail: element.urlImagen
+      });
+      setListCarrusel(newArray);
+    });
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <Card
       sx={{ maxWidth: 600 }}
       style={{
-        border: "2px solid #0DA5D9",
-        borderRadius: "20px",
-        marginTop: "10px",
+        border: '2px solid #0DA5D9',
+        borderRadius: '20px',
+        marginTop: '10px'
       }}
     >
       <CardMedia>
-        <CarouselImages {...service.otrasImagenes} />
+        <Box className="carousel-demo">
+          <Box className="card" sx={{ p: 4 }}>
+            <ImageGallery
+              lazyLoad={true}
+              showPlayButton={false}
+              showNav={true}
+              thumbnailPosition={'bottom'}
+              showFullscreenButton={false}
+              items={listCarrusel}
+            />
+          </Box>
+        </Box>
       </CardMedia>
 
       <CardContent>
@@ -37,7 +70,7 @@ export const DetailServiceComponent = ({
           gutterBottom
           variant="h5"
           component="div"
-          sx={{ display: "flex", alignItems: "center", m: 0 }}
+          sx={{ display: 'flex', alignItems: 'center', m: 0 }}
         >
           {service.titulo}
           <Rating
@@ -47,7 +80,7 @@ export const DetailServiceComponent = ({
             readOnly
           />
         </Typography>
-        <Typography variant="subtitle1" sx={{ fontWeight: "bold" }}>
+        <Typography variant="subtitle1" sx={{ fontWeight: 'bold' }}>
           ${service.precio}
         </Typography>
         <Typography variant="body2" color="text.secondary">
@@ -56,9 +89,9 @@ export const DetailServiceComponent = ({
       </CardContent>
       <CardActions
         style={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center'
         }}
       >
         <FooterButton

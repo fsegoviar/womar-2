@@ -5,17 +5,22 @@ import { FormProfile } from './components/FormProfile';
 import { useParams } from 'react-router-dom';
 import { Typography } from '@mui/material';
 import { useState, useEffect } from 'react';
+import { SkeletonLoader } from './components/SkeletonLoader';
 
 export const ProfilePage = () => {
   const { userId } = useParams();
   const [infoUser, setInfoUser] = useState<any>();
   const { fetchData } = ObtenerInfoUsuario(userId as string);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const fetch = async () => {
-      await fetchData().then((response: any) => {
-        setInfoUser(response.result);
-      });
+      setLoading(true);
+      await fetchData()
+        .then((response: any) => {
+          setInfoUser(response.result);
+        })
+        .finally(() => setLoading(false));
     };
 
     fetch();
@@ -33,7 +38,7 @@ export const ProfilePage = () => {
           justifyContent: 'center'
         }}
       >
-        {infoUser ? (
+        {loading && (
           <Box
             className="w-full md:w-5/12"
             sx={{
@@ -43,9 +48,23 @@ export const ProfilePage = () => {
               border: '2px solid #0bafdd'
             }}
           >
-            {infoUser && <FormProfile {...infoUser} />}
+            <SkeletonLoader />
           </Box>
-        ) : (
+        )}
+        {infoUser && !loading && (
+          <Box
+            className="w-full md:w-5/12"
+            sx={{
+              backgroundColor: 'white',
+              borderRadius: 10,
+              p: 5,
+              border: '2px solid #0bafdd'
+            }}
+          >
+            <FormProfile {...infoUser} />
+          </Box>
+        )}
+        {!infoUser && !loading && (
           <Typography variant="h4" className="text-center">
             Usuario no encontrado
           </Typography>

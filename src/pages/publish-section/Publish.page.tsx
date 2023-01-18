@@ -12,11 +12,14 @@ import { DisabledPublish } from './components/DisabledPublish';
 import { BtnSubmit } from '../../styles';
 import { PublishComponent } from './components/PublishComponent';
 import { useParams } from 'react-router-dom';
+import { SkeletonLoader } from './components/SkeletonLoader';
 
 export const PublishPage = () => {
   const [openModal, setOpenModal] = useState(false);
   const { userId } = useParams();
-  const { publishUser } = ObtenerPublicacionDeUsuario(userId as string);
+  const { publishUser, loading } = ObtenerPublicacionDeUsuario(
+    userId as string
+  );
   const [publishSelected, setPublishSelected] = useState<DetailService>();
   const [openModalEdit, setOpenModalEdit] = useState(false);
   const [openModalDelete, setOpenModalDelete] = useState(false);
@@ -92,7 +95,9 @@ export const PublishPage = () => {
               }}
             >
               <Stack spacing={2} sx={{ width: '90%', margin: '0 auto' }}>
-                {publishUser.length > 0 ? (
+                {loading && <SkeletonLoader />}
+                {publishUser.length > 0 &&
+                  !loading &&
                   publishUser.map((publish) => (
                     <PublishComponent
                       key={publish.id}
@@ -100,8 +105,8 @@ export const PublishPage = () => {
                       deletePublish={deletePublish}
                       editPublish={editPublish}
                     />
-                  ))
-                ) : (
+                  ))}
+                {publishUser.length === 0 && !loading && (
                   <h1>No existen publicaciones para esta sección</h1>
                 )}
               </Stack>
