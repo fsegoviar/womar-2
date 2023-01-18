@@ -58,6 +58,7 @@ export const DialogRegister = (props: PropsRegister) => {
     register,
     handleSubmit,
     setValue,
+    getValues,
     formState: { errors }
   } = useForm<RegisterUser>();
   const [open, setOpen] = useState(props.open);
@@ -147,7 +148,7 @@ export const DialogRegister = (props: PropsRegister) => {
               <SelectForm
                 style={{ width: '100%' }}
                 label="Dirección"
-                value={''}
+                value={getValues('comunaId')}
                 onChange={(evnt) => {
                   if (evnt.target.value) {
                     setValue('comunaId', Number(evnt.target.value));
