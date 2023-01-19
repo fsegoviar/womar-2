@@ -1,13 +1,14 @@
-import { AppBar, Toolbar } from '@mui/material';
+import AppBar from '@mui/material/AppBar';
+import Toolbar from '@mui/material/Toolbar';
 import { Box, Container } from '@mui/system';
-import { SearchBar } from './SearchBar';
-import { UserMenu } from './UserMenu';
-import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { BtnSubmit } from '../../styles';
+import { SearchBar } from './SearchBar';
+import { useState } from 'react';
+import { UserMenu } from './UserMenu';
+import { BtnNavbar, BtnSubmit } from '../../styles';
+import { parseJwt } from '../../utils';
 import { DialogLogin } from './login';
 import { DialogRegister } from '../DialogRegister';
-import { parseJwt } from '../../utils';
 
 export const Navbar = () => {
   const navigate = useNavigate();
@@ -19,8 +20,6 @@ export const Navbar = () => {
   const [isLogged, setIsLogged] = useState(
     !!localStorage.getItem('tokenWomar')
   );
-
-  console.log('proveedor' + proveedor + ' open ' + openRegisterExternal);
 
   const handleCloseSession = () => {
     setIsLogged(false);
@@ -49,20 +48,22 @@ export const Navbar = () => {
 
   return (
     <>
-      <AppBar position="static" sx={{ backgroundColor: '#E0E0E2' }}>
+      <AppBar
+        position="static"
+        sx={{ backgroundColor: '#FFFFFF' }}
+        className="h-24"
+      >
         <Container maxWidth="xl">
-          <Toolbar disableGutters>
+          <Toolbar disableGutters className="h-24">
             {/* Logo Womar */}
             <Box
-              className="bg-center bg-no-repeat bg-contain my-2 cursor-pointer"
+              className="bg-center bg-no-repeat bg-contain my-2 cursor-pointer w-56 h-14"
               sx={{
                 flexGrow: 1,
-                backgroundImage: `url(${require('../../assets/images/logo-womar-2.png')})`,
-                height: '70px'
+                backgroundImage: `url(${require('../../assets/images/logo-womar-2.png')})`
               }}
               onClick={() => navigate('/')}
             ></Box>
-
             {/* Barra de busqueda */}
             <Box
               sx={{
@@ -73,25 +74,19 @@ export const Navbar = () => {
             >
               <SearchBar />
             </Box>
-            {/* Botones de ingresar y registrarse */}
+            {/* Botones */}
             <Box sx={{ flexGrow: 1 }}>
               {!isLogged ? (
                 <>
-                  <BtnSubmit
-                    onClick={() => setOpenLogin(true)}
-                    sx={{
-                      boxShadow: 'inset 0 0 0 2px #FFFFFF',
-                      marginRight: '10px'
-                    }}
-                  >
+                  <BtnNavbar onClick={() => navigate(`/publicar/${IdUser}`)}>
+                    Publicar
+                  </BtnNavbar>
+                  <BtnNavbar onClick={() => setOpenLogin(true)}>
                     Ingresa
-                  </BtnSubmit>
-                  <BtnSubmit
-                    onClick={() => setOpenRegisterLocal(true)}
-                    sx={{ boxShadow: 'inset 0 0 0 2px #FFFFFF' }}
-                  >
+                  </BtnNavbar>
+                  <BtnNavbar onClick={() => setOpenRegisterLocal(true)}>
                     Registrate
-                  </BtnSubmit>
+                  </BtnNavbar>
                 </>
               ) : (
                 <>
@@ -100,12 +95,9 @@ export const Navbar = () => {
                       display: { xs: 'none', md: 'flex' }
                     }}
                   >
-                    <BtnSubmit
-                      onClick={() => navigate(`/publicar/${IdUser}`)}
-                      sx={{ boxShadow: 'inset 0 0 0 2px #FFFFFF', mx: 3 }}
-                    >
+                    <BtnNavbar onClick={() => navigate(`/publicar/${IdUser}`)}>
                       Mis publicaciones
-                    </BtnSubmit>
+                    </BtnNavbar>
                     <UserMenu handleCloseSession={handleCloseSession} />
                   </Box>
                 </>
