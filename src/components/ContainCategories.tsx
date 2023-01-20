@@ -16,37 +16,71 @@ const dataNavigation = [
     icon: <AnchorIcon sx={{ width: '30px', height: '30px' }} />
   },
   {
-    site: '/otros_servicios',
+    site: '/otros_srvicios',
     title: 'Otros Servicios',
     icon: <MiscellaneousServicesIcon sx={{ width: '30px', height: '30px' }} />
   }
 ];
 
 export const CategoryButton = styled.button`
-  background-color: #61dafb;
+  background: #174590;
   color: #ffffff;
-  /* font-weight: bold;
-  font-size: 22px;
-  border-radius: 50px;
-  padding: 5px 15px;
-  margin: 0; */
-  border: 3px solid #ffffff;
-  box-shadow: -1px 2px 16px -1px rgba(0, 0, 0, 0.75);
+  border-radius: 0% 30px 30px 0%;
+  transition: background 2s ease-out;
 
   :hover {
-    background-color: #61dafb;
+    background: linear-gradient(
+      90deg,
+      rgba(0, 229, 182, 1) 0%,
+      rgba(0, 124, 240, 1) 100%
+    );
   }
 `;
 
+export const CircleIcon = styled.div`
+  clip-path: circle(50% at 50% 50%);
+  width: 90px;
+  height: 90px;
+  position: absolute;
+  left: -80px;
+  top: -20px;
+  background-color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
 export const ContainCategories = () => {
+  const icons = [
+    {
+      url: require('../assets/images/icono-web-1.png')
+    },
+    {
+      url: require('../assets/images/icono-web-2.png')
+    },
+    {
+      url: require('../assets/images/icono-web-1.png')
+    }
+  ];
+
   return (
     <>
       {dataNavigation.map((item, index) => (
-        <div key={index} className="flex justify-center md:mx-5">
+        <div key={index} className="flex justify-center items-center md:mx-5">
           <Link to={item.site} style={{ textDecoration: 'none' }}>
-            <CategoryButton className="px-5 py-3 my-3 text-[20px] rounded-full md:m-0 ">
-              {item.title}
-            </CategoryButton>
+            <div className="flex relative items-center mx-10 my-5">
+              <CircleIcon>
+                <div
+                  style={{
+                    backgroundImage: `url(${icons[index].url})`
+                  }}
+                  className="bg-cover bg-center bg-no-repeat w-32 h-32"
+                ></div>
+              </CircleIcon>
+              <CategoryButton className="px-5 py-3 my-3 text-[20px]  md:m-0 ">
+                {item.title}
+              </CategoryButton>
+            </div>
           </Link>
         </div>
       ))}

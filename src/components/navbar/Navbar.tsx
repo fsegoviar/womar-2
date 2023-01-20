@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { SearchBar } from './SearchBar';
 import { useState } from 'react';
 import { UserMenu } from './UserMenu';
-import { BtnNavbar, BtnSubmit } from '../../styles';
+import { BtnNavbar } from '../../styles';
 import { parseJwt } from '../../utils';
 import { DialogLogin } from './login';
 import { DialogRegister } from '../DialogRegister';
@@ -20,6 +20,8 @@ export const Navbar = () => {
   const [isLogged, setIsLogged] = useState(
     !!localStorage.getItem('tokenWomar')
   );
+
+  console.log('Datos navbar =>', proveedor, openRegisterExternal);
 
   const handleCloseSession = () => {
     setIsLogged(false);

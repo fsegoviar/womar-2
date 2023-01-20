@@ -1,83 +1,175 @@
-import { Box, Container } from '@mui/material';
 import { ContainCategories, PageBase } from '../../components';
-import { StepsComponent } from './components/StepsComponent';
+import { SimpleCarousel } from './components/SimpleCarousel';
+import Carousel from 'react-multi-carousel';
+import { Carousel as Carousel3D } from 'react-configurable-carousel';
+import 'react-multi-carousel/lib/styles.css';
+import { CardItem } from './components/CardItem';
+import { ItemFooter } from './components/ItemFooter';
 
 export const HomePage = () => {
-  const steps = [
-    {
-      stepNumber: '1',
-      label:
-        'Explora los servicios marítimos, lee todos los detalles, reseñas, selecciona y contáctalo.',
-      image: require('../../assets/images/servicio-1.png')
+  const responsive = {
+    superLargeDesktop: {
+      // the naming can be any, depends on you.
+      breakpoint: { max: 4000, min: 3000 },
+      items: 5
     },
-    {
-      stepNumber: '2',
-      label: 'El proveedor del servicio revisará tu solicitud.',
-      image: require('../../assets/images/servicio-2.png')
+    desktop: {
+      breakpoint: { max: 3000, min: 1024 },
+      items: 3
     },
-    {
-      stepNumber: '3',
-      label:
-        'Recibirás un correo electrónico de confirmación y listo habrás contactado tu servicio.',
-      image: require('../../assets/images/servicio-3.png')
+    tablet: {
+      breakpoint: { max: 1024, min: 464 },
+      items: 2
+    },
+    mobile: {
+      breakpoint: { max: 464, min: 0 },
+      items: 1
     }
-  ];
+  };
 
   return (
     <PageBase>
-      {/* Imagen de fondo */}
-      <Box
-        className="flex bg-cover bg-no-repeat bg-center justify-center items-start md:justify-end md:items-center"
-        sx={{
-          backgroundImage: `url(${require('../../assets/images/Banner.png')})`,
-          width: '100%',
-          height: '40vh'
-        }}
-      >
-        <h3
-          className="font text-center pt-5 text-2xl w-5/12 font-bold sm:text-sm md:text-5xl lg:text-6xl md:pt-0"
-          style={{
-            color: '#FFFFFF'
-          }}
-        >
-          Contacta tu servicio marítimo
-        </h3>
-      </Box>
+      {/* <ButtonInfo /> */}
+
+      <SimpleCarousel />
       {/* Categorías */}
       <section className="my-10 flex flex-col md:flex-row md:justify-center">
         <ContainCategories />
       </section>
       {/* Servicios maritimos más populares */}
-      <Container maxWidth={'xl'} sx={{ width: '100%', height: 'auto' }}>
-        {/* <Carrusel /> */}
-      </Container>
-      {/* Como publicar */}
-      <Box
-        className="bg-center bg-no-repeat bg-cover"
-        sx={{
-          backgroundImage: `url(${require('../../assets/images/background-ocean.jpeg')})`,
-          width: '100%',
-          height: '700px',
-          py: 2
+      <section
+        style={{
+          background:
+            'linear-gradient(90deg,rgba(0, 229, 182, 1) 0%,rgba(0, 124, 240, 1) 100%)'
+        }}
+        className="flex flex-col justify-center items-center h-[500px]"
+      >
+        <h1 className="font-light text-white mt-10 text-2xl tracking-[.40em]">
+          SERVICIOS MARÍTIMOS MÁS POPULARES
+        </h1>
+        <Carousel className="z-10 w-[80%] h-[450px]" responsive={responsive}>
+          <CardItem
+            img={require('../../assets/images/img-servicio1.png')}
+            title="Servicio de turismo"
+            direction="Dirección 1"
+            price="300.000"
+          />
+          <CardItem
+            img={require('../../assets/images/naves-1.png')}
+            title="Servicio de turismo"
+            direction="Dirección 1"
+            price="250.000"
+          />
+          <CardItem
+            img={require('../../assets/images/naves-2.png')}
+            title="Servicio de transporte"
+            direction="Dirección 2"
+            price="2.050.000"
+          />
+          <CardItem
+            img={require('../../assets/images/img-servicio1.png')}
+            title="Servicio de turismo"
+            direction="Dirección 1"
+            price="300.000"
+          />
+          <CardItem
+            img={require('../../assets/images/img-servicio1.png')}
+            title="Servicio de turismo"
+            direction="Dirección 1"
+            price="300.000"
+          />
+        </Carousel>
+      </section>
+      {/*Como funciona womar y Carrusel 3D */}
+      <section className="flex flex-col items-center py-4">
+        <h2
+          style={{ color: '#003BE9' }}
+          className="my-10 font-bold text-4xl tracking-[.30em]"
+        >
+          ¿CÓMO FUNCIONA WOMAR?
+        </h2>
+        <Carousel3D
+          arrows={true}
+          dotsNavigation={false}
+          dotsNavigationInside={true}
+          width={'90%'}
+          height={'400px'}
+          carouselStyle={'3d'}
+        >
+          <div
+            className="bg-center bg-cover bg-no-repeat w-[100%] h-[100%]"
+            style={{
+              backgroundImage: `url(${require('../../assets/images/comofunciona-1.png')})`
+            }}
+          ></div>
+          <div
+            className="bg-center bg-cover bg-no-repeat w-[100%] h-[100%]"
+            style={{
+              backgroundImage: `url(${require('../../assets/images/comofunciona-2.png')})`
+            }}
+          ></div>
+          <div
+            className="bg-center bg-cover bg-no-repeat w-[100%] h-[100%]"
+            style={{
+              backgroundImage: `url(${require('../../assets/images/comofunciona-3.png')})`
+            }}
+          ></div>
+        </Carousel3D>
+      </section>
+      <footer
+        className="relative bg-center bg-cover bg-no-repeat w-full h-72 mt-10"
+        style={{
+          backgroundImage: `url(${require('../../assets/images/Banner.png')})`,
+          zIndex: '-1'
         }}
       >
-        <Container maxWidth={'xl'}>
-          <h4 className="font my-3 font-bold text-[20px] md:text-4xl">
-            Cómo funciona Womar?
-          </h4>
-          <div className="flex mt-5 flex-col md:justify-around md:items-center md:flex-row md:mt-10">
-            {/* Contenido card */}
-            {steps.map((step, index) => (
-              <StepsComponent
-                key={index}
-                spanNumber={step.stepNumber}
-                label={step.label}
-                image={step.image}
-              />
-            ))}
+        {/* fondo de color */}
+        <div
+          className="absolute top-0 lef-0 w-full h-full"
+          style={{
+            background:
+              'linear-gradient(90deg,rgba(0, 229, 182, 1) 0%,rgba(0, 124, 240, 1) 100%)',
+            opacity: '.7',
+            zIndex: '0'
+          }}
+        ></div>
+        <div className="relative grid grid-cols-3" style={{ zIndex: '9999' }}>
+          <div className="grid-span-1 flex flex-col items-center pt-10">
+            <h2
+              className="text-white font-bold text-[2.8rem]"
+              style={{ textShadow: '2px 2px rgba(0, 0, 0, 0.2)' }}
+            >
+              ¿AÚN
+            </h2>
+            <h2
+              className="text-white font-medium text-[2.8rem] pl-40"
+              style={{ textShadow: '2px 2px rgba(0, 0, 0, 0.2)' }}
+            >
+              TIENES
+            </h2>
+            <h2
+              className="text-white font-medium text-[2.8rem] pl-60"
+              style={{ textShadow: '2px 2px rgba(0, 0, 0, 0.2)' }}
+            >
+              DUDAS?
+            </h2>
           </div>
-        </Container>
-      </Box>
+          <div className="grid-span-2 flex items-center">
+            <ItemFooter
+              img={require('../../assets/images/ico-pin.png')}
+              text="Puntos de atención"
+            />
+            <ItemFooter
+              img={require('../../assets/images/ico-tel.png')}
+              text="Llámanos a nuestra línea"
+            />
+            <ItemFooter
+              img={require('../../assets/images/ico-person.png')}
+              text="Prefieres que te llamemos"
+            />
+          </div>
+        </div>
+      </footer>
     </PageBase>
   );
 };
