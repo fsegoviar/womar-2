@@ -170,3 +170,32 @@ export const CargarImagen = (formData: FormData) => {
 
   return { cargarImagen };
 };
+
+// * ---------------- PARTE DEL ALVAREZ ------------
+
+export const SubirImagen = (formData: FormData) => {
+  let result: any = null;
+  let error = false;
+
+  const subirImagen = async () => {
+    try {
+      const response = await axios.post(
+        `${process.env.REACT_APP_URL_BACKEND}/Publicaciones/SubirImagen`,
+        formData,
+        {
+          headers: {
+            'Access-Control-Allow-Origin': '*',
+            'Content-Type': 'multipart/form-data'
+          }
+        }
+      );
+      result = response;
+    } catch (e) {
+      error = true;
+    }
+
+    return { result, error };
+  };
+
+  return { subirImagen };
+};

@@ -16,7 +16,11 @@ import { forwardRef, ReactElement, Ref, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { RegisterUser } from '../interfaces';
 import { useEffect } from 'react';
-import { ObtenerComunas, RegistrarUsuarioLocal } from '../services';
+import {
+  ObtenerComunas,
+  RegistrarUsuarioLocal,
+  SubirImagen
+} from '../services';
 import { BtnSubmit, InputForm, ButtonSubmitOutlined } from '../styles';
 import { AxiosError } from 'axios';
 import Typography from '@mui/material/Typography';
@@ -78,8 +82,14 @@ export const DialogRegister = (props: PropsRegister) => {
   };
 
   const onSubmitRegisterLocal = (data: RegisterUser) => {
-    const { registerUserLocal } = RegistrarUsuarioLocal(data);
+    const blob = new Blob([fileChange!], { type: 'image/png' });
+    let formData = new FormData();
+    // formData.append(blob);
+    // const { subirImagen } = SubirImagen();
+
     setLoading(true);
+
+    const { registerUserLocal } = RegistrarUsuarioLocal(data);
     registerUserLocal()
       .then(() => props.setOpenRegisterLocal(false))
       .catch((error: AxiosError) => console.log('Error =>', error))
