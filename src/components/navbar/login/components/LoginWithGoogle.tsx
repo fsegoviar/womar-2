@@ -2,9 +2,15 @@ import GoogleLogin from '@leecheuk/react-google-login';
 import { gapi } from 'gapi-script';
 import { useEffect } from 'react';
 import { GoogleLoginButton } from 'react-social-login-buttons';
+import { TypeUser } from '../../../../interfaces/Login';
 
 type PropsGoogle = {
-  response: (value: any) => void;
+  response: (data: {
+    accessToken?: string;
+    email?: string;
+    password?: string;
+    tipo: TypeUser;
+  }) => void;
 };
 
 export const LoginWithGoogle = ({ response }: PropsGoogle) => {
@@ -23,8 +29,18 @@ export const LoginWithGoogle = ({ response }: PropsGoogle) => {
     <GoogleLogin
       clientId={String(process.env.REACT_APP_KEY_GOOGLE)}
       buttonText="Login"
-      onSuccess={response}
-      onFailure={response}
+      onSuccess={(value: any) =>
+        response({
+          accessToken: value.accessToken,
+          tipo: TypeUser.GOOGLE
+        })
+      }
+      onFailure={(value: any) =>
+        response({
+          accessToken: value.accessToken,
+          tipo: TypeUser.GOOGLE
+        })
+      }
       render={(renderProps) => (
         <GoogleLoginButton
           onClick={renderProps.onClick}

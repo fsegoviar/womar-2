@@ -14,12 +14,10 @@ import { TransitionProps } from '@mui/material/transitions';
 import React, { forwardRef, useState } from 'react';
 import { LoginWithGoogle } from './components/LoginWithGoogle';
 import { LoginWithFacebook } from './components/LoginWithFacebook';
-import {
-  FailResponse,
-  SuccessResponse
-} from '@greatsumini/react-facebook-login';
+import { FailResponse } from '@greatsumini/react-facebook-login';
 import { StandardLogin } from './components/StandardLogin';
-import { LoginFacebook, LoginGoogle, LoginLocal } from '../../../services';
+import { TypeUser } from '../../../interfaces/Login';
+import axios from 'axios';
 
 const Transition = forwardRef(function Transition(
   props: TransitionProps & {
@@ -42,65 +40,61 @@ export const DialogLogin = (props: PropsLogin) => {
   const [open, setOpen] = useState(props.open);
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [msgError, setMsgError] = useState('');
 
-  const loginStandard = async (data: { email: string; password: string }) => {
-    const { fetchData } = LoginLocal(data);
-    let response: any = null;
+  // const loginStandard = async (data: { email: string; password: string }) => {
+  //   const { fetchData } = LoginLocal(data);
+  //   let response: any = null;
 
+  //   setLoading(true);
+
+  //   await fetchData()
+  //     .then((res: any) => (response = res))
+  //     .finally(() => setLoading(false));
+
+  //   if (!response.error) {
+  //     props.handleOpenSession(response.result.data.token);
+  //     setOpen(false);
+  //     props.handleClose();
+  //   } else {
+  //     setError(true);
+  //   }
+  // };
+
+  const accessLogin = ({
+    accessToken,
+    email = '',
+    password = '',
+    tipo
+  }: {
+    accessToken?: string;
+    email?: string;
+    password?: string;
+    tipo: TypeUser;
+  }): void => {
     setLoading(true);
-
-    await fetchData()
-      .then((res: any) => (response = res))
+    axios
+      .post(`${process.env.REACT_APP_URL_BACKEND}/Security/Login`, {
+        accessToken,
+        email,
+        password,
+        tipo
+      })
+      .then((response: any) => console.log('Success =>', response))
+      .catch((error: any) => {
+        if (error.response.data) {
+          setMsgError('Usuario no registrado');
+        } else {
+          setMsgError('Usuario/Contraseña incorrecta');
+        }
+        setError(true);
+      })
       .finally(() => setLoading(false));
-
-    if (!response.error) {
-      props.handleOpenSession(response.result.data.token);
-      setOpen(false);
-      props.handleClose();
-    } else {
-      setError(true);
-    }
-  };
-
-  const loginGoogle = async (data: any) => {
-    const { fetchData } = LoginGoogle(data.accessToken);
-    let response: any = null;
-
-    setLoading(true);
-    await fetchData()
-      .then((res: any) => (response = res))
-      .finally(() => setLoading(false));
-
-    responseDataLogin(response, 'GOOGLE');
-  };
-
-  const loginFacebookSuccess = async (data: SuccessResponse) => {
-    const { fetchData } = LoginFacebook(data.accessToken);
-    let response: any = null;
-
-    setLoading(true);
-    await fetchData()
-      .then((res: any) => console.log('Response Facebook => ', res))
-      .finally(() => setLoading(false));
-
-    responseDataLogin(response, 'FACEBOOK');
   };
 
   const loginFacebookFailure = (data: FailResponse) => {
     console.log('Failure login =>', data);
     setError(true);
-  };
-
-  const responseDataLogin = (response: any, type: string) => {
-    if (!response.error) {
-      props.handleOpenSession(response.result.data.token);
-      setOpen(false);
-      props.handleClose();
-    } else {
-      props.handleClose();
-      props.isOpenRegisterExternal(true);
-      props.setProveedor(type);
-    }
   };
 
   const handleClose = () => {
@@ -133,7 +127,7 @@ export const DialogLogin = (props: PropsLogin) => {
           sx={{ color: '#3c3c3c' }}
           title={
             <>
-              <span className="font">Bienevenido a Womar!</span>
+              <span className="font-medium">Bienevenido a Womar!</span>
               <img
                 src="https://d30y9cdsu7xlg0.cloudfront.net/png/53504-200.png"
                 alt={'closeModal'}
@@ -147,22 +141,22 @@ export const DialogLogin = (props: PropsLogin) => {
           }
         />
         <CardContent>
-          <StandardLogin onSubmit={loginStandard} />
+          <StandardLogin onSubmit={accessLogin} />
           {error && (
             <Fade in={error}>
               <Box className="flex justify-center items-center pt-2">
                 <Typography variant="body1" color="red">
-                  Usuario/Contraseña incorrecta
+                  {msgError}
                 </Typography>
               </Box>
             </Fade>
           )}
           <Divider className="pt-5" />
           <Box sx={{ my: 2 }}>
-            <LoginWithGoogle response={loginGoogle} />
+            <LoginWithGoogle response={accessLogin} />
           </Box>
           <LoginWithFacebook
-            success={loginFacebookSuccess}
+            success={accessLogin}
             failure={loginFacebookFailure}
           />
         </CardContent>

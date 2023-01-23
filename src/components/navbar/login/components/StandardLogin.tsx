@@ -2,6 +2,8 @@ import { Box, Typography } from '@mui/material';
 import { useForm } from 'react-hook-form';
 import { BtnSubmit } from '../../../../styles';
 import styled from '@emotion/styled';
+import { TypeUser } from '../../../../interfaces/Login';
+import { useEffect } from 'react';
 
 const InputForm = styled.input<{ error: boolean }>`
   border: ${(props) => (props.error ? '1px solid red' : '1px solid #0BAFDD')};
@@ -14,6 +16,7 @@ const InputForm = styled.input<{ error: boolean }>`
 type Inputs = {
   email: string;
   password: string;
+  tipo: TypeUser;
 };
 
 type PropsLoginStandard = {
@@ -24,8 +27,13 @@ export const StandardLogin = (props: PropsLoginStandard) => {
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors }
   } = useForm<Inputs>();
+
+  useEffect(() => {
+    setValue('tipo', TypeUser.LOCAL);
+  }, []);
 
   return (
     <Box
@@ -36,7 +44,7 @@ export const StandardLogin = (props: PropsLoginStandard) => {
       <Typography
         component={'label'}
         variant={'subtitle1'}
-        className="font"
+        className="font-medium"
         sx={{ color: '#3c3c3c' }}
       >
         Correo electrónico
@@ -46,7 +54,7 @@ export const StandardLogin = (props: PropsLoginStandard) => {
           error={!!errors.email}
           id="email"
           type={'email'}
-          className="font"
+          className="font-medium"
           {...register('email', { required: true })}
         />
         {errors.email && (
@@ -65,7 +73,7 @@ export const StandardLogin = (props: PropsLoginStandard) => {
       <Typography
         component={'label'}
         variant={'subtitle1'}
-        className="font"
+        className="font-medium"
         sx={{ color: '#3c3c3c', paddingTop: '10px' }}
       >
         Contraseña
@@ -75,6 +83,7 @@ export const StandardLogin = (props: PropsLoginStandard) => {
           error={!!errors.password}
           id="password"
           type={'password'}
+          className="font-medium"
           {...register('password', { required: true })}
         />
         {errors.password && (
@@ -90,7 +99,11 @@ export const StandardLogin = (props: PropsLoginStandard) => {
           </span>
         )}
       </Box>
-      <BtnSubmit type={'submit'} style={{ marginTop: '20px' }}>
+      <BtnSubmit
+        type={'submit'}
+        className="font-medium"
+        style={{ marginTop: '20px' }}
+      >
         Entrar
       </BtnSubmit>
     </Box>

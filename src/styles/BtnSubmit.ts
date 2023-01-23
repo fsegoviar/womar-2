@@ -6,7 +6,6 @@ export const BtnSubmit = styled(Button)`
   color: #ffffff;
   font-size: 12px;
   font-weight: bold;
-  font-family: 'sailec' !important;
   border-radius: 50px;
   padding: 5px 15px;
   :hover {

@@ -61,12 +61,14 @@ export const DialogRegister = (props: PropsRegister) => {
     getValues,
     formState: { errors }
   } = useForm<RegisterUser>();
+  const [urlImage, setUrlImage] = useState('');
+  const [fileChange, setFileChange] = useState<File>();
   const [open, setOpen] = useState(props.open);
   const { comunas } = ObtenerComunas();
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    setValue('role', 'Cliente');
+    setValue('Role', 'Cliente');
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -82,6 +84,11 @@ export const DialogRegister = (props: PropsRegister) => {
       .then(() => props.setOpenRegisterLocal(false))
       .catch((error: AxiosError) => console.log('Error =>', error))
       .finally(() => setLoading(false));
+  };
+
+  const handleChangeImage = (e: any) => {
+    setUrlImage(URL.createObjectURL(e.target.files[0]));
+    setFileChange(e.target.files[0]);
   };
 
   return (
@@ -107,13 +114,34 @@ export const DialogRegister = (props: PropsRegister) => {
         </h1>
         <Box component={'form'} onSubmit={handleSubmit(onSubmitRegisterLocal)}>
           <Container>
+            <Box
+              className="relative bg-center bg-cover bg-no-repeat my-5 rounded-full m-auto"
+              sx={{
+                backgroundImage: `url(${urlImage})`,
+                width: '150px',
+                height: '150px'
+              }}
+            >
+              {!urlImage && (
+                <p className="absolute top-0 left-0 cursor-pointer">
+                  Ingresa tu imagen de perfil aqui
+                </p>
+              )}
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleChangeImage}
+                className="w-full cursor-pointer opacity-0"
+                style={{ height: '100%' }}
+              />
+            </Box>
             <InputForm
               className="font"
-              error={!!errors.nombre}
+              error={!!errors.Nombre}
               id="name"
               style={{ margin: '10px 0', width: '100%' }}
               label="Nombres *"
-              {...register('nombre', { required: true })}
+              {...register('Nombre', { required: true })}
             />
             <Stack
               direction="row"
@@ -121,14 +149,14 @@ export const DialogRegister = (props: PropsRegister) => {
               spacing={2}
             >
               <InputForm
-                error={!!errors.apellidoPaterno}
+                error={!!errors.ApellidoPaterno}
                 style={{ margin: '10px 0', width: '49%' }}
                 id="surname1"
                 label="Apellido Paterno *"
-                {...register('apellidoPaterno', { required: true })}
+                {...register('ApellidoPaterno', { required: true })}
               />
               <InputForm
-                error={!!errors.apellidoMaterno}
+                error={!!errors.ApellidoMaterno}
                 style={{ margin: '10px 0', width: '49%' }}
                 label="Apellido Materno"
               />
@@ -148,10 +176,10 @@ export const DialogRegister = (props: PropsRegister) => {
               <SelectForm
                 style={{ width: '100%' }}
                 label="Dirección"
-                value={getValues('comunaId')}
+                value={getValues('ComunaId')}
                 onChange={(evnt) => {
                   if (evnt.target.value) {
-                    setValue('comunaId', Number(evnt.target.value));
+                    setValue('ComunaId', Number(evnt.target.value));
                   }
                 }}
               >
@@ -172,7 +200,7 @@ export const DialogRegister = (props: PropsRegister) => {
                 label="Rut"
                 style={{ margin: '10px 0', width: '49%' }}
                 onChange={(e: any) => {
-                  setValue('rut', e.target.value);
+                  setValue('Rut', e.target.value);
                 }}
               />
               <InputForm
@@ -180,22 +208,22 @@ export const DialogRegister = (props: PropsRegister) => {
                 type={'number'}
                 style={{ margin: '10px 0', width: '49%' }}
                 label="Telefono"
-                {...register('telefono')}
+                {...register('Telefono')}
               />
             </Stack>
             <InputForm
-              error={!!errors.email}
+              error={!!errors.Email}
               type={'email'}
               style={{ marginBottom: '10px', width: '100%' }}
               label="Correo electrónico *"
-              {...register('email', { required: true })}
+              {...register('Email', { required: true })}
             />
             <InputForm
-              error={!!errors.password}
+              error={!!errors.Password}
               type={'password'}
               style={{ margin: '10px 0', width: '100%' }}
               label="Contraseña *"
-              {...register('password', { required: true })}
+              {...register('Password', { required: true })}
             />
             <Box sx={{ float: 'right', '& > :not(style)': { m: 1 }, py: 1 }}>
               <ButtonSubmitOutlined onClick={handleClose}>
@@ -209,14 +237,7 @@ export const DialogRegister = (props: PropsRegister) => {
         </Box>
       </Paper>
       {loading && (
-        <Box
-          className="flex flex-col justify-center items-center absolute top-0 left-0"
-          sx={{
-            backgroundColor: '#FFFFFF',
-            width: '100%',
-            height: '100%'
-          }}
-        >
+        <Box className="bg-white w-full h-full flex flex-col justify-center items-center absolute top-0 left-0">
           <CircularProgress color="primary" value={25} />
           <Typography>Cargando...</Typography>
         </Box>

@@ -1,13 +1,15 @@
 interface RegisterUser {
-  nombre: string;
-  apellidoPaterno: string;
-  apellidoMaterno: string;
-  rut: string;
-  comunaId: number;
-  telefono: number;
-  email: string;
-  password: string;
-  role: string;
+  Nombre: string;
+  ApellidoPaterno: string;
+  ApellidoMaterno?: string;
+  Rut: string;
+  ComunaId: number;
+  Telefono?: number;
+  Email: string;
+  Password: string;
+  Role: string;
+  Origen?: number;
+  ImagenPerfil: string;
 }
 
 interface RegisterExternalUser {
