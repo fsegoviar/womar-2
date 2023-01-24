@@ -42,27 +42,8 @@ export const DialogLogin = (props: PropsLogin) => {
   const [loading, setLoading] = useState(false);
   const [msgError, setMsgError] = useState('');
 
-  // const loginStandard = async (data: { email: string; password: string }) => {
-  //   const { fetchData } = LoginLocal(data);
-  //   let response: any = null;
-
-  //   setLoading(true);
-
-  //   await fetchData()
-  //     .then((res: any) => (response = res))
-  //     .finally(() => setLoading(false));
-
-  //   if (!response.error) {
-  //     props.handleOpenSession(response.result.data.token);
-  //     setOpen(false);
-  //     props.handleClose();
-  //   } else {
-  //     setError(true);
-  //   }
-  // };
-
   const accessLogin = ({
-    accessToken,
+    accessToken = '',
     email = '',
     password = '',
     tipo
@@ -80,7 +61,11 @@ export const DialogLogin = (props: PropsLogin) => {
         password,
         tipo
       })
-      .then((response: any) => console.log('Success =>', response))
+      .then((response: any) => {
+        props.handleOpenSession(response.data.token);
+        setOpen(false);
+        props.handleClose();
+      })
       .catch((error: any) => {
         if (error.response.data) {
           setMsgError('Usuario no registrado');

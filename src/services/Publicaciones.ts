@@ -1,21 +1,19 @@
 import axios, { AxiosError } from 'axios';
 import { useEffect, useState } from 'react';
 import { DetailService } from '../interfaces';
-import { CreatePublish } from '../interfaces/Publicacion';
 
-export const ObtenerPublicacionPorCategoria = (nombre: string) => {
+export const ObtenerPublicacionPorCategoria = () => {
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(true);
   const [publish, setPublish] = useState<DetailService[]>([]);
 
   const fetchData = async () => {
     await axios
-      .post(
-        `${process.env.REACT_APP_URL_API}/Publicaciones/ObtenerPublicacionPorCategoria`,
-        {
-          nombreCategoria: nombre
+      .get(`${process.env.REACT_APP_URL_BACKEND}/Publicaciones/Obtener`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('tokenWomar')}`
         }
-      )
+      })
       .then((response: any) => {
         setPublish(response.data);
       })
@@ -34,7 +32,7 @@ export const ObtenerPublicacionPorCategoria = (nombre: string) => {
   return { publish, loading, error };
 };
 
-export const ObtenerPublicacionDeUsuario = (id: string) => {
+export const ObtenerPublicacionDeUsuario = () => {
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(true);
   const [publishUser, setPublishUser] = useState<DetailService[]>([]);
@@ -42,7 +40,7 @@ export const ObtenerPublicacionDeUsuario = (id: string) => {
   const fetchData = async () => {
     await axios
       .get(
-        `${process.env.REACT_APP_URL_API}/Publicaciones/ObtenerPublicacionDeUsuario?UserId=${id}&Pagina=2&RecordsPorPagina=10`,
+        `${process.env.REACT_APP_URL_BACKEND}/Publicaciones/ObtenerMisPublicaciones`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('tokenWomar')}`
@@ -116,14 +114,14 @@ export const ObtenerPublicacion = (id: string) => {
   return { detailService, loading, error };
 };
 
-export const CrearPublicacion = (publish: CreatePublish) => {
+export const CrearPublicacion = (publish: FormData) => {
   let result: any = null;
   let error = false;
 
   const cargarPublicacion = async () => {
     try {
       const response = await axios.post(
-        `${process.env.REACT_APP_URL_API}/Publicaciones/CrearPublicacion`,
+        `${process.env.REACT_APP_URL_BACKEND}/Publicaciones/Crear`,
         publish,
         {
           headers: {

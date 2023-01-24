@@ -17,9 +17,7 @@ import { SkeletonLoader } from './components/SkeletonLoader';
 export const PublishPage = () => {
   const [openModal, setOpenModal] = useState(false);
   const { userId } = useParams();
-  const { publishUser, loading } = ObtenerPublicacionDeUsuario(
-    userId as string
-  );
+  const { publishUser, loading } = ObtenerPublicacionDeUsuario();
   const [publishSelected, setPublishSelected] = useState<DetailService>();
   const [openModalEdit, setOpenModalEdit] = useState(false);
   const [openModalDelete, setOpenModalDelete] = useState(false);

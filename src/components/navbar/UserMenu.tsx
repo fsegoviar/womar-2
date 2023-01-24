@@ -18,7 +18,7 @@ export const UserMenu = (props: PropsMenu) => {
   const [infoUser, setInfoUser] = useState<any>();
   const navigate = useNavigate();
   const { IdUser } = parseJwt();
-  const { fetchData } = ObtenerInfoUsuario(IdUser);
+  const { fetchData } = ObtenerInfoUsuario();
 
   useEffect(() => {
     const fetch = async () => {

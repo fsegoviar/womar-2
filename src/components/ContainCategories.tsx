@@ -12,7 +12,7 @@ const dataNavigation = [
   },
   {
     site: '/naves',
-    title: 'Servicio de Naves',
+    title: 'Naves',
     icon: <AnchorIcon sx={{ width: '30px', height: '30px' }} />
   },
   {
@@ -25,6 +25,7 @@ const dataNavigation = [
 export const CategoryButton = styled.button`
   background: #174590;
   color: #ffffff;
+  min-width: 200px;
   border-radius: 0% 30px 30px 0%;
   transition: background 2s ease-out;
 

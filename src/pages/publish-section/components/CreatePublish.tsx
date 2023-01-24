@@ -22,7 +22,6 @@ import {
 import { TransitionProps } from '@mui/material/transitions';
 import { InputForm } from '../../../styles/InputForm';
 import {
-  CargarImagen,
   CrearPublicacion,
   ObtenerCategorias,
   ObtenerComunas
@@ -97,7 +96,7 @@ export const CreatePublish = (props: PropsDialog) => {
   const [caruselImg, setCarruselImg] = useState([]);
   const { comunas } = ObtenerComunas();
   const { categories } = ObtenerCategorias();
-  const [file, setFile] = useState<any[]>([]);
+  const [files, setFiles] = useState<any[]>([]);
 
   const {
     register,
@@ -107,45 +106,25 @@ export const CreatePublish = (props: PropsDialog) => {
   } = useForm<CreatePublishType>();
   const maxNumber = 5;
 
-  const fetchUploadImage = async (
-    id: string,
-    blob: Blob,
-    isPrincipal: boolean
-  ) => {
-    let formData = new FormData();
-    formData.append('IdPublicacion', id);
-    formData.append('Imagen', blob);
-    formData.append('IsPrincipal', String(isPrincipal));
-
-    const { cargarImagen } = CargarImagen(formData);
-
-    await cargarImagen()
-      .then((response: any) => {
-        console.log('Respuesta OK =>', response);
-      })
-      .catch((error: any) => {
-        console.log('Error =>', error);
-      });
-  };
-
   const onSubmit: SubmitHandler<CreatePublishType> = async (data) => {
-    let listBlobs = file.map((f) => new Blob([f!], { type: 'image/png' }));
-    const { cargarPublicacion } = CrearPublicacion({
-      usuarioId: String(props.userId),
-      categoriaId: data.categoriaId,
-      comunaId: data.comunaId,
-      titulo: data.title,
-      descripcion: data.description,
-      precio: data.price
-    });
+    let formData = new FormData();
+    formData.append('ImagenPrincipal', files[0]);
+    for (const file of files) {
+      formData.append('Imagenes', file);
+    }
+    formData.append('Titulo', data.title);
+    formData.append('ComunaId', String(data.comunaId));
+    // formData.append('CategoriaId', String(data.categoriaId));
+    formData.append('CategoriaId', String(1));
+    formData.append('Precio', String(data.price));
+    formData.append('Descripcion', String(data.description));
+    formData.append('UsuarioId', String(props.userId));
+
+    // let listBlobs = file.map((f) => new Blob([f!], { type: 'image/png' }));
+    const { cargarPublicacion } = CrearPublicacion(formData);
     await cargarPublicacion()
       .then((response: any) => {
-        const idPublish = response.result.data.id;
-        listBlobs.forEach(async (blob, index) => {
-          index === 0
-            ? await fetchUploadImage(idPublish, blob, true)
-            : await fetchUploadImage(idPublish, blob, false);
-        });
+        console.log('Respuesta Publicacion =>', response);
       })
       .catch((response: any) => {
         console.log('Respuesta ERROR =>', response);
@@ -168,11 +147,11 @@ export const CreatePublish = (props: PropsDialog) => {
 
     imageList.forEach((image: any) => {
       if (image) {
-        // listBlobImg.push(new Blob([image.file!], { type: "image/png" }));
+        // lfistBlobImg.push(new Blob([image.file!], { type: "image/png" }));
         console.log(`File => `, image.file!);
-        let arrFiles = file!;
+        let arrFiles = files!;
         arrFiles.push(image.file!);
-        setFile(arrFiles);
+        setFiles(arrFiles);
       }
 
       imgUrls.push({

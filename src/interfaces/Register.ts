@@ -9,7 +9,7 @@ interface RegisterUser {
   Password: string;
   Role: string;
   Origen?: number;
-  ImagenPerfil: string;
+  ImagenPerfil: FormData;
 }
 
 interface RegisterExternalUser {

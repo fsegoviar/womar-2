@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { RegisterUser } from '../interfaces';
 import { useEffect } from 'react';
 
 export const LoginLocal = (data: { email: string; password: string }) => {
@@ -111,10 +110,10 @@ export const LoginFacebook = (accessToken: string) => {
   return { fetchData };
 };
 
-export const RegistrarUsuarioLocal = (data: RegisterUser) => {
-  const registerUserLocal = async () => {
+export const Registrar = (data: FormData) => {
+  const registrar = async () => {
     await axios.post(
-      `${process.env.REACT_APP_URL_API}/Usuarios/RegistrarUsuarioLocal`,
+      `${process.env.REACT_APP_URL_BACKEND}/Security/Registrar`,
       data,
       {
         headers: {
@@ -123,13 +122,13 @@ export const RegistrarUsuarioLocal = (data: RegisterUser) => {
       }
     );
   };
-  return { registerUserLocal };
+  return { registrar };
 };
 
 export const ActualizarInfoUsuario = (data: any, token: string) => {
   const actualizarInfoUsuario = async () => {
     await axios.patch(
-      `${process.env.REACT_APP_URL_API}/Usuarios/ActualizarInfoUsuario`,
+      `${process.env.REACT_APP_URL_BACKEND}/Security/ActualizarUsuario`,
       data,
       {
         headers: {
@@ -142,22 +141,21 @@ export const ActualizarInfoUsuario = (data: any, token: string) => {
   return { actualizarInfoUsuario };
 };
 
-export const ObtenerInfoUsuario = (IdUser: string) => {
+export const ObtenerInfoUsuario = () => {
   let result: any = null;
   let error = false;
 
   const fetchData = async () => {
     // const { IdUser } = parseJwt();
     try {
-      const response = await axios
-        .get(
-          `${process.env.REACT_APP_URL_API}/Usuarios/ObtenerInfoUsuario/${IdUser}`,
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem('tokenWomar')}`
-            }
+      const response = await axios.get(
+        `${process.env.REACT_APP_URL_BACKEND}/Security/ObtenerInfo`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('tokenWomar')}`
           }
-        )
+        }
+      );
       result = response.data;
     } catch (_error) {
       error = true;

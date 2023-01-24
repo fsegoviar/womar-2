@@ -23,8 +23,7 @@ export const ShipSectionPage = () => {
   const [openModal, setOpenModal] = useState(false);
   const [serviceSelected, setServiceSelected] = useState<DetailService>();
   const navigate = useNavigate();
-  const { publish: listShips, loading } =
-    ObtenerPublicacionPorCategoria('Naves');
+  const { publish: listShips, loading } = ObtenerPublicacionPorCategoria();
 
   console.log('Publish', loading);
 

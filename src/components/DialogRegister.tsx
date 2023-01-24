@@ -16,15 +16,12 @@ import { forwardRef, ReactElement, Ref, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { RegisterUser } from '../interfaces';
 import { useEffect } from 'react';
-import {
-  ObtenerComunas,
-  RegistrarUsuarioLocal,
-  SubirImagen
-} from '../services';
+import { ObtenerComunas, Registrar } from '../services';
 import { BtnSubmit, InputForm, ButtonSubmitOutlined } from '../styles';
 import { AxiosError } from 'axios';
 import Typography from '@mui/material/Typography';
 import styled from '@emotion/styled';
+import { TypeUser } from '../interfaces/Login';
 
 const Transition = forwardRef(function Transition(
   props: TransitionProps & {
@@ -55,6 +52,7 @@ interface PropsRegister {
   open: boolean;
   handleClose: () => void;
   setOpenRegisterLocal: (value: boolean) => void;
+  tipo: TypeUser;
 }
 
 export const DialogRegister = (props: PropsRegister) => {
@@ -73,6 +71,7 @@ export const DialogRegister = (props: PropsRegister) => {
 
   useEffect(() => {
     setValue('Role', 'Cliente');
+    setValue('Origen', props.tipo);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -84,13 +83,24 @@ export const DialogRegister = (props: PropsRegister) => {
   const onSubmitRegisterLocal = (data: RegisterUser) => {
     const blob = new Blob([fileChange!], { type: 'image/png' });
     let formData = new FormData();
-    // formData.append(blob);
-    // const { subirImagen } = SubirImagen();
+    formData.append('Nombre', data.Nombre);
+    formData.append('ApellidoPaterno', data.ApellidoPaterno);
+    data.ApellidoMaterno
+      ? formData.append('ApellidoMaterno', String(data.ApellidoMaterno))
+      : formData.append('ApellidoMaterno', '');
+    formData.append('ComunaId', String(data.ComunaId));
+    formData.append('Rut', data.Rut);
+    data.Telefono
+      ? formData.append('Telefono', String(data.Telefono))
+      : formData.append('Telefono', '');
+    formData.append('Email', data.Email);
+    formData.append('Password', data.Password);
+    formData.append('Role', data.Role);
+    formData.append('Origen', String(data.Origen));
+    formData.append('ImagenPerfil', blob);
 
-    setLoading(true);
-
-    const { registerUserLocal } = RegistrarUsuarioLocal(data);
-    registerUserLocal()
+    const { registrar } = Registrar(formData);
+    registrar()
       .then(() => props.setOpenRegisterLocal(false))
       .catch((error: AxiosError) => console.log('Error =>', error))
       .finally(() => setLoading(false));
@@ -169,6 +179,7 @@ export const DialogRegister = (props: PropsRegister) => {
                 error={!!errors.ApellidoMaterno}
                 style={{ margin: '10px 0', width: '49%' }}
                 label="Apellido Materno"
+                {...register('ApellidoMaterno', { required: false })}
               />
             </Stack>
             <FormControl

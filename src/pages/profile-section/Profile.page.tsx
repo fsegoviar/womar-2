@@ -2,15 +2,13 @@ import { PageBase } from '../../components/PageBase';
 import { Box, Container } from '@mui/system';
 import { ObtenerInfoUsuario } from '../../services';
 import { FormProfile } from './components/FormProfile';
-import { useParams } from 'react-router-dom';
 import { Typography } from '@mui/material';
 import { useState, useEffect } from 'react';
 import { SkeletonLoader } from './components/SkeletonLoader';
 
 export const ProfilePage = () => {
-  const { userId } = useParams();
   const [infoUser, setInfoUser] = useState<any>();
-  const { fetchData } = ObtenerInfoUsuario(userId as string);
+  const { fetchData } = ObtenerInfoUsuario();
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {

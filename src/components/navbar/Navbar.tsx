@@ -9,6 +9,7 @@ import { BtnNavbar } from '../../styles';
 import { parseJwt } from '../../utils';
 import { DialogLogin } from './login';
 import { DialogRegister } from '../DialogRegister';
+import { TypeUser } from '../../interfaces/Login';
 
 export const Navbar = () => {
   const navigate = useNavigate();
@@ -122,6 +123,7 @@ export const Navbar = () => {
           open={openRegisterLocal}
           handleClose={closeRegisterLocal}
           setOpenRegisterLocal={setOpenRegisterLocal}
+          tipo={TypeUser.LOCAL}
         />
       )}
     </>
