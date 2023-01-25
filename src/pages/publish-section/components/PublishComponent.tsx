@@ -1,14 +1,13 @@
 import { Card, Box, CardContent, Typography } from '@mui/material';
 import Chip from '@mui/material/Chip';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
-import LocationOnIcon from '@mui/icons-material/LocationOn';
 import { DetailService } from '../../../interfaces';
 import { BtnSubmit } from '../../../styles';
 
 type PropsPublish = {
   publish: DetailService;
   editPublish: (publish: DetailService) => void;
-  deletePublish: (idPublish: number) => void;
+  deletePublish: (idPublish: string) => void;
 };
 
 export const PublishComponent = (props: PropsPublish) => {
@@ -60,7 +59,7 @@ export const PublishComponent = (props: PropsPublish) => {
             component="div"
             sx={{ display: 'flex', justifyContent: 'center', my: 1 }}
           >
-            <LocationOnIcon /> {props.publish.locacion}
+            {/* <LocationOnIcon /> {props.publish.locacion} */}
           </Typography>
           <Typography component="div" sx={{ textAlign: 'center' }}>
             <Chip
@@ -79,7 +78,9 @@ export const PublishComponent = (props: PropsPublish) => {
           }}
         >
           <Box sx={{ '& > :not(style)': { m: 1 } }}>
-            <BtnSubmit onClick={() => props.deletePublish(props.publish.id)}>
+            <BtnSubmit
+              onClick={() => props.deletePublish(String(props.publish.id))}
+            >
               Dar de baja
             </BtnSubmit>
             <BtnSubmit onClick={() => props.editPublish(props.publish)}>

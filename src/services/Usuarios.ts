@@ -125,18 +125,26 @@ export const Registrar = (data: FormData) => {
   return { registrar };
 };
 
-export const ActualizarInfoUsuario = (data: any, token: string) => {
+export const ActualizarInfoUsuario = (data: any) => {
+  let result: any = null;
+  let error = false;
   const actualizarInfoUsuario = async () => {
-    await axios.patch(
-      `${process.env.REACT_APP_URL_BACKEND}/Security/ActualizarUsuario`,
-      data,
-      {
-        headers: {
-          'Access-Control-Allow-Origin': '*',
-          Authorization: `Bearer ${token}`
+    try {
+      const response = await axios.put(
+        `${process.env.REACT_APP_URL_BACKEND}/Security/ActualizarUsuario`,
+        data,
+        {
+          headers: {
+            'Access-Control-Allow-Origin': '*',
+            Authorization: `Bearer ${localStorage.getItem('tokenWomar')}`
+          }
         }
-      }
-    );
+      );
+      result = response.data;
+    } catch (_error) {
+      error = true;
+    }
+    return { result, error };
   };
   return { actualizarInfoUsuario };
 };

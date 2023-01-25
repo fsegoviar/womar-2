@@ -21,7 +21,7 @@ export const PublishPage = () => {
   const [publishSelected, setPublishSelected] = useState<DetailService>();
   const [openModalEdit, setOpenModalEdit] = useState(false);
   const [openModalDelete, setOpenModalDelete] = useState(false);
-  const [idPublishDelete, setIdPublishDelete] = useState(0);
+  const [idPublishDelete, setIdPublishDelete] = useState('');
 
   const closeModal = () => setOpenModal(false);
 
@@ -30,7 +30,7 @@ export const PublishPage = () => {
     setOpenModalEdit(true);
   };
 
-  const deletePublish = (idPublish: number) => {
+  const deletePublish = (idPublish: string) => {
     setOpenModalDelete(true);
     setIdPublishDelete(idPublish);
   };

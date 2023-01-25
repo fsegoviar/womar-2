@@ -1,14 +1,12 @@
 import { Box, Card, CardContent, Chip, Typography } from '@mui/material';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
-import Rating from '@mui/material/Rating/Rating';
 
 interface PropsPreview {
   title: string;
-  address: string;
   price: number;
+  direccion: string;
   urlImgCover: string;
-  rating: number;
   openContact: () => void;
 }
 
@@ -37,14 +35,13 @@ export const SmartPreviewService = (props: PropsPreview) => {
       <Box className="flex flex-col justify-center w-5/12">
         <CardContent className="flex flex-col justify-center items-center">
           <h6 className="text-center font-bold text-[20px]">{props.title}</h6>
-          <Rating name="read-only" value={props.rating} readOnly />
           <Typography
             className="flex justify-center py-2"
             variant="subtitle1"
             color="text.secondary"
             component="div"
           >
-            <LocationOnIcon /> {props.address}
+            <LocationOnIcon /> {props.direccion}
           </Typography>
           <Typography component="div" className="text-center">
             <Chip icon={<AttachMoneyIcon />} label={String(props.price)} />

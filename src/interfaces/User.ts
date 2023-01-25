@@ -3,7 +3,7 @@ export interface InfoUser {
   nombre: string;
   apellidoPaterno: string;
   apellidoMaterno: string;
-  urlImgPerfil: string;
+  imgPerfil: string;
   comuna: {
     id: number;
     nombre: string;

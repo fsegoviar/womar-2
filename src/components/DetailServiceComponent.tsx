@@ -3,7 +3,6 @@ import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
-import Rating from '@mui/material/Rating';
 import { FooterButton } from './DetailServiceSubComponent/FooterButton';
 import { DetailService } from '../interfaces';
 import { Box } from '@mui/system';
@@ -29,11 +28,11 @@ export const DetailServiceComponent = ({
   const [listCarrusel, setListCarrusel] = useState<PropsCarrusel[]>([]);
 
   useEffect(() => {
-    service.otrasImagenes.forEach((element: any) => {
+    service.imagenes.forEach((element: any) => {
       let newArray = listCarrusel;
       newArray.push({
-        original: element.urlImagen,
-        thumbnail: element.urlImagen
+        original: element,
+        thumbnail: element
       });
       setListCarrusel(newArray);
     });
@@ -73,12 +72,6 @@ export const DetailServiceComponent = ({
           sx={{ display: 'flex', alignItems: 'center', m: 0 }}
         >
           {service.titulo}
-          <Rating
-            name="simple-controlled"
-            sx={{ pl: 2 }}
-            value={service.puntuacion}
-            readOnly
-          />
         </Typography>
         <Typography variant="subtitle1" sx={{ fontWeight: 'bold' }}>
           ${service.precio}

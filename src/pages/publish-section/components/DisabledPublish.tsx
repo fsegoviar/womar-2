@@ -12,7 +12,7 @@ import React from 'react';
 type PropsDialog = {
   open: boolean;
   handleClose: () => void;
-  id: number;
+  id: string;
 };
 
 export const DisabledPublish = ({ open, handleClose, id }: PropsDialog) => {

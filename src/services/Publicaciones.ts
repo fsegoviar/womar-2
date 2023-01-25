@@ -89,7 +89,7 @@ export const ObtenerPublicacion = (id: string) => {
   const fetchData = async () => {
     await axios
       .get(
-        `${process.env.REACT_APP_URL_API}/Publicaciones/ObtenerPublicacion/${id}`,
+        `${process.env.REACT_APP_URL_BACKEND}/Publicaciones/ObtenerPublicacion/${id}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('tokenWomar')}`

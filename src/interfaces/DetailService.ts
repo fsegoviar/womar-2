@@ -7,21 +7,13 @@ export type DetailService = {
   // description?: string;
   // urlImgCover: string;
   // urlOtherImg: string[];
-  id: number;
-  estado: string;
-  titulo: string;
-  comuna: {
-    id: number;
-    nombre: string;
-  };
-  categoria: {
-    id: number;
-    nombre: string;
-  };
   descripcion: string;
-  locacion: string;
-  puntuacion: number;
-  urlImagenPrincipal: string;
-  otrasImagenes: string[];
+  fechaCreacion: string;
+  id: string;
+  imagenes: string[];
+  direccion: string;
   precio: number;
+  titulo: string;
+  urlImagenPrincipal: string;
+  usuarioPublicante: string;
 };

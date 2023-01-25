@@ -16,6 +16,8 @@ export const ProfilePage = () => {
       setLoading(true);
       await fetchData()
         .then((response: any) => {
+          console.log('InfoUser =>', response.result);
+
           setInfoUser(response.result);
         })
         .finally(() => setLoading(false));

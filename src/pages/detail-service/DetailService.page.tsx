@@ -22,8 +22,8 @@ export const DetailServicePage = () => {
 
       detailService.imagenes.forEach((imagen: any) => {
         imgUrls.push({
-          original: imagen.urlImagen,
-          thumbnail: imagen.urlImagen
+          original: imagen,
+          thumbnail: imagen
         });
       });
       setCarruselImg(imgUrls as never[]);
@@ -68,7 +68,7 @@ export const DetailServicePage = () => {
             {detailService && (
               <Grid item xs={12} md={3} className="pt-10 md:p-0">
                 <Card>
-                  <h4 className="font p-4 text-[20px]">
+                  <h4 className="font p-4 text-[20px] font-medium">
                     Formulario de contacto
                   </h4>
                   <FormContact {...detailService} />

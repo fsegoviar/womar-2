@@ -96,10 +96,9 @@ export const MaritimePersonnelPage = () => {
                     <SmartPreviewService
                       key={index}
                       title={publish.titulo}
-                      address={publish.locacion}
                       price={publish.precio}
+                      direccion={publish.direccion}
                       urlImgCover={publish.urlImagenPrincipal}
-                      rating={publish.puntuacion}
                       openContact={() => openModalContact(publish)}
                     />
                   </Grid>

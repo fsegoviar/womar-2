@@ -96,9 +96,9 @@ export const DialogEditPublish = (props: PropsDialog) => {
     formState: { errors }
   } = useForm<TypeForm>({
     defaultValues: {
-      idPublicacion: props.publish.id,
+      // idPublicacion: props.publish.id,
       titulo: props.publish.titulo,
-      comunaId: props.publish.comuna.id,
+      // comunaId: props.publish.comuna.id,
       categoriaId: 3,
       descripcion: props.publish.descripcion,
       precio: props.publish.precio
@@ -116,7 +116,7 @@ export const DialogEditPublish = (props: PropsDialog) => {
   }, []);
 
   const generateImgCarusel = () => {
-    props.publish.otrasImagenes.forEach((imgCarrusel: any) => {
+    props.publish.imagenes.forEach((imgCarrusel: any) => {
       let newCarrusel: any[] = caruselImg;
       newCarrusel.push({
         original: imgCarrusel.urlImagen,
@@ -128,11 +128,11 @@ export const DialogEditPublish = (props: PropsDialog) => {
   };
 
   const generateImgUploaded = () => {
-    setCountImg(props.publish.otrasImagenes.length);
-    props.publish.otrasImagenes.forEach((img: any) => {
+    setCountImg(props.publish.imagenes.length);
+    props.publish.imagenes.forEach((url: any) => {
       let newListImg: ImageListType = images;
       newListImg.push({
-        dataURL: img.urlImagen
+        dataURL: url
       });
       setImages(newListImg as never[]);
     });

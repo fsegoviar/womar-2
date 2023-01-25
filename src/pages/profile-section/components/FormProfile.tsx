@@ -30,7 +30,7 @@ export const FormProfile = ({
   rut,
   comuna,
   telefono,
-  urlImgPerfil,
+  imgPerfil,
   nombre
 }: InfoUser) => {
   const {
@@ -46,7 +46,7 @@ export const FormProfile = ({
       comunaId: String(comuna.id),
       nombre,
       rut: rut ?? '',
-      telefono
+      telefono: telefono ?? ''
     }
   });
   const IdUsuario = id;
@@ -58,15 +58,14 @@ export const FormProfile = ({
   const navigate = useNavigate();
 
   useEffect(() => {
-    setUrlImage(urlImgPerfil);
+    setUrlImage(imgPerfil);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const onSubmit: SubmitHandler<TypeForm> = async (data) => {
-    const { actualizarInfoUsuario } = ActualizarInfoUsuario(
-      { id, ...data },
-      String(localStorage.getItem('tokenWomar'))
-    );
+    console.log('Data');
+
+    const { actualizarInfoUsuario } = ActualizarInfoUsuario(data);
 
     await actualizarInfoUsuario()
       .then((response: any) => console.log('Datos guardados => ', response))

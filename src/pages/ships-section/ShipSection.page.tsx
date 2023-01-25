@@ -29,6 +29,7 @@ export const ShipSectionPage = () => {
 
   const openModalContact = (service: DetailService) => {
     setOpenModal(true);
+    console.log('service', service);
     setServiceSelected(service);
   };
 
@@ -78,10 +79,9 @@ export const ShipSectionPage = () => {
                     <SmartPreviewService
                       key={index}
                       title={ship.titulo}
-                      address={ship.locacion}
                       price={ship.precio}
+                      direccion={ship.direccion}
                       urlImgCover={ship.urlImagenPrincipal}
-                      rating={ship.puntuacion}
                       openContact={() => openModalContact(ship)}
                     />
                   </Grid>
