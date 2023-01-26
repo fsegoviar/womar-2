@@ -21,14 +21,10 @@ export const FormContact = (state: any) => {
     console.log(data);
 
     axios.post(
-      `${process.env.REACT_APP_URL_BACKEND}/Publicaciones/EnviarFormularioContacto`,
+      `${process.env.REACT_APP_URL_BACKEND}/Publicaciones/CrearNotificacion`,
       {
-        idPublicacion: state.service.id,
-        nombres: data.names,
-        apellidos: data.surname,
-        telefono: data.phone,
-        correo: data.email,
-        mensaje: data.message
+        publicacionId: state.service.id,
+        observaciones: data.message
       },
       {
         headers: {

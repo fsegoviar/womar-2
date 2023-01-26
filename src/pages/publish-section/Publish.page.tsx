@@ -124,7 +124,7 @@ export const PublishPage = () => {
         <DisabledPublish
           open={openModalDelete}
           handleClose={() => setOpenModalDelete(false)}
-          id={idPublishDelete}
+          idPublicacion={idPublishDelete}
         />
       )}
     </PageBase>

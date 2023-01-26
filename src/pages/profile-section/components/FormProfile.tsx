@@ -28,7 +28,7 @@ export const FormProfile = ({
   apellidoMaterno,
   apellidoPaterno,
   rut,
-  comuna,
+  comunaId,
   telefono,
   imgPerfil,
   nombre
@@ -43,7 +43,7 @@ export const FormProfile = ({
     defaultValues: {
       apellidoMaterno,
       apellidoPaterno,
-      comunaId: String(comuna.id),
+      comunaId: String(comunaId),
       nombre,
       rut: rut ?? '',
       telefono: telefono ?? ''
@@ -51,7 +51,7 @@ export const FormProfile = ({
   });
   const IdUsuario = id;
   const [urlImage, setUrlImage] = useState('');
-  const [fileChange, setFileChange] = useState<File>();
+  const [fileChange, setFileChange] = useState<any>();
   const Imagen = new Blob([fileChange!], { type: 'image/png' });
   const { comunas } = ObtenerComunas();
   const { cargarImagenUsuario } = CargarImagenUsuario({ IdUsuario, Imagen });
@@ -63,17 +63,25 @@ export const FormProfile = ({
   }, []);
 
   const onSubmit: SubmitHandler<TypeForm> = async (data) => {
-    console.log('Data');
+    console.log('Data', data);
 
-    const { actualizarInfoUsuario } = ActualizarInfoUsuario(data);
+    let formData = new FormData();
+    formData.append('Nombre', data.nombre);
+    formData.append('ApellidoPaterno', data.apellidoPaterno);
+    formData.append('ApellidoMaterno', data.apellidoMaterno);
+    formData.append('ComunaId', data.comunaId);
+    formData.append('Telefono', data.telefono);
+    formData.append('ImagenPerfil', fileChange);
+
+    const { actualizarInfoUsuario } = ActualizarInfoUsuario(formData);
 
     await actualizarInfoUsuario()
       .then((response: any) => console.log('Datos guardados => ', response))
       .catch((error: AxiosError) => console.log('Error =>', error));
 
-    await cargarImagenUsuario()
-      .then(() => navigate('/'))
-      .catch((error: AxiosError) => console.log('Error =>', error));
+    // await cargarImagenUsuario()
+    //   .then(() => navigate('/'))
+    //   .catch((error: AxiosError) => console.log('Error =>', error));
   };
 
   const handleChangeImage = (e: any) => {

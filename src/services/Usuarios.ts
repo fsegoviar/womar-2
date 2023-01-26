@@ -125,7 +125,7 @@ export const Registrar = (data: FormData) => {
   return { registrar };
 };
 
-export const ActualizarInfoUsuario = (data: any) => {
+export const ActualizarInfoUsuario = (data: FormData) => {
   let result: any = null;
   let error = false;
   const actualizarInfoUsuario = async () => {
@@ -136,7 +136,8 @@ export const ActualizarInfoUsuario = (data: any) => {
         {
           headers: {
             'Access-Control-Allow-Origin': '*',
-            Authorization: `Bearer ${localStorage.getItem('tokenWomar')}`
+            Authorization: `Bearer ${localStorage.getItem('tokenWomar')}`,
+            'Content-Type': 'multipart/form-data'
           }
         }
       );

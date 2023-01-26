@@ -197,3 +197,29 @@ export const SubirImagen = (formData: FormData) => {
 
   return { subirImagen };
 };
+
+export const ActualizarEstado = (idPublicacion: string) => {
+  let result: any = null;
+  let error = false;
+
+  const actualizarEstado = async () => {
+    try {
+      const response = await axios.put(
+        `${process.env.REACT_APP_URL_BACKEND}/Publicaciones/ActualizarEstado/${idPublicacion}`,
+        {
+          headers: {
+            'Access-Control-Allow-Origin': '*',
+            Authorization: `Bearer ${localStorage.getItem('tokenWomar')}`
+          }
+        }
+      );
+      result = response;
+    } catch (e) {
+      error = true;
+    }
+
+    return { result, error };
+  };
+
+  return { actualizarEstado };
+};

@@ -22,16 +22,20 @@ export const UserMenu = (props: PropsMenu) => {
 
   useEffect(() => {
     const fetch = async () => {
-      await fetchData().then((response: any) => {
-        if (response.result.imgPerfil) {
-          setUrlImgUser(response.result.imgPerfil);
-        }
-        setInfoUser(response.result);
+      await fetchData()
+        .then((response: any) => {
+          if (response.result.imgPerfil) {
+            setUrlImgUser(response.result.imgPerfil);
+          }
+          setInfoUser(response.result);
 
-        if (response.error) {
+          if (response.error) {
+            localStorage.removeItem('tokenWomar');
+          }
+        })
+        .catch((error: any) => {
           localStorage.removeItem('tokenWomar');
-        }
-      });
+        });
     };
 
     fetch();

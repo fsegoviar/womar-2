@@ -6,32 +6,33 @@ import {
   DialogContentText,
   DialogTitle
 } from '@mui/material';
-import axios, { AxiosError } from 'axios';
-import React from 'react';
+import axios from 'axios';
 
 type PropsDialog = {
   open: boolean;
   handleClose: () => void;
-  id: string;
+  idPublicacion: string;
 };
 
-export const DisabledPublish = ({ open, handleClose, id }: PropsDialog) => {
-  const handleDisabled = () => {
-    axios
-      .patch(
-        `${process.env.REACT_APP_URL_BACKEND}/Publicaciones/CambiarEstadoPublicacion`,
-        {
-          idPublicacion: id,
-          esActivada: false
-        },
+export const DisabledPublish = ({
+  open,
+  handleClose,
+  idPublicacion
+}: PropsDialog) => {
+  const handleDisabled = async () => {
+    await axios
+      .post(
+        `${process.env.REACT_APP_URL_BACKEND}/Publicaciones/ActualizarEstado`,
+        { idPublicacion },
         {
           headers: {
+            'Access-Control-Allow-Origin': '*',
             Authorization: `Bearer ${localStorage.getItem('tokenWomar')}`
           }
         }
       )
-      .then((response: any) => console.log('Deshabilitada =>', response))
-      .catch((error: AxiosError) => console.log('Error =>', error));
+      .then((response: any) => console.log('Deshabilitar', response))
+      .catch((error: any) => console.log('Error => ', error));
   };
 
   return (

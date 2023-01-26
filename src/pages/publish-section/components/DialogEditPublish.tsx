@@ -21,6 +21,7 @@ import { BtnSubmit, ButtonSubmitOutlined } from '../../../styles';
 import ImageGallery from 'react-image-gallery';
 import ImageUploading, { ImageListType } from 'react-images-uploading';
 import CloseIcon from '@mui/icons-material/Close';
+import axios from 'axios';
 
 const Transition = forwardRef(function Transition(
   props: TransitionProps & {
@@ -107,6 +108,8 @@ export const DialogEditPublish = (props: PropsDialog) => {
   const [caruselImg, setCarruselImg] = useState([]);
   const [images, setImages] = useState<ImageListType>([]);
   const [countImg, setCountImg] = useState(0);
+  const [imgBorradas, setImgBorradas] = useState<string[]>([]);
+  const [imgAgregadas, setImgAgregadas] = useState<any[]>([]);
 
   useEffect(() => {
     console.log('Publish Edit => ', props.publish);
@@ -119,8 +122,8 @@ export const DialogEditPublish = (props: PropsDialog) => {
     props.publish.imagenes.forEach((imgCarrusel: any) => {
       let newCarrusel: any[] = caruselImg;
       newCarrusel.push({
-        original: imgCarrusel.urlImagen,
-        thumbnail: imgCarrusel.urlImagen,
+        original: imgCarrusel,
+        thumbnail: imgCarrusel,
         originalWidth: '100px'
       });
       setCarruselImg(newCarrusel as never[]);
@@ -139,22 +142,48 @@ export const DialogEditPublish = (props: PropsDialog) => {
   };
 
   const onSubmit: SubmitHandler<TypeForm> = (data) => {
-    console.log('Data para Edit =>', data);
+    console.log('Imagenes borradas', imgBorradas);
+    console.log('Imagenes agregadas', imgAgregadas);
+    console.log('Data', data);
 
-    //* Cargo editar publicacion
+    let formData = new FormData();
+    formData.append('PublicacionId', props.publish.id);
+    formData.append('NuevaImagenPrincipal', imgAgregadas[0]);
+    for (const img of imgAgregadas) {
+      formData.append('NuevasFotos', img);
+    }
+    if (imgBorradas.length !== 0) {
+      for (const img of imgBorradas) {
+        formData.append('FotosRemovidas', img);
+      }
+    } else {
+      formData.append('FotosRemovidas', '');
+    }
+    formData.append('Titulo', data.titulo);
+    formData.append('Descripcion', data.descripcion);
+    formData.append('Precio', String(data.precio));
+    formData.append('Activo', String('true'));
 
-    //* Elimino las imagenes de la publicacion
+    axios
+      .put(
+        `${process.env.REACT_APP_URL_BACKEND}/Publicaciones/Editar`,
+        formData,
+        {
+          headers: {
+            'Access-Control-Allow-Origin': '*',
+            Authorization: `Bearer ${localStorage.getItem('tokenWomar')}`,
+            'Content-Type': 'multipart/form-data'
+          }
+        }
+      )
+      .then((response: any) => console.log('Response =>', response))
+      .catch((error: any) => console.log('Error =>', error));
+  };
 
-    //* Cargo las nuevas imagenes
-
-    // const { fetchData } = EditarPublicacion(
-    //   data,
-    //   String(localStorage.getItem('tokenWomar'))
-    // );
-
-    // fetchData()
-    //   .then((response: any) => console.log('Editado! =>', response))
-    //   .catch((error: AxiosError) => console.log('Errror =>', error));
+  const onRemoveImageURL = (index: number) => {
+    let newListImgBorradas = imgBorradas;
+    newListImgBorradas.push(String(images[index].dataURL));
+    setImgBorradas(newListImgBorradas);
   };
 
   const onChange = (
@@ -162,21 +191,30 @@ export const DialogEditPublish = (props: PropsDialog) => {
     addUpdateIndex: number[] | undefined
   ) => {
     // data for submit
-    console.log(imageList, addUpdateIndex);
     if (imageList.length <= 5) setCountImg(imageList.length);
 
     setImages(imageList as never[]);
 
     const imgUrls: any[] = [];
+    const newFiles: any[] = imgAgregadas;
+
+    imageList.forEach((image: any) => {
+      if (image.file) {
+        console.log('Hola', image.file);
+        newFiles.push(image.file);
+      }
+    });
 
     imageList.forEach((image: any) => {
       imgUrls.push({
-        original: URL.createObjectURL(image.file!),
-        thumbnail: URL.createObjectURL(image.file!),
+        original: URL.createObjectURL(image.dataURL),
+        thumbnail: URL.createObjectURL(image.dataURL),
         originalWidth: '100px'
       });
     });
+
     setCarruselImg(imgUrls as never[]);
+    setImgAgregadas(newFiles as never[]);
   };
 
   return (
@@ -236,7 +274,10 @@ export const DialogEditPublish = (props: PropsDialog) => {
                       style={{ paddingTop: '10px', backgroundSize: 'cover' }}
                     />
                     <button
-                      onClick={() => onImageRemove(index)}
+                      onClick={() => {
+                        onRemoveImageURL(index);
+                        onImageRemove(index);
+                      }}
                       className="absolute bg-transparent border-none cursor-pointer"
                       style={{
                         top: '-10px',
