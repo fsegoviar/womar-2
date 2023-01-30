@@ -2,19 +2,26 @@ import axios, { AxiosError } from 'axios';
 import { useEffect, useState } from 'react';
 import { DetailService } from '../interfaces';
 
-export const ObtenerPublicacionPorCategoria = () => {
+export const ObtenerPublicacionPorCategoria = (
+  categorias: number[],
+  orderBy = true
+) => {
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(true);
   const [publish, setPublish] = useState<DetailService[]>([]);
 
   const fetchData = async () => {
     await axios
-      .get(`${process.env.REACT_APP_URL_BACKEND}/Publicaciones/Obtener`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('tokenWomar')}`
+      .post(
+        `${process.env.REACT_APP_URL_BACKEND}/Publicaciones/ObtenerFiltrados`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('tokenWomar')}`
+          }
         }
-      })
+      )
       .then((response: any) => {
+        console.log('Response Publicaciones =>', response.data);
         setPublish(response.data);
       })
       .catch((error: AxiosError) => {

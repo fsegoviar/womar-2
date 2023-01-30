@@ -22,6 +22,7 @@ import { AxiosError } from 'axios';
 import Typography from '@mui/material/Typography';
 import styled from '@emotion/styled';
 import { TypeUser } from '../interfaces/Login';
+import { MdAddAPhoto } from 'react-icons/md';
 
 const Transition = forwardRef(function Transition(
   props: TransitionProps & {
@@ -125,7 +126,7 @@ export const DialogRegister = (props: PropsRegister) => {
         }
       }}
     >
-      <Paper elevation={3} style={{ width: '400px' }}>
+      <Paper elevation={3} style={{ width: '500px' }}>
         <h1
           style={{ textAlign: 'center' }}
           className="font text-xl mt-5 font-bold"
@@ -143,7 +144,8 @@ export const DialogRegister = (props: PropsRegister) => {
               }}
             >
               {!urlImage && (
-                <p className="absolute top-0 left-0 cursor-pointer">
+                <p className="absolute top-0 left-0 h-full cursor-pointer flex flex-col justify-center items-center text-center border-2 rounded-xl border-[#0BAEDC]">
+                  <MdAddAPhoto size={54} />
                   Ingresa tu imagen de perfil aqui
                 </p>
               )}

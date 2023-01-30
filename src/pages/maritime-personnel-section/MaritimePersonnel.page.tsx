@@ -41,7 +41,7 @@ const filterOptions = [
 ];
 
 export const MaritimePersonnelPage = () => {
-  const { publish: listPublish } = ObtenerPublicacionPorCategoria();
+  const { publish: listPublish } = ObtenerPublicacionPorCategoria([2]);
   const [openModal, setOpenModal] = useState(false);
   const [serviceSelected, setServiceSelected] = useState<DetailService>();
   const navigate = useNavigate();

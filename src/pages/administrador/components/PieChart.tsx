@@ -8,7 +8,7 @@ type PropsPie = {
 };
 
 type DataReduce = {
-  cantidadPublicaciones: number;
+  cantidad: number;
   nombreCategoria: string;
 };
 
@@ -29,14 +29,16 @@ export const PieChart = ({ pieData }: PropsPie) => {
   });
 
   const dataPieChart = pieData.reduce((prev: DataReduce, curr: DataReduce) => {
-    if (prev.cantidadPublicaciones !== undefined) {
-      keyData.push(prev.cantidadPublicaciones);
+    if (prev.cantidad !== undefined) {
+      keyData.push(prev.cantidad);
     }
 
-    keyData.push(curr.cantidadPublicaciones);
+    keyData.push(curr.cantidad);
 
     return keyData;
   });
+
+  console.log(labelsData, dataPieChart);
 
   const dataPie = {
     labels: labelsData,

@@ -1,61 +1,25 @@
 import { Container } from '@mui/system';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
 import { PageBase } from '../../components/PageBase';
-import { Box, Divider, Grid, Stack, Typography } from '@mui/material';
+import { Divider, Grid, Stack, Typography } from '@mui/material';
 import { CardInfor } from './components/CardInfor';
-import { PieChart } from './components/PieChart';
-import axios, { AxiosError } from 'axios';
+// import { PieChart } from './components/PieChart';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { Button } from 'primereact/button';
 import { DialogDisabledUser } from './components/DialogDisabledUser';
+import { CantidadUsuario } from '../../services/Reporteria';
 export const AdminPage = () => {
-  const [pieData, setPieData] = useState();
-  const [numberUsers, setNumberUsers] = useState(0);
-  const [listUsers, setListUsers] = useState<any[]>([]);
+  // const [pieData, setPieData] = useState();
+  const [listUsers] = useState<any[]>([]);
   const [openModalDisabled, setOpenModalDisabled] = useState(false);
   const [userSelected, setUserSelected] = useState({
     id: '',
     state: ''
   });
-
-  useEffect(() => {
-    const fetchData = async () => {
-      await axios
-        .get(
-          `${process.env.REACT_APP_URL_API}/Reportes/ObtenerCantidadPublicacionesPorCategoria`,
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem('tokenWomar')}`
-            }
-          }
-        )
-        .then((response: any) => {
-          setPieData(response.data);
-        })
-        .catch((error: AxiosError) => console.log('Error =>', error));
-    };
-
-    const fetchDataUser = async () => {
-      await axios
-        .get(`${process.env.REACT_APP_URL_API}/Usuarios/ObtenerUsuarios`, {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem('tokenWomar')}`
-          }
-        })
-        .then((response: any) => {
-          console.log(response.data);
-
-          setNumberUsers(response.data.length);
-          setListUsers(response.data);
-        })
-        .catch((error: AxiosError) => console.log('Error =>', error));
-    };
-
-    fetchData();
-    fetchDataUser();
-  }, []);
+  const { result: countUsers } = CantidadUsuario();
+  // const { result: publishPerCategory } = PublicacionesPorCategoria();
 
   const handleDisabledUser = (user: any) => {
     setOpenModalDisabled(true);
@@ -117,10 +81,10 @@ export const AdminPage = () => {
             bgCard="#07BC77"
             icon={<PeopleAltIcon sx={{ mx: 1 }} />}
             title={'Usuarios Registrados'}
-            numberData={numberUsers}
+            numberData={countUsers}
           />
-          <Box>
-            {pieData && (
+          {/* <Box>
+            {publishPerCategory && (
               <>
                 <Typography
                   variant="h6"
@@ -129,10 +93,10 @@ export const AdminPage = () => {
                 >
                   Nº Publicaciones por categoría
                 </Typography>
-                <PieChart pieData={pieData} />
+                <PieChart pieData={publishPerCategory} />
               </>
             )}
-          </Box>
+          </Box> */}
         </Stack>
         <Divider sx={{ my: 4 }} />
         <Grid container>
