@@ -93,6 +93,7 @@ export const AdminPage = () => {
             title={'Usuarios Registrados'}
             numberData={countUsers}
           />
+
           {/* <Box>
             {publishPerCategory && (
               <>
@@ -114,7 +115,6 @@ export const AdminPage = () => {
             <Typography variant={'h4'} sx={{ mb: 2 }}>
               Administrador de Usuarios
             </Typography>
-            {/* <GridUsers {...listUsers} /> */}
             <DataTable
               value={usuarios}
               responsiveLayout="stack"

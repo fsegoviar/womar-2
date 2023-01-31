@@ -3,11 +3,7 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { InputForm } from '../../../styles/InputForm';
 import { Stack } from '@mui/material';
 import { SelectForm } from '../../../styles/SelectForm';
-import {
-  ActualizarInfoUsuario,
-  CargarImagenUsuario,
-  ObtenerComunas
-} from '../../../services';
+import { ActualizarInfoUsuario, ObtenerComunas } from '../../../services';
 import { AxiosError } from 'axios';
 import { InfoUser } from '../../../interfaces';
 import { BtnSubmit } from '../../../styles';
@@ -49,13 +45,11 @@ export const FormProfile = ({
       telefono: telefono ?? ''
     }
   });
-  const IdUsuario = id;
   const [urlImage, setUrlImage] = useState('');
   const [fileChange, setFileChange] = useState<any>();
-  const Imagen = new Blob([fileChange!], { type: 'image/png' });
   const { comunas } = ObtenerComunas();
-  const { cargarImagenUsuario } = CargarImagenUsuario({ IdUsuario, Imagen });
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     setUrlImage(imgPerfil);
@@ -74,14 +68,11 @@ export const FormProfile = ({
     formData.append('ImagenPerfil', fileChange);
 
     const { actualizarInfoUsuario } = ActualizarInfoUsuario(formData);
-
+    setLoading(true);
     await actualizarInfoUsuario()
-      .then((response: any) => console.log('Datos guardados => ', response))
-      .catch((error: AxiosError) => console.log('Error =>', error));
-
-    // await cargarImagenUsuario()
-    //   .then(() => navigate('/'))
-    //   .catch((error: AxiosError) => console.log('Error =>', error));
+      .then(() => navigate('/'))
+      .catch((error: AxiosError) => console.log('Error =>', error))
+      .finally(() => setLoading(false));
   };
 
   const handleChangeImage = (e: any) => {
@@ -91,7 +82,14 @@ export const FormProfile = ({
 
   return (
     <Box component={'form'} onSubmit={handleSubmit(onSubmit)}>
+      {/* Box loading */}
       <Container>
+        {loading && (
+          <div className="absolute top-0 mx-[50%] -translate-x-[50%] left-0 z-50 rounded-3xl w-full md:w-5/12 h-full bg-white opacity-80 flex justify-center items-center">
+            <p className="text-xl">Cargando...</p>
+          </div>
+        )}
+
         <Box
           className="relative bg-center bg-cover bg-no-repeat my-5 rounded-full m-auto"
           sx={{
