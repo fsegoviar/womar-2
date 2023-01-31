@@ -6,8 +6,8 @@ import axios, { AxiosError } from 'axios';
 interface PropsDialog {
   open: boolean;
   info: {
-    id: string;
-    state: string;
+    usuarioId: string;
+    activo: boolean;
   };
   closeModal: (value: boolean) => void;
 }
@@ -15,11 +15,10 @@ interface PropsDialog {
 export const DialogDisabledUser = (props: PropsDialog) => {
   const changeStateUser = () => {
     axios
-      .patch(
-        `${process.env.REACT_APP_URL_API}/Usuarios/CambiarEstadoUsuario`,
+      .post(
+        `${process.env.REACT_APP_URL_BACKEND}/Security/CambiarEstado`,
         {
-          idUsuario: String(props.info.id),
-          esActivo: !(props.info.state === 'Activo')
+          usuarioId: props.info.usuarioId
         },
         {
           headers: {
@@ -66,15 +65,11 @@ export const DialogDisabledUser = (props: PropsDialog) => {
       draggable={false}
       onHide={() => props.closeModal(false)}
       message={
-        props.info.state !== 'Activo'
+        props.info.activo
           ? '¿Está seguro que desea deshabilitar este usuario?'
           : '¿Desea volver a habilitar este usuario?'
       }
-      header={
-        props.info.state !== 'Activo'
-          ? 'Deshabilitar Usuario'
-          : 'Habilitar Usuario'
-      }
+      header={props.info.activo ? 'Deshabilitar Usuario' : 'Habilitar Usuario'}
       icon="pi pi-exclamation-triangle"
       acceptLabel="Eliminar"
       footer={renderFooter}

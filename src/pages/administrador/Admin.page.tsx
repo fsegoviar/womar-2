@@ -10,27 +10,29 @@ import { Column } from 'primereact/column';
 import { Button } from 'primereact/button';
 import { DialogDisabledUser } from './components/DialogDisabledUser';
 import { CantidadUsuario } from '../../services/Reporteria';
+import { ObtenerUsuario } from '../../services/Administrador';
+import { UsuariosAdmin } from '../../interfaces';
 export const AdminPage = () => {
   // const [pieData, setPieData] = useState();
-  const [listUsers] = useState<any[]>([]);
   const [openModalDisabled, setOpenModalDisabled] = useState(false);
   const [userSelected, setUserSelected] = useState({
-    id: '',
-    state: ''
+    usuarioId: '',
+    activo: false
   });
   const { result: countUsers } = CantidadUsuario();
+  const { usuarios } = ObtenerUsuario();
   // const { result: publishPerCategory } = PublicacionesPorCategoria();
 
-  const handleDisabledUser = (user: any) => {
+  const handleDisabledUser = (user: UsuariosAdmin) => {
     setOpenModalDisabled(true);
     setUserSelected({
-      id: String(user.id),
-      state: String(user.estado)
+      usuarioId: user.id,
+      activo: user.activo
     });
   };
 
-  const actionDisabled = (rowData: any) => {
-    if (rowData.estado === 'Activo') {
+  const actionDisabled = (rowData: UsuariosAdmin) => {
+    if (rowData.activo) {
       return (
         <div style={{ display: 'flex' }}>
           <div style={{ margin: '0 5px' }}>
@@ -49,11 +51,19 @@ export const AdminPage = () => {
             <Button
               icon="pi pi-user-plus"
               className="p-button-rounded p-button-outlined p-button-sm p-button-success"
-              onClick={() => handleDisabledUser(rowData.id)}
+              onClick={() => handleDisabledUser(rowData)}
             />
           </div>
         </div>
       );
+    }
+  };
+
+  const statusUser = (rowData: UsuariosAdmin) => {
+    if (rowData.activo) {
+      return <p>ACTIVO</p>;
+    } else {
+      return <p>DESHABILITADO</p>;
     }
   };
 
@@ -106,21 +116,26 @@ export const AdminPage = () => {
             </Typography>
             {/* <GridUsers {...listUsers} /> */}
             <DataTable
-              value={listUsers}
+              value={usuarios}
               responsiveLayout="stack"
               breakpoint="960px"
               dataKey="id"
               rows={15}
               style={{ padding: '30px 0' }}
             >
-              <Column field="id" header={'Id'} sortable></Column>
-              <Column field="nombreUsuario" header={'Nombre'} sortable></Column>
+              <Column field="nombre" header={'Nombre'} sortable></Column>
+              <Column field="email" header={'Email'} sortable></Column>
               <Column
-                field="tipoCuenta"
-                header={'Tipo de Cuenta'}
+                field="publicaciones"
+                header={'Nº de publicaciones'}
                 sortable
               ></Column>
-              <Column field="estado" header={'Estado'} sortable></Column>
+              <Column
+                field="activo"
+                header={'Estado'}
+                body={statusUser}
+                sortable
+              ></Column>
               <Column
                 body={actionDisabled}
                 exportable={false}
