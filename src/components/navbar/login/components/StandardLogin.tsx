@@ -33,6 +33,7 @@ export const StandardLogin = (props: PropsLoginStandard) => {
 
   useEffect(() => {
     setValue('tipo', TypeUser.LOCAL);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
