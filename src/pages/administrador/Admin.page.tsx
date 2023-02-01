@@ -9,7 +9,11 @@ import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { Button } from 'primereact/button';
 import { DialogDisabledUser } from './components/DialogDisabledUser';
-import { CantidadUsuario } from '../../services/Reporteria';
+import {
+  CantidadUsuario,
+  PublicacionesAceptadas,
+  PublicacionesRechazadas
+} from '../../services/Reporteria';
 import { ObtenerUsuario } from '../../services/Administrador';
 import { UsuariosAdmin } from '../../interfaces';
 export const AdminPage = () => {
@@ -20,6 +24,8 @@ export const AdminPage = () => {
     activo: false
   });
   const { result: countUsers } = CantidadUsuario();
+  const { result: publishAccept } = PublicacionesAceptadas();
+  const { result: publishReject } = PublicacionesRechazadas();
   const { usuarios } = ObtenerUsuario();
   // const { result: publishPerCategory } = PublicacionesPorCategoria();
 
@@ -92,6 +98,18 @@ export const AdminPage = () => {
             icon={<PeopleAltIcon sx={{ mx: 1 }} />}
             title={'Usuarios Registrados'}
             numberData={countUsers}
+          />
+          <CardInfor
+            bgCard="#07BC77"
+            icon={<PeopleAltIcon sx={{ mx: 1 }} />}
+            title={'Publicaciones Aceptadas'}
+            numberData={publishAccept}
+          />
+          <CardInfor
+            bgCard="#07BC77"
+            icon={<PeopleAltIcon sx={{ mx: 1 }} />}
+            title={'Publicaciones Rechazadas'}
+            numberData={publishReject}
           />
 
           {/* <Box>

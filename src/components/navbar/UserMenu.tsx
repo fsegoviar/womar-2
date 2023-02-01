@@ -31,6 +31,7 @@ export const UserMenu = (props: PropsMenu) => {
 
           if (response.error) {
             localStorage.removeItem('tokenWomar');
+            window.location.reload();
           }
         })
         .catch((error: any) => {
