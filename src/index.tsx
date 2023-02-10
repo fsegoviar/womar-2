@@ -25,7 +25,7 @@ root.render(
     <Routes>
       <Route path={'/'} element={<HomePage />} />
       <Route path={'/perfil/:userId'} element={<ProfilePage />} />
-      <Route path={'/naves'} element={<ShipSectionPage />} />
+      <Route path={'/embarcaciones'} element={<ShipSectionPage />} />
       <Route path={'/personal_maritimo'} element={<MaritimePersonnelPage />} />
       <Route path={'/otros_servicios'} element={<OtherServicesPage />} />
       <Route path={'naves/detalle/:id'} element={<DetailServicePage />} />

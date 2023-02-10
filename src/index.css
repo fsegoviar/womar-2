@@ -78,6 +78,30 @@
   font-family: 'sailec-black' !important;
 }
 
+.color-primary {
+  color: #000aff;
+}
+
+.color-secondary {
+  color: #00bfe8;
+}
+
+.color-third {
+  color: #00e9ba;
+}
+
+.bg-primary {
+  background-color: #000aff;
+}
+
+.bg-secondary {
+  background-color: #00bfe8;
+}
+
+.bg-third {
+  background-color: #00e9ba;
+}
+
 body {
   padding: 0;
   margin: 0;

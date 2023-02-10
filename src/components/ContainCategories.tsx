@@ -11,8 +11,8 @@ const dataNavigation = [
     icon: <GroupsIcon sx={{ width: '30px', height: '30px' }} />
   },
   {
-    site: '/naves',
-    title: 'Naves',
+    site: '/embarcaciones',
+    title: 'Embarcaciones',
     icon: <AnchorIcon sx={{ width: '30px', height: '30px' }} />
   },
   {
@@ -23,7 +23,6 @@ const dataNavigation = [
 ];
 
 export const CategoryButton = styled.button`
-  background: #174590;
   color: #ffffff;
   min-width: 200px;
   border-radius: 0% 30px 30px 0%;
@@ -75,10 +74,10 @@ export const ContainCategories = () => {
                   style={{
                     backgroundImage: `url(${icons[index].url})`
                   }}
-                  className="bg-cover bg-center bg-no-repeat w-32 h-32"
+                  className="bg-cover bg-center bg-no-repeat w-32 h-32 "
                 ></div>
               </CircleIcon>
-              <CategoryButton className="px-5 py-3 my-3 text-[20px]  md:m-0 ">
+              <CategoryButton className="px-5 py-3 my-3 text-[20px]  md:m-0 bg-primary">
                 {item.title}
               </CategoryButton>
             </div>

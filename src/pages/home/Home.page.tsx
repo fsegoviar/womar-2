@@ -40,14 +40,14 @@ export const HomePage = () => {
       <section
         style={{
           background:
-            'linear-gradient(90deg,rgba(0, 229, 182, 1) 0%,rgba(0, 124, 240, 1) 100%)'
+            'linear-gradient(90deg, rgba(0,233,186,1) 0%, rgba(0,191,232,1) 50%, rgba(0,10,255,1) 100%)'
         }}
-        className="flex flex-col justify-center items-center h-[500px]"
+        className="flex flex-col justify-center items-center h-[600px]"
       >
         <h1 className="font-light text-white mt-10 text-2xl tracking-[.40em]">
           SERVICIOS MARÍTIMOS MÁS POPULARES
         </h1>
-        <Carousel className="z-10 w-[80%] h-[450px]" responsive={responsive}>
+        <Carousel className="z-10 w-[80%] h-[550px]" responsive={responsive}>
           <CardItem
             img={require('../../assets/images/img-servicio1.png')}
             title="Servicio de turismo"
@@ -128,7 +128,7 @@ export const HomePage = () => {
           className="absolute top-0 lef-0 w-full h-full"
           style={{
             background:
-              'linear-gradient(90deg,rgba(0, 229, 182, 1) 0%,rgba(0, 124, 240, 1) 100%)',
+              'linear-gradient(90deg, rgba(0,233,186,1) 0%, rgba(0,191,232,1) 50%, rgba(0,10,255,1) 100%)',
             opacity: '.7',
             zIndex: '0'
           }}
@@ -157,15 +157,11 @@ export const HomePage = () => {
           <div className="grid-span-2 flex items-center">
             <ItemFooter
               img={require('../../assets/images/ico-pin.png')}
-              text="Puntos de atención"
+              text="Contáctanos"
             />
             <ItemFooter
               img={require('../../assets/images/ico-tel.png')}
-              text="Llámanos a nuestra línea"
-            />
-            <ItemFooter
-              img={require('../../assets/images/ico-person.png')}
-              text="Prefieres que te llamemos"
+              text="Envianos un WhatsApp"
             />
           </div>
         </div>

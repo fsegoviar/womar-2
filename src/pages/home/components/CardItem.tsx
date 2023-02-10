@@ -9,10 +9,10 @@ type PropsCard = {
 
 export const CardItem = (props: PropsCard) => {
   return (
-    <div className="h-[350px] w-[320px] bg-white rounded-xl">
+    <div className="h-[450px] w-[450px] bg-white rounded-3xl">
       {/* imagen */}
       <div
-        className="rounded-xl bg-center bg-cover bg-no-repeat w-full h-[200px]"
+        className="rounded-3xl bg-center bg-cover bg-no-repeat w-full h-[270px]"
         style={{ backgroundImage: `url(${props.img})` }}
       ></div>
       <div className="p-5">

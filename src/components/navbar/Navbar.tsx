@@ -10,6 +10,7 @@ import { parseJwt } from '../../utils';
 import { DialogLogin } from './login';
 import { DialogRegister } from '../DialogRegister';
 import { TypeUser } from '../../interfaces/Login';
+import { DialogBase } from '../DialogBase';
 
 export const Navbar = () => {
   const navigate = useNavigate();
@@ -53,7 +54,7 @@ export const Navbar = () => {
     <>
       <AppBar
         position="static"
-        sx={{ backgroundColor: '#FFFFFF' }}
+        sx={{ backgroundColor: '#FFFFFF', position: 'fixed', zIndex: 45 }}
         className="h-24"
       >
         <Container maxWidth="xl">
@@ -72,7 +73,7 @@ export const Navbar = () => {
               sx={{
                 flexGrow: 3,
                 display: 'flex',
-                justifyContent: 'center'
+                justifyContent: 'end'
               }}
             >
               <SearchBar />
@@ -110,13 +111,14 @@ export const Navbar = () => {
         </Container>
       </AppBar>
       {openLogin && (
-        <DialogLogin
-          open={openLogin}
-          handleClose={handleCloseDialogLogin}
-          handleOpenSession={handleOpenSession}
-          setProveedor={setProveedor}
-          isOpenRegisterExternal={setOpenRegisterExternal}
-        />
+        // <DialogLogin
+        //   open={openLogin}
+        //   handleClose={handleCloseDialogLogin}
+        //   handleOpenSession={handleOpenSession}
+        //   setProveedor={setProveedor}
+        //   isOpenRegisterExternal={setOpenRegisterExternal}
+        // />
+        <DialogBase />
       )}
       {openRegisterLocal && (
         <DialogRegister
