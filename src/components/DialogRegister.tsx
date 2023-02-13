@@ -2,50 +2,36 @@ import {
   Box,
   CircularProgress,
   Container,
-  Dialog,
   FormControl,
   InputLabel,
   MenuItem,
-  Paper,
   Select,
-  Slide,
   Stack
 } from '@mui/material';
-import { TransitionProps } from '@mui/material/transitions';
-import { forwardRef, ReactElement, Ref, useState } from 'react';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { RegisterUser } from '../interfaces';
 import { useEffect } from 'react';
 import { ObtenerComunas, Registrar } from '../services';
-import { BtnSubmit, InputForm, ButtonSubmitOutlined } from '../styles';
+import { InputForm } from '../styles';
 import { AxiosError } from 'axios';
 import Typography from '@mui/material/Typography';
 import styled from '@emotion/styled';
 import { TypeUser } from '../interfaces/Login';
-import { MdAddAPhoto } from 'react-icons/md';
-
-const Transition = forwardRef(function Transition(
-  props: TransitionProps & {
-    children: ReactElement<any, any>;
-  },
-  ref: Ref<unknown>
-) {
-  return <Slide direction="up" ref={ref} {...props} />;
-});
 
 const SelectForm = styled(Select)`
-  border-color: #0bafdd;
+  border-color: #000aff;
   border-radius: 10px;
   & .MuiOutlinedInput-input {
-    border-color: #0bafdd;
+    border-color: #000aff;
   }
 
   & .MuiOutlinedInput-notchedOutline {
-    border-color: #0bafdd;
+    border-color: gray;
   }
 
   &.Mui-focused fieldset {
-    border-color: #0bafdd;
+    border-color: #000aff;
   }
 `;
 
@@ -64,9 +50,7 @@ export const DialogRegister = (props: PropsRegister) => {
     getValues,
     formState: { errors }
   } = useForm<RegisterUser>();
-  const [urlImage, setUrlImage] = useState('');
-  const [fileChange, setFileChange] = useState<File>();
-  const [open, setOpen] = useState(props.open);
+  // const [open, setOpen] = useState(props.open);
   const { comunas } = ObtenerComunas();
   const [loading, setLoading] = useState(false);
 
@@ -77,12 +61,11 @@ export const DialogRegister = (props: PropsRegister) => {
   }, []);
 
   const handleClose = () => {
-    setOpen(false);
+    // setOpen(false);
     props.handleClose();
   };
 
   const onSubmitRegisterLocal = (data: RegisterUser) => {
-    const blob = new Blob([fileChange!], { type: 'image/png' });
     let formData = new FormData();
     formData.append('Nombre', data.Nombre);
     formData.append('ApellidoPaterno', data.ApellidoPaterno);
@@ -98,7 +81,6 @@ export const DialogRegister = (props: PropsRegister) => {
     formData.append('Password', data.Password);
     formData.append('Role', data.Role);
     formData.append('Origen', String(data.Origen));
-    formData.append('ImagenPerfil', blob);
 
     const { registrar } = Registrar(formData);
     registrar()
@@ -107,164 +89,186 @@ export const DialogRegister = (props: PropsRegister) => {
       .finally(() => setLoading(false));
   };
 
-  const handleChangeImage = (e: any) => {
-    setUrlImage(URL.createObjectURL(e.target.files[0]));
-    setFileChange(e.target.files[0]);
-  };
+  // const handleChangeImage = (e: any) => {
+  //   setUrlImage(URL.createObjectURL(e.target.files[0]));
+  //   setFileChange(e.target.files[0]);
+  // };
 
   return (
-    <Dialog
-      open={open}
-      TransitionComponent={Transition}
-      keepMounted
-      onClose={handleClose}
-      maxWidth={'md'}
-      PaperProps={{
-        sx: {
-          border: '3px solid #0BAEDC',
-          borderRadius: '20px'
-        }
-      }}
-    >
-      <Paper elevation={3} style={{ width: '500px' }}>
-        <h1
-          style={{ textAlign: 'center' }}
-          className="font text-xl mt-5 font-bold"
+    <>
+      {/* Fondo blanco */}
+      <div className="fixed top-0 left-0 w-full h-screen bg-white z-50 opacity-75"></div>
+      {/* Contendor Dialog */}
+      <div
+        className="fixed top-0 left-0 w-full h-screen flex z-50 justify-end container items-center"
+        onClick={() => {
+          console.log('Padre');
+        }}
+      >
+        <div
+          className="w-4/12 h-4/6 bg-white flex pt-5"
+          style={{ borderRadius: '70px', border: '3px solid #000aff' }}
+          onClick={() => {
+            console.log('Hijo');
+          }}
         >
-          Registrar usuario{' '}
-        </h1>
-        <Box component={'form'} onSubmit={handleSubmit(onSubmitRegisterLocal)}>
-          <Container>
+          <div style={{ width: '500px' }}>
+            <h1
+              style={{ textAlign: 'center' }}
+              className="font text-xl mt-5 font-bold text-gray-500"
+            >
+              Registrar usuario{' '}
+            </h1>
             <Box
-              className="relative bg-center bg-cover bg-no-repeat my-5 rounded-full m-auto"
-              sx={{
-                backgroundImage: `url(${urlImage})`,
-                width: '150px',
-                height: '150px'
-              }}
+              component={'form'}
+              onSubmit={handleSubmit(onSubmitRegisterLocal)}
             >
-              {!urlImage && (
-                <p className="absolute top-0 left-0 h-full cursor-pointer flex flex-col justify-center items-center text-center border-2 rounded-xl border-[#0BAEDC]">
-                  <MdAddAPhoto size={54} />
-                  Ingresa tu imagen de perfil aqui
-                </p>
-              )}
-              <input
-                type="file"
-                accept="image/*"
-                onChange={handleChangeImage}
-                className="w-full cursor-pointer opacity-0"
-                style={{ height: '100%' }}
-              />
+              <Container>
+                {/* <Box
+                  className="relative bg-center bg-cover bg-no-repeat my-5 rounded-full m-auto"
+                  sx={{
+                    backgroundImage: `url(${urlImage})`,
+                    width: '150px',
+                    height: '150px'
+                  }}
+                >
+                  {!urlImage && (
+                    <p className="absolute top-0 left-0 h-full cursor-pointer flex flex-col justify-center items-center text-center border-2 rounded-xl border-[#0BAEDC]">
+                      <MdAddAPhoto size={54} />
+                      Ingresa tu imagen de perfil aqui
+                    </p>
+                  )}
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleChangeImage}
+                    className="w-full cursor-pointer opacity-0"
+                    style={{ height: '100%' }}
+                  />
+                </Box> */}
+                <InputForm
+                  className="font"
+                  error={!!errors.Nombre}
+                  id="name"
+                  style={{ margin: '10px 0', width: '100%' }}
+                  label="Nombres *"
+                  {...register('Nombre', { required: true })}
+                />
+                <Stack
+                  direction="row"
+                  sx={{ mb: 1, justifyContent: 'space-around' }}
+                  spacing={2}
+                >
+                  <InputForm
+                    error={!!errors.ApellidoPaterno}
+                    style={{ margin: '10px 0', width: '49%' }}
+                    id="surname1"
+                    label="Apellido Paterno *"
+                    {...register('ApellidoPaterno', { required: true })}
+                  />
+                  <InputForm
+                    error={!!errors.ApellidoMaterno}
+                    style={{ margin: '10px 0', width: '49%' }}
+                    label="Apellido Materno"
+                    {...register('ApellidoMaterno', { required: false })}
+                  />
+                </Stack>
+                <FormControl
+                  fullWidth
+                  sx={{
+                    p: 0,
+                    m: 0,
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    mb: 1
+                  }}
+                >
+                  <InputLabel>Dirección</InputLabel>
+                  <SelectForm
+                    style={{ width: '100%' }}
+                    label="Dirección"
+                    value={getValues('ComunaId')}
+                    onChange={(evnt) => {
+                      if (evnt.target.value) {
+                        setValue('ComunaId', Number(evnt.target.value));
+                      }
+                    }}
+                  >
+                    {comunas.map((comuna) => (
+                      <MenuItem key={comuna.id} value={comuna.id}>
+                        {comuna.nombre}
+                      </MenuItem>
+                    ))}
+                  </SelectForm>
+                </FormControl>
+                <Stack
+                  direction="row"
+                  sx={{ my: 1, justifyContent: 'space-around' }}
+                  spacing={2}
+                >
+                  <InputForm
+                    id="dni"
+                    label="Rut"
+                    style={{ margin: '10px 0', width: '49%' }}
+                    onChange={(e: any) => {
+                      setValue('Rut', e.target.value);
+                    }}
+                  />
+                  <InputForm
+                    id="phone"
+                    type={'number'}
+                    style={{ margin: '10px 0', width: '49%' }}
+                    label="Telefono"
+                    {...register('Telefono')}
+                  />
+                </Stack>
+                <InputForm
+                  error={!!errors.Email}
+                  type={'email'}
+                  style={{ marginBottom: '10px', width: '100%' }}
+                  label="Correo electrónico *"
+                  {...register('Email', { required: true })}
+                />
+                <InputForm
+                  error={!!errors.Password}
+                  type={'password'}
+                  style={{ margin: '10px 0', width: '100%' }}
+                  label="Contraseña *"
+                  {...register('Password', { required: true })}
+                />
+                <Box
+                  className="flex justify-center"
+                  sx={{ '& > :not(style)': { m: 1 }, py: 1 }}
+                >
+                  <button
+                    className="text-white rounded-full py-2 px-10 cursor-pointer bg-[#D5278F]"
+                    onClick={handleClose}
+                  >
+                    Cancelar
+                  </button>
+                  <button
+                    className="text-white rounded-full py-2 px-10 cursor-pointer"
+                    type={'submit'}
+                    style={{
+                      background:
+                        'linear-gradient(90deg, rgba(0,10,255,1) 0%, rgba(0,191,232,1) 50%, rgba(0,233,186,1) 100%)'
+                    }}
+                  >
+                    Registrar
+                  </button>
+                </Box>
+              </Container>
             </Box>
-            <InputForm
-              className="font"
-              error={!!errors.Nombre}
-              id="name"
-              style={{ margin: '10px 0', width: '100%' }}
-              label="Nombres *"
-              {...register('Nombre', { required: true })}
-            />
-            <Stack
-              direction="row"
-              sx={{ mb: 1, justifyContent: 'space-around' }}
-              spacing={2}
-            >
-              <InputForm
-                error={!!errors.ApellidoPaterno}
-                style={{ margin: '10px 0', width: '49%' }}
-                id="surname1"
-                label="Apellido Paterno *"
-                {...register('ApellidoPaterno', { required: true })}
-              />
-              <InputForm
-                error={!!errors.ApellidoMaterno}
-                style={{ margin: '10px 0', width: '49%' }}
-                label="Apellido Materno"
-                {...register('ApellidoMaterno', { required: false })}
-              />
-            </Stack>
-            <FormControl
-              fullWidth
-              sx={{
-                p: 0,
-                m: 0,
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                mb: 1
-              }}
-            >
-              <InputLabel>Dirección</InputLabel>
-              <SelectForm
-                style={{ width: '100%' }}
-                label="Dirección"
-                value={getValues('ComunaId')}
-                onChange={(evnt) => {
-                  if (evnt.target.value) {
-                    setValue('ComunaId', Number(evnt.target.value));
-                  }
-                }}
-              >
-                {comunas.map((comuna) => (
-                  <MenuItem key={comuna.id} value={comuna.id}>
-                    {comuna.nombre}
-                  </MenuItem>
-                ))}
-              </SelectForm>
-            </FormControl>
-            <Stack
-              direction="row"
-              sx={{ my: 1, justifyContent: 'space-around' }}
-              spacing={2}
-            >
-              <InputForm
-                id="dni"
-                label="Rut"
-                style={{ margin: '10px 0', width: '49%' }}
-                onChange={(e: any) => {
-                  setValue('Rut', e.target.value);
-                }}
-              />
-              <InputForm
-                id="phone"
-                type={'number'}
-                style={{ margin: '10px 0', width: '49%' }}
-                label="Telefono"
-                {...register('Telefono')}
-              />
-            </Stack>
-            <InputForm
-              error={!!errors.Email}
-              type={'email'}
-              style={{ marginBottom: '10px', width: '100%' }}
-              label="Correo electrónico *"
-              {...register('Email', { required: true })}
-            />
-            <InputForm
-              error={!!errors.Password}
-              type={'password'}
-              style={{ margin: '10px 0', width: '100%' }}
-              label="Contraseña *"
-              {...register('Password', { required: true })}
-            />
-            <Box sx={{ float: 'right', '& > :not(style)': { m: 1 }, py: 1 }}>
-              <ButtonSubmitOutlined onClick={handleClose}>
-                Cancelar
-              </ButtonSubmitOutlined>
-              <BtnSubmit type={'submit'} variant="contained">
-                Registrar
-              </BtnSubmit>
+          </div>
+          {loading && (
+            <Box className="bg-white w-full h-full flex flex-col justify-center items-center absolute top-0 left-0">
+              <CircularProgress color="primary" value={25} />
+              <Typography>Cargando...</Typography>
             </Box>
-          </Container>
-        </Box>
-      </Paper>
-      {loading && (
-        <Box className="bg-white w-full h-full flex flex-col justify-center items-center absolute top-0 left-0">
-          <CircularProgress color="primary" value={25} />
-          <Typography>Cargando...</Typography>
-        </Box>
-      )}
-    </Dialog>
+          )}
+        </div>
+      </div>
+    </>
   );
 };

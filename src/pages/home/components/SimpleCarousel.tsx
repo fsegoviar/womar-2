@@ -8,10 +8,13 @@ export const SimpleCarousel = () => {
       url: require('../../../assets/images/banner-1.png')
     },
     {
-      url: require('../../../assets/images/Banner.png')
+      url: require('../../../assets/images/banner-2.png')
     },
     {
-      url: require('../../../assets/images/banner-2.png')
+      url: require('../../../assets/images/banner-3.png')
+    },
+    {
+      url: require('../../../assets/images/banner-4.png')
     }
   ];
 
@@ -34,11 +37,11 @@ export const SimpleCarousel = () => {
   };
 
   return (
-    <div className="h-[680px] w-full m-auto relative">
+    <div className="h-[520px] w-full m-auto relative">
       {/* Contenedor de imagene slide */}
       <div
         style={{ backgroundImage: `url(${slides[currentIndex].url})` }}
-        className="w-full h-full bg-center bg-cover duration-500"
+        className="w-full h-full bg-center bg-no-repeat bg-contain duration-500 lg:bg-cover"
       ></div>
       {/* Flecha izquierda */}
       <div className=" absolute top-[50%] -translate-x-0 translate-y-[50%] left-5 text-2xl rounded-full p-2 bg-black/20 text-white cursor-pointer">

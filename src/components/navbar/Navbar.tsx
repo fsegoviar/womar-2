@@ -7,7 +7,6 @@ import { useState } from 'react';
 import { UserMenu } from './UserMenu';
 import { BtnNavbar } from '../../styles';
 import { parseJwt } from '../../utils';
-import { DialogLogin } from './login';
 import { DialogRegister } from '../DialogRegister';
 import { TypeUser } from '../../interfaces/Login';
 import { DialogBase } from '../DialogBase';
@@ -112,13 +111,19 @@ export const Navbar = () => {
       </AppBar>
       {openLogin && (
         // <DialogLogin
-        //   open={openLogin}
-        //   handleClose={handleCloseDialogLogin}
-        //   handleOpenSession={handleOpenSession}
-        //   setProveedor={setProveedor}
-        //   isOpenRegisterExternal={setOpenRegisterExternal}
+        // open={openLogin}
+        // handleClose={handleCloseDialogLogin}
+        // handleOpenSession={handleOpenSession}
+        // setProveedor={setProveedor}
+        // isOpenRegisterExternal={setOpenRegisterExternal}
         // />
-        <DialogBase />
+        <DialogBase
+          open={openLogin}
+          handleClose={handleCloseDialogLogin}
+          handleOpenSession={handleOpenSession}
+          setProveedor={setProveedor}
+          isOpenRegisterExternal={setOpenRegisterExternal}
+        />
       )}
       {openRegisterLocal && (
         <DialogRegister

@@ -1,17 +1,16 @@
-import { Box, Typography } from '@mui/material';
+import { Box } from '@mui/material';
 import { useForm } from 'react-hook-form';
-import { BtnSubmit } from '../../../../styles';
-import styled from '@emotion/styled';
+import { InputForm } from '../../../../styles';
 import { TypeUser } from '../../../../interfaces/Login';
 import { useEffect } from 'react';
 
-const InputForm = styled.input<{ error: boolean }>`
-  border: ${(props) => (props.error ? '1px solid red' : '1px solid #0BAFDD')};
-  border-radius: 10px;
-  padding: 8px 10px;
-  width: 250px;
-  font-size: 16px;
-`;
+// const InputForm = styled.input<{ error: boolean }>`
+//   border: ${(props) => (props.error ? '1px solid red' : '1px solid #0BAFDD')};
+//   border-radius: 10px;
+//   padding: 8px 10px;
+//   width: 250px;
+//   font-size: 16px;
+// `;
 
 type Inputs = {
   email: string;
@@ -42,17 +41,10 @@ export const StandardLogin = (props: PropsLoginStandard) => {
       className="flex flex-col items-center"
       onSubmit={handleSubmit(props.onSubmit)}
     >
-      <Typography
-        component={'label'}
-        variant={'subtitle1'}
-        className="font-medium"
-        sx={{ color: '#3c3c3c' }}
-      >
-        Correo electrónico
-      </Typography>
-      <Box>
+      <Box className="w-full my-5">
         <InputForm
           error={!!errors.email}
+          label="Correo electrónico"
           id="email"
           type={'email'}
           className="font-medium"
@@ -71,17 +63,10 @@ export const StandardLogin = (props: PropsLoginStandard) => {
           </span>
         )}
       </Box>
-      <Typography
-        component={'label'}
-        variant={'subtitle1'}
-        className="font-medium"
-        sx={{ color: '#3c3c3c', paddingTop: '10px' }}
-      >
-        Contraseña
-      </Typography>
-      <Box>
+      <Box className="w-full">
         <InputForm
           error={!!errors.password}
+          label="Contraseña"
           id="password"
           type={'password'}
           className="font-medium"
@@ -100,13 +85,15 @@ export const StandardLogin = (props: PropsLoginStandard) => {
           </span>
         )}
       </Box>
-      <BtnSubmit
-        type={'submit'}
-        className="font-medium"
-        style={{ marginTop: '20px' }}
+      <button
+        className="text-white py-2 px-10 rounded-full mt-5"
+        style={{
+          background:
+            'linear-gradient(90deg, rgba(0,10,255,1) 0%, rgba(0,191,232,1) 50%, rgba(0,233,186,1) 100%)'
+        }}
       >
-        Entrar
-      </BtnSubmit>
+        Acceder
+      </button>
     </Box>
   );
 };

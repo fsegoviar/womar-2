@@ -1,17 +1,24 @@
-import { ReactElement, useState } from 'react';
+import { useState } from 'react';
 import { LoginWithFacebook } from './navbar/login/components/LoginWithFacebook';
 import { LoginWithGoogle } from './navbar/login/components/LoginWithGoogle';
 import { TypeUser } from '../interfaces/Login';
 import axios from 'axios';
 import { FailResponse } from '@greatsumini/react-facebook-login';
+import { Box, Fade, Typography } from '@mui/material';
+import { StandardLogin } from './navbar/login/components/StandardLogin';
 
-type ChildrenElement = {
-  children?: ReactElement;
-};
+interface PropsLogin {
+  open: boolean;
+  handleClose: () => void;
+  handleOpenSession: (value: string) => void;
+  isOpenRegisterExternal: (value: boolean) => void;
+  setProveedor: (value: string) => void;
+}
 
-export const DialogBase = ({ children }: ChildrenElement) => {
+export const DialogBase = (props: PropsLogin) => {
+  // const [open, setOpen] = useState(props.open);
   const [error, setError] = useState(false);
-  const [loading, setLoading] = useState(false);
+  // const [loading, setLoading] = useState(false);
   const [msgError, setMsgError] = useState('');
 
   const accessLogin = ({
@@ -25,7 +32,7 @@ export const DialogBase = ({ children }: ChildrenElement) => {
     password?: string;
     tipo: TypeUser;
   }): void => {
-    setLoading(true);
+    // setLoading(true);
     axios
       .post(`${process.env.REACT_APP_URL_BACKEND}/Security/Login`, {
         accessToken,
@@ -34,9 +41,9 @@ export const DialogBase = ({ children }: ChildrenElement) => {
         tipo
       })
       .then((response: any) => {
-        /*props.handleOpenSession(response.data.token);
-        setOpen(false);
-        props.handleClose();*/
+        props.handleOpenSession(response.data.token);
+        // setOpen(false);
+        props.handleClose();
       })
       .catch((error: any) => {
         if (error.response.data) {
@@ -45,14 +52,19 @@ export const DialogBase = ({ children }: ChildrenElement) => {
           setMsgError('Usuario/Contraseña incorrecta');
         }
         setError(true);
-      })
-      .finally(() => setLoading(false));
+      });
+    // .finally(() => setLoading(false));
   };
 
   const loginFacebookFailure = (data: FailResponse) => {
     console.log('Failure login =>', data);
     setError(true);
   };
+
+  // const handleClose = () => {
+  //   // setOpen(false);
+  //   props.handleClose();
+  // };
 
   return (
     <>
@@ -83,29 +95,17 @@ export const DialogBase = ({ children }: ChildrenElement) => {
               style={{ borderRadius: '70px' }}
             >
               <p>Ingresa</p>
-              <div className="grid gap-4 mt-10">
-                <input
-                  type="text"
-                  placeholder="Correo electrónico"
-                  className="border-2 rounded-md p-2"
-                />
-                <input
-                  type="text"
-                  placeholder="Contraseña"
-                  className="border-2 rounded-md p-2"
-                />
-              </div>
-              <div className="mt-7 flex justify-center">
-                <button
-                  className="text-white py-2 px-10 rounded-full"
-                  style={{
-                    background:
-                      'linear-gradient(90deg, rgba(0,10,255,1) 0%, rgba(0,191,232,1) 50%, rgba(0,233,186,1) 100%)'
-                  }}
-                >
-                  Acceder
-                </button>
-              </div>
+              <StandardLogin onSubmit={accessLogin} />
+              {error && (
+                <Fade in={error}>
+                  <Box className="flex justify-center items-center pt-2">
+                    <Typography variant="body1" color="red">
+                      {msgError}
+                    </Typography>
+                  </Box>
+                </Fade>
+              )}
+
               <hr className="mt-3" />
               <div className="grid gap-4">
                 <LoginWithGoogle response={accessLogin} />

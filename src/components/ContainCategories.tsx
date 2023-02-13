@@ -39,12 +39,12 @@ export const CategoryButton = styled.button`
 
 export const CircleIcon = styled.div`
   clip-path: circle(50% at 50% 50%);
-  width: 90px;
-  height: 90px;
+  width: 100px;
+  height: 100px;
   position: absolute;
-  left: -80px;
+  left: -90px;
   top: -20px;
-  background-color: white;
+  background-color: #f7f7f7;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -53,13 +53,13 @@ export const CircleIcon = styled.div`
 export const ContainCategories = () => {
   const icons = [
     {
-      url: require('../assets/images/icono-web-1.png')
+      url: require('../assets/images/ico-p-maritimo.png')
     },
     {
-      url: require('../assets/images/icono-web-2.png')
+      url: require('../assets/images/ico-embaraciones.png')
     },
     {
-      url: require('../assets/images/icono-web-1.png')
+      url: require('../assets/images/ico-config.png')
     }
   ];
 
@@ -74,7 +74,7 @@ export const ContainCategories = () => {
                   style={{
                     backgroundImage: `url(${icons[index].url})`
                   }}
-                  className="bg-cover bg-center bg-no-repeat w-32 h-32 "
+                  className="bg-contain bg-center bg-no-repeat w-20 h-20 "
                 ></div>
               </CircleIcon>
               <CategoryButton className="px-5 py-3 my-3 text-[20px]  md:m-0 bg-primary">
