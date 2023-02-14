@@ -10,7 +10,7 @@ export const ItemFooter = (props: PropsItem) => {
       <div
         className="bg-center bg-cover bg-no-repeat"
         style={{
-          backgroundImage: `url(${props.img})`,
+          background: `url(${props.img})`,
           width: '100px',
           height: '100px'
         }}

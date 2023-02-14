@@ -78,42 +78,42 @@ export const DialogBase = (props: PropsLogin) => {
         }}
       >
         <div
-          className="w-7/12 h-3/6 bg-white flex"
+          className="relative w-7/12 h-3/6 bg-white flex"
           style={{ borderRadius: '70px' }}
           onClick={() => {
             console.log('Hijo');
           }}
         >
           <div
-            className="w-full h-full bg-no-repeat bg-center bg-cover rounded-[70px] flex justify-end"
+            className="w-9/12 h-full bg-no-repeat bg-center bg-cover flex justify-end"
             style={{
-              backgroundImage: `url(${require('../assets/images/slider-womar1.jpg')})`
+              backgroundImage: `url(${require('../assets/images/img-login.png')})`,
+              borderRadius: '70px 0 0 70px'
             }}
+          ></div>
+          <div
+            className="absolute top-0 right-0 w-5/12 h-full border-2 border-[#000aff] bg-white p-10"
+            style={{ borderRadius: '70px' }}
           >
-            <div
-              className="w-5/12 h-full border-2 border-[#000aff] bg-white p-10"
-              style={{ borderRadius: '70px' }}
-            >
-              <p>Ingresa</p>
-              <StandardLogin onSubmit={accessLogin} />
-              {error && (
-                <Fade in={error}>
-                  <Box className="flex justify-center items-center pt-2">
-                    <Typography variant="body1" color="red">
-                      {msgError}
-                    </Typography>
-                  </Box>
-                </Fade>
-              )}
+            <p>Ingresa</p>
+            <StandardLogin onSubmit={accessLogin} />
+            {error && (
+              <Fade in={error}>
+                <Box className="flex justify-center items-center pt-2">
+                  <Typography variant="body1" color="red">
+                    {msgError}
+                  </Typography>
+                </Box>
+              </Fade>
+            )}
 
-              <hr className="mt-3" />
-              <div className="grid gap-4">
-                <LoginWithGoogle response={accessLogin} />
-                <LoginWithFacebook
-                  success={accessLogin}
-                  failure={loginFacebookFailure}
-                />
-              </div>
+            <hr className="mt-3" />
+            <div className="grid gap-4">
+              <LoginWithGoogle response={accessLogin} />
+              <LoginWithFacebook
+                success={accessLogin}
+                failure={loginFacebookFailure}
+              />
             </div>
           </div>
         </div>

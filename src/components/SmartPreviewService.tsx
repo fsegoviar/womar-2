@@ -15,9 +15,10 @@ export const SmartPreviewService = (props: PropsPreview) => {
     <Card
       className="flex w-full cursor-pointer"
       sx={{
-        border: '2px solid #0BAEDC',
+        border: '3px solid #000aff',
         transition: 'all 0.4s',
-        borderRadius: '1rem',
+        borderRadius: '35px',
+        height: '200px',
         '&:hover': {
           boxShadow: '1px 1px 24px grey',
           transform: 'scale(1.01)'
@@ -28,8 +29,9 @@ export const SmartPreviewService = (props: PropsPreview) => {
       <Box
         className="bg-center bg-no-repeat bg-cover w-7/12"
         sx={{
-          height: '250px',
-          backgroundImage: `url(${props.urlImgCover})`
+          height: '200px',
+          backgroundImage: `url(${props.urlImgCover})`,
+          borderRadius: '30px'
         }}
       ></Box>
       <Box className="flex flex-col justify-center w-5/12">

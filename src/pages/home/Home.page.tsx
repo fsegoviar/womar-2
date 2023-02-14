@@ -119,19 +119,13 @@ export const HomePage = () => {
       <footer
         className="relative bg-center bg-cover bg-no-repeat w-full h-72 mt-10"
         style={{
-          backgroundImage: `url(${require('../../assets/images/Banner.png')})`,
+          backgroundImage: `url(${require('../../assets/images/footer.jpg')})`,
           zIndex: '-1'
         }}
       >
         {/* fondo de color */}
         <div
           className="absolute top-0 lef-0 w-full h-full"
-          style={{
-            background:
-              'linear-gradient(90deg, rgba(0,233,186,1) 0%, rgba(0,191,232,1) 50%, rgba(0,10,255,1) 100%)',
-            opacity: '.7',
-            zIndex: '0'
-          }}
         ></div>
         <div className="relative grid grid-cols-3" style={{ zIndex: '9999' }}>
           <div className="grid-span-1 flex flex-col items-center pt-10">
@@ -156,11 +150,11 @@ export const HomePage = () => {
           </div>
           <div className="grid-span-2 flex items-center">
             <ItemFooter
-              img={require('../../assets/images/ico-pin.png')}
+              img={require('../../assets/images/ico-avion.svg')}
               text="Contáctanos"
             />
             <ItemFooter
-              img={require('../../assets/images/ico-tel.png')}
+              img={require('../../assets/images/ico-wsp.svg')}
               text="Envianos un WhatsApp"
             />
           </div>

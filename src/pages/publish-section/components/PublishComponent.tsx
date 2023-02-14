@@ -15,15 +15,16 @@ export const PublishComponent = (props: PropsPublish) => {
     <Card
       sx={{
         display: 'flex',
-        border: '2px solid #0BAEDC',
-        borderRadius: 3,
-        width: '100%'
+        border: '3px solid #000aff',
+        borderRadius: '35px',
+        width: '100%',
+        height: '200px'
       }}
     >
       <Box
         sx={{
-          width: '60%',
-          height: '250px',
+          width: '45%',
+          height: '200px',
           backgroundImage: `url(${props.publish.urlImagenPrincipal})`,
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',
@@ -35,7 +36,7 @@ export const PublishComponent = (props: PropsPublish) => {
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'center',
-          width: '40%'
+          width: '55%'
         }}
       >
         <CardContent
@@ -49,7 +50,10 @@ export const PublishComponent = (props: PropsPublish) => {
           <Typography
             component="div"
             variant="h6"
-            sx={{ textAlign: 'center', fontWeight: 'bold' }}
+            sx={{
+              textAlign: 'center',
+              fontWeight: 'bold'
+            }}
           >
             {props.publish.titulo}
           </Typography>
