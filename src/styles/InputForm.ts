@@ -3,7 +3,7 @@ import { TextField } from '@mui/material';
 
 export const InputForm = styled(TextField)<{ error?: boolean }>`
   width: 100%;
-  font-size: 16px;
+  font-size: 12px;
   font-family: 'font-medium' !important;
   & .MuiOutlinedInput-root {
     & fieldset {

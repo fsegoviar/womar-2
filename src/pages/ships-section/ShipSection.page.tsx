@@ -13,6 +13,7 @@ import { PageBase } from '../../components/PageBase';
 import { ObtenerPublicacionPorCategoria } from '../../services';
 import { DetailService } from '../../interfaces';
 import { SkeletonLoader } from './components/SkeletonLoader';
+import { DetailPublish } from './components/DetailPublish';
 
 export const ShipSectionPage = () => {
   const [openModal, setOpenModal] = useState(false);
@@ -168,7 +169,14 @@ export const ShipSectionPage = () => {
             </Grid>
           </Grid>
         </Grid>
-        <Modal
+        {openModal && (
+          <DetailPublish
+            open={openModal}
+            service={serviceSelected!}
+            closeModal={() => setOpenModal(false)}
+          />
+        )}
+        {/* <Modal
           open={openModal}
           onClose={() => setOpenModal(false)}
           closeAfterTransition
@@ -189,7 +197,7 @@ export const ShipSectionPage = () => {
               </Box>
             </Box>
           </Fade>
-        </Modal>
+        </Modal> */}
       </Box>
     </PageBase>
   );
