@@ -1,14 +1,7 @@
 import { Grid } from '@mui/material';
-import {
-  ContainCategories,
-  SmartPreviewService,
-  DetailServiceComponent
-} from '../../components';
+import { ContainCategories, SmartPreviewService } from '../../components';
 import { useState } from 'react';
-import Modal from '@mui/material/Modal';
-import Fade from '@mui/material/Fade/Fade';
 import Box from '@mui/material/Box/Box';
-import { useNavigate } from 'react-router-dom';
 import { PageBase } from '../../components/PageBase';
 import { ObtenerPublicacionPorCategoria } from '../../services';
 import { DetailService } from '../../interfaces';
@@ -18,18 +11,12 @@ import { DetailPublish } from './components/DetailPublish';
 export const ShipSectionPage = () => {
   const [openModal, setOpenModal] = useState(false);
   const [serviceSelected, setServiceSelected] = useState<DetailService>();
-  const navigate = useNavigate();
   const { publish: listShips, loading } = ObtenerPublicacionPorCategoria([1]);
 
   const openModalContact = (service: DetailService) => {
     setOpenModal(true);
     console.log('service', service);
     setServiceSelected(service);
-  };
-
-  const contactPage = (service: DetailService) => {
-    setOpenModal(false);
-    navigate(`detalle/${service.id}`);
   };
 
   return (
