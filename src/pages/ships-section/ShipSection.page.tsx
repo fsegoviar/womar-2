@@ -5,8 +5,6 @@ import {
   DetailServiceComponent
 } from '../../components';
 import { useState } from 'react';
-import Typography from '@mui/material/Typography';
-import Divider from '@mui/material/Divider';
 import Modal from '@mui/material/Modal';
 import Fade from '@mui/material/Fade/Fade';
 import Box from '@mui/material/Box/Box';
@@ -133,7 +131,7 @@ export const ShipSectionPage = () => {
                   <div
                     className="bg-cover bg-no-repeat bg-center w-16 h-16 ml-2"
                     style={{
-                      backgroundImage: `url(${require('../../assets/images/ico-embaraciones.png')})`
+                      backgroundImage: `url(${require('../../assets/images/ico-embarcaciones-blanco.png')})`
                     }}
                   ></div>
                 </div>
@@ -142,12 +140,6 @@ export const ShipSectionPage = () => {
           </Grid>
           <Grid item xs={12} md={12} className="px-10">
             <Grid container sx={{ my: 5 }} spacing={2}>
-              <Grid item xs={12}>
-                <Typography variant="h4" sx={{ fontWeight: 'bold' }}>
-                  Naves
-                </Typography>
-                <Divider />
-              </Grid>
               {loading && (
                 <Grid item xs={12}>
                   <SkeletonLoader />
