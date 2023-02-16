@@ -47,7 +47,7 @@ export const HomePage = () => {
         <h1 className="font-light text-white mt-10 text-2xl tracking-[.40em]">
           SERVICIOS MARÍTIMOS MÁS POPULARES
         </h1>
-        <Carousel className="z-10 w-[80%] h-[550px]" responsive={responsive}>
+        <Carousel className="z-9 w-[80%] h-[550px]" responsive={responsive}>
           <CardItem
             img={require('../../assets/images/img-servicio1.png')}
             title="Servicio de turismo"
@@ -124,9 +124,7 @@ export const HomePage = () => {
         }}
       >
         {/* fondo de color */}
-        <div
-          className="absolute top-0 lef-0 w-full h-full"
-        ></div>
+        <div className="absolute top-0 lef-0 w-full h-full"></div>
         <div className="relative grid grid-cols-3" style={{ zIndex: '9999' }}>
           <div className="grid-span-1 flex flex-col items-center pt-10">
             <h2

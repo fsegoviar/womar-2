@@ -13,10 +13,12 @@ type FormContactType = {
 
 export const FormContact = ({
   idService,
-  closeModal
+  closeModal,
+  loading
 }: {
   idService: string;
   closeModal: () => void;
+  loading: (value: boolean) => void;
 }) => {
   const {
     register,
@@ -25,20 +27,22 @@ export const FormContact = ({
   } = useForm<FormContactType>();
 
   const onSubmit: SubmitHandler<FormContactType> = (data) => {
-    console.log(data);
-
-    axios.post(
-      `${process.env.REACT_APP_URL_BACKEND}/Publicaciones/CrearNotificacion`,
-      {
-        publicacionId: idService,
-        observaciones: data.message
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('accessToken')}`
+    loading(true);
+    axios
+      .post(
+        `${process.env.REACT_APP_URL_BACKEND}/Publicaciones/CrearNotificacion`,
+        {
+          publicacionId: idService,
+          observaciones: data.message
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('tokenWomar')}`
+          }
         }
-      }
-    );
+      )
+      .then(() => closeModal())
+      .finally(() => loading(false));
   };
   return (
     <Box component={'form'} onSubmit={handleSubmit(onSubmit)}>

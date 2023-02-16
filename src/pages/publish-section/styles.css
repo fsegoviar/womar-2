@@ -32,7 +32,7 @@
 .window-container-detail {
   position: relative;
   width: 1000px;
-  height: 500px;
+  height: auto;
   border-radius: 20px;
   animation-name: modal;
   animation-duration: 0.5s;

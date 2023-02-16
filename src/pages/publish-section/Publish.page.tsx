@@ -5,13 +5,13 @@ import Card from '@mui/material/Card/Card';
 import { useState } from 'react';
 import { ObtenerPublicacionDeUsuario } from '../../services/Publicaciones';
 import { DetailService } from '../../interfaces';
-import { DialogEditPublish } from './components/DialogEditPublish';
 import { DisabledPublish } from './components/DisabledPublish';
 import { PublishComponent } from './components/PublishComponent';
 import { useParams } from 'react-router-dom';
 import { SkeletonLoader } from './components/SkeletonLoader';
 import { CreateNewPublish } from './components/CreateNewPublish';
 import './styles.css';
+import { EditPublish } from './components/EditPublish';
 
 export const PublishPage = () => {
   const [openModal, setOpenModal] = useState(false);
@@ -118,7 +118,7 @@ export const PublishPage = () => {
       </Container>
       <CreateNewPublish open={openModal} userId={userId!} close={closeModal} />
       {openModalEdit && (
-        <DialogEditPublish
+        <EditPublish
           open={openModalEdit}
           close={setOpenModalEdit}
           publish={publishSelected!}

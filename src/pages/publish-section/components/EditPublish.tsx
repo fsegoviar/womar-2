@@ -1,44 +1,26 @@
-import React, { useEffect, useRef, useState } from 'react';
+import styled from '@emotion/styled';
 import {
-  CrearPublicacion,
-  ObtenerCategorias,
-  ObtenerComunas
-} from '../../../services';
-import {
-  Grid,
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
-  Stack,
   Box,
+  FormControl,
+  Grid,
+  InputLabel,
+  MenuItem,
+  Select,
+  Stack,
   TextField
 } from '@mui/material';
+import { DetailService } from '../../../interfaces';
+import { ObtenerCategorias, ObtenerComunas } from '../../../services';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import { useEffect, useRef, useState } from 'react';
 import ImageUploading, {
   ImageListType,
   ImageType
 } from 'react-images-uploading';
-import { SubmitHandler, useForm } from 'react-hook-form';
-import CloseIcon from '@mui/icons-material/Close';
-import { InputForm } from '../../../styles/InputForm';
-import styled from '@emotion/styled';
+import axios from 'axios';
 import { LoadingComponent } from '../../../components';
-
-type CreateNewPublishType = {
-  open: boolean;
-  close: () => void;
-  userId: string;
-};
-
-type CreatePublishType = {
-  title: string;
-  address: string;
-  price: number;
-  description: string;
-  categoriaId: number;
-  comunaId: number;
-  listImg: Blob;
-};
+import CloseIcon from '@mui/icons-material/Close';
+import { InputForm } from '../../../styles';
 
 const SelectForm = styled(Select)`
   border-color: #c2c2c2;
@@ -75,25 +57,55 @@ const TextAreaForm = styled(TextField)`
   }
 `;
 
-export const CreateNewPublish = (props: CreateNewPublishType) => {
+type TypeForm = {
+  idPublicacion: number;
+  titulo: string;
+  descripcion: string;
+  precio: number;
+  enable: boolean;
+};
+
+type PropsDialog = {
+  publish: DetailService;
+  open: boolean;
+  close: (value: boolean) => void;
+};
+
+export const EditPublish = (props: PropsDialog) => {
   const modalRef = useRef<HTMLDivElement>(null!);
   const containerRef = useRef<HTMLDivElement>(null!);
-  //-----
-  const [images, setImages] = useState([]);
-  const [countImg, setCountImg] = useState(0);
+
   const { comunas } = ObtenerComunas();
   const { categories } = ObtenerCategorias();
-  const [files, setFiles] = useState<any[]>([]);
   const {
     register,
     handleSubmit,
-    setValue,
     formState: { errors }
-  } = useForm<CreatePublishType>();
+  } = useForm<TypeForm>({
+    defaultValues: {
+      // idPublicacion: props.publish.id,
+      titulo: props.publish.titulo,
+      // comunaId: props.publish.comuna.id,
+      descripcion: props.publish.descripcion,
+      precio: props.publish.precio
+    }
+  });
+
   const [loading, setLoading] = useState(false);
 
+  const [caruselImg, setCarruselImg] = useState([]);
+  const [images, setImages] = useState<ImageListType>([]);
+  const [countImg, setCountImg] = useState(0);
+  const [imgBorradas, setImgBorradas] = useState<string[]>([]);
+  const [imgAgregadas, setImgAgregadas] = useState<any[]>([]);
+  const maxNumber = 5;
+
   useEffect(() => {
+    console.log('Publish Edit => ', props.publish);
+    generateImgCarusel();
+    generateImgUploaded();
     if (props.open) modalRef.current.style.display = 'flex';
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.open]);
 
   const closeModal = (): void => {
@@ -101,7 +113,7 @@ export const CreateNewPublish = (props: CreateNewPublishType) => {
     setTimeout(() => {
       containerRef.current.classList.remove('close');
       modalRef.current.style.display = 'none';
-      props.close();
+      props.close(false);
     }, 1000);
   };
 
@@ -110,34 +122,75 @@ export const CreateNewPublish = (props: CreateNewPublishType) => {
     (e: any) => e.target === modalRef.current && closeModal()
   );
 
-  const maxNumber = 5;
+  const generateImgCarusel = () => {
+    props.publish.imagenes.forEach((imgCarrusel: any) => {
+      let newCarrusel: any[] = caruselImg;
+      newCarrusel.push({
+        original: imgCarrusel,
+        thumbnail: imgCarrusel,
+        originalWidth: '100px'
+      });
+      setCarruselImg(newCarrusel as never[]);
+    });
+  };
 
-  const onSubmit: SubmitHandler<CreatePublishType> = async (data) => {
+  const generateImgUploaded = () => {
+    setCountImg(props.publish.imagenes.length);
+    props.publish.imagenes.forEach((url: any) => {
+      let newListImg: ImageListType = images;
+      newListImg.push({
+        dataURL: url
+      });
+      setImages(newListImg as never[]);
+    });
+  };
+
+  const onSubmit: SubmitHandler<TypeForm> = (data) => {
+    console.log('Imagenes borradas', imgBorradas);
+    console.log('Imagenes agregadas', imgAgregadas);
+    console.log('Data', data);
+
     let formData = new FormData();
-    formData.append('ImagenPrincipal', files[0]);
-    for (const file of files) {
-      formData.append('Imagenes', file);
+    formData.append('PublicacionId', props.publish.id);
+    formData.append('NuevaImagenPrincipal', imgAgregadas[0]);
+    for (const img of imgAgregadas) {
+      formData.append('NuevasFotos', img);
     }
-    formData.append('Titulo', data.title);
-    formData.append('ComunaId', String(data.comunaId));
-    // formData.append('CategoriaId', String(data.categoriaId));
-    formData.append('CategoriaId', String(1));
-    formData.append('Precio', String(data.price));
-    formData.append('Descripcion', String(data.description));
-    formData.append('UsuarioId', String(props.userId));
+    if (imgBorradas.length !== 0) {
+      for (const img of imgBorradas) {
+        formData.append('FotosRemovidas', img);
+      }
+    } else {
+      formData.append('FotosRemovidas', '');
+    }
+    formData.append('Titulo', data.titulo);
+    formData.append('Descripcion', data.descripcion);
+    formData.append('Precio', String(data.precio));
+    formData.append('Activo', String('true'));
 
-    // let listBlobs = file.map((f) => new Blob([f!], { type: 'image/png' }));
     setLoading(true);
-    const { cargarPublicacion } = CrearPublicacion(formData);
-    await cargarPublicacion()
-      .then((response: any) => {
-        console.log('Respuesta Publicacion =>', response);
-        closeModal();
-      })
-      .catch((response: any) => {
-        console.log('Respuesta ERROR =>', response);
-      })
+
+    axios
+      .put(
+        `${process.env.REACT_APP_URL_BACKEND}/Publicaciones/Editar`,
+        formData,
+        {
+          headers: {
+            'Access-Control-Allow-Origin': '*',
+            Authorization: `Bearer ${localStorage.getItem('tokenWomar')}`,
+            'Content-Type': 'multipart/form-data'
+          }
+        }
+      )
+      .then((response: any) => console.log('Response =>', response))
+      .catch((error: any) => console.log('Error =>', error))
       .finally(() => setLoading(false));
+  };
+
+  const onRemoveImageURL = (index: number) => {
+    let newListImgBorradas = imgBorradas;
+    newListImgBorradas.push(String(images[index].dataURL));
+    setImgBorradas(newListImgBorradas);
   };
 
   const onChange = (
@@ -145,23 +198,30 @@ export const CreateNewPublish = (props: CreateNewPublishType) => {
     addUpdateIndex: number[] | undefined
   ) => {
     // data for submit
-    console.log(imageList, addUpdateIndex);
     if (imageList.length <= 5) setCountImg(imageList.length);
 
     setImages(imageList as never[]);
 
-    let blobImg: Blob = new Blob();
+    const imgUrls: any[] = [];
+    const newFiles: any[] = imgAgregadas;
 
     imageList.forEach((image: any) => {
-      if (image) {
-        // lfistBlobImg.push(new Blob([image.file!], { type: "image/png" }));
-        console.log(`File => `, image.file!);
-        let arrFiles = files!;
-        arrFiles.push(image.file!);
-        setFiles(arrFiles);
+      if (image.file) {
+        console.log('Hola', image.file);
+        newFiles.push(image.file);
       }
     });
-    setValue('listImg', blobImg);
+
+    imageList.forEach((image: any) => {
+      imgUrls.push({
+        original: URL.createObjectURL(image.dataURL),
+        thumbnail: URL.createObjectURL(image.dataURL),
+        originalWidth: '100px'
+      });
+    });
+
+    setCarruselImg(imgUrls as never[]);
+    setImgAgregadas(newFiles as never[]);
   };
 
   return (
@@ -263,7 +323,10 @@ export const CreateNewPublish = (props: CreateNewPublishType) => {
                             }}
                           />
                           <button
-                            onClick={() => onImageRemove(index)}
+                            onClick={() => {
+                              onImageRemove(index);
+                              onRemoveImageURL(index);
+                            }}
                             style={{
                               backgroundColor: 'transparent',
                               border: 'none',
@@ -299,14 +362,14 @@ export const CreateNewPublish = (props: CreateNewPublishType) => {
                   <Grid container>
                     <Grid item xs={7} className="pr-4">
                       <InputForm
-                        error={!!errors.title}
+                        error={!!errors.titulo}
                         id="title"
                         style={{
                           margin: '10px 0',
                           width: '100%'
                         }}
                         label="Titulo *"
-                        {...register('title', { required: true })}
+                        {...register('titulo', { required: true })}
                       />
                       <FormControl
                         fullWidth
@@ -323,15 +386,7 @@ export const CreateNewPublish = (props: CreateNewPublishType) => {
                         <SelectForm
                           style={{ width: '100%' }}
                           label="Categoria"
-                          required
-                          onChange={(evnt) => {
-                            if (evnt.target.value) {
-                              setValue(
-                                'categoriaId',
-                                evnt.target.value as number
-                              );
-                            }
-                          }}
+                          readOnly
                         >
                           {categories.map((categorie, index) => (
                             <MenuItem key={index} value={categorie.id}>
@@ -360,14 +415,7 @@ export const CreateNewPublish = (props: CreateNewPublishType) => {
                             style={{ width: '100%' }}
                             label="Comuna"
                             required
-                            onChange={(evnt) => {
-                              if (evnt.target.value) {
-                                setValue(
-                                  'comunaId',
-                                  evnt.target.value as number
-                                );
-                              }
-                            }}
+                            readOnly
                           >
                             {comunas.map((comuna, index) => (
                               <MenuItem key={index} value={comuna.id}>
@@ -377,20 +425,20 @@ export const CreateNewPublish = (props: CreateNewPublishType) => {
                           </SelectForm>
                         </FormControl>
                         <InputForm
-                          error={!!errors.price}
+                          error={!!errors.precio}
                           id="price"
                           style={{
                             margin: '10px 0',
                             width: '49%'
                           }}
                           label="Precio *"
-                          {...register('price', { required: true })}
+                          {...register('precio', { required: true })}
                         />
                       </Stack>
                     </Grid>
                     <Grid item xs={5}>
                       <TextAreaForm
-                        error={!!errors.description}
+                        error={!!errors.descripcion}
                         id="description"
                         fullWidth
                         sx={{ my: 1 }}
@@ -398,7 +446,7 @@ export const CreateNewPublish = (props: CreateNewPublishType) => {
                         multiline
                         rows={7}
                         variant="outlined"
-                        {...register('description', { required: true })}
+                        {...register('descripcion', { required: true })}
                       />
                     </Grid>
                   </Grid>
@@ -413,7 +461,7 @@ export const CreateNewPublish = (props: CreateNewPublishType) => {
                         closeModal();
                         setImages([]);
                         setCountImg(0);
-                        props.close();
+                        props.close(false);
                       }}
                     >
                       Cancelar
@@ -426,7 +474,7 @@ export const CreateNewPublish = (props: CreateNewPublishType) => {
                           'linear-gradient(90deg, rgba(0,10,255,1) 0%, rgba(0,191,232,1) 50%, rgba(0,233,186,1) 100%)'
                       }}
                     >
-                      Crear Publicación
+                      Editar
                     </button>
                   </Box>
                 </form>

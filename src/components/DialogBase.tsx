@@ -7,6 +7,7 @@ import { FailResponse } from '@greatsumini/react-facebook-login';
 import { Box, Fade, Typography } from '@mui/material';
 import { StandardLogin } from './navbar/login/components/StandardLogin';
 import './styles-login.css';
+import { LoadingComponent } from './LoadingComponent';
 
 interface PropsLogin {
   open: boolean;
@@ -21,7 +22,7 @@ export const DialogBase = (props: PropsLogin) => {
   const containerRef = useRef<HTMLDivElement>(null!);
   // const [open, setOpen] = useState(props.open);
   const [error, setError] = useState(false);
-  // const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [msgError, setMsgError] = useState('');
 
   useEffect(() => {
@@ -53,7 +54,7 @@ export const DialogBase = (props: PropsLogin) => {
     password?: string;
     tipo: TypeUser;
   }): void => {
-    // setLoading(true);
+    setLoading(true);
     axios
       .post(`${process.env.REACT_APP_URL_BACKEND}/Security/Login`, {
         accessToken,
@@ -73,8 +74,8 @@ export const DialogBase = (props: PropsLogin) => {
           setMsgError('Usuario/Contraseña incorrecta');
         }
         setError(true);
-      });
-    // .finally(() => setLoading(false));
+      })
+      .finally(() => setLoading(false));
   };
 
   const loginFacebookFailure = (data: FailResponse) => {
@@ -112,26 +113,32 @@ export const DialogBase = (props: PropsLogin) => {
               className="absolute top-0 right-0 w-5/12 h-full border-2 border-[#000aff] bg-white p-10"
               style={{ borderRadius: '70px' }}
             >
-              <p>Ingresa</p>
-              <StandardLogin onSubmit={accessLogin} />
-              {error && (
-                <Fade in={error}>
-                  <Box className="flex justify-center items-center pt-2">
-                    <Typography variant="body1" color="red">
-                      {msgError}
-                    </Typography>
-                  </Box>
-                </Fade>
-              )}
+              {!loading ? (
+                <>
+                  <p>Ingresa</p>
+                  <StandardLogin onSubmit={accessLogin} />
+                  {error && (
+                    <Fade in={error}>
+                      <Box className="flex justify-center items-center pt-2">
+                        <Typography variant="body1" color="red">
+                          {msgError}
+                        </Typography>
+                      </Box>
+                    </Fade>
+                  )}
 
-              <hr className="mt-3" />
-              <div className="grid gap-4">
-                <LoginWithGoogle response={accessLogin} />
-                <LoginWithFacebook
-                  success={accessLogin}
-                  failure={loginFacebookFailure}
-                />
-              </div>
+                  <hr className="mt-3" />
+                  <div className="grid gap-4">
+                    <LoginWithFacebook
+                      success={accessLogin}
+                      failure={loginFacebookFailure}
+                    />
+                    <LoginWithGoogle response={accessLogin} />
+                  </div>
+                </>
+              ) : (
+                <LoadingComponent />
+              )}
             </div>
           </div>
         </div>

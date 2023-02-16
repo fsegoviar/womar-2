@@ -1,14 +1,29 @@
 import { Box, Container } from '@mui/system';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { InputForm } from '../../../styles/InputForm';
-import { Stack } from '@mui/material';
-import { SelectForm } from '../../../styles/SelectForm';
+import { FormControl, Grid, InputLabel, MenuItem, Select } from '@mui/material';
 import { ActualizarInfoUsuario, ObtenerComunas } from '../../../services';
 import { AxiosError } from 'axios';
 import { InfoUser } from '../../../interfaces';
-import { BtnSubmit } from '../../../styles';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import styled from '@emotion/styled';
+
+const SelectForm = styled(Select)`
+  border-color: #c2c2c2;
+  border-radius: 10px;
+  & .MuiOutlinedInput-input {
+    border-color: white;
+  }
+
+  & .MuiOutlinedInput-notchedOutline {
+    border-color: #c2c2c2;
+  }
+
+  &.Mui-focused fieldset {
+    border-color: #c2c2c2;
+  }
+`;
 
 type TypeForm = {
   nombre: string;
@@ -33,7 +48,6 @@ export const FormProfile = ({
     register,
     handleSubmit,
     setValue,
-    getValues,
     formState: { errors }
   } = useForm<TypeForm>({
     defaultValues: {
@@ -118,67 +132,86 @@ export const FormProfile = ({
           placeholder="Nombres *"
           {...register('nombre', { required: true })}
         />
-        <Stack
-          direction="row"
+        <Grid
+          container
           sx={{ mb: 1, justifyContent: 'space-around' }}
           spacing={2}
         >
-          <InputForm
-            error={!!errors.apellidoPaterno}
-            style={{ margin: '10px 0', width: '49%' }}
-            id="surname1"
-            placeholder="Apellido Paterno *"
-            {...register('apellidoPaterno', { required: true })}
-          />
-          <InputForm
-            error={!!errors.apellidoMaterno}
-            style={{ margin: '10px 0', width: '49%' }}
-            placeholder="Apellido Materno *"
-            {...register('apellidoMaterno', { required: true })}
-          />
-        </Stack>
-        <Stack
-          direction={'row'}
+          <Grid item xs={6}>
+            <InputForm
+              error={!!errors.apellidoPaterno}
+              style={{ margin: '10px 0' }}
+              id="surname1"
+              placeholder="Apellido Paterno *"
+              {...register('apellidoPaterno', { required: true })}
+            />
+          </Grid>
+          <Grid item xs={6}>
+            <InputForm
+              error={!!errors.apellidoMaterno}
+              style={{ margin: '10px 0' }}
+              placeholder="Apellido Materno *"
+              {...register('apellidoMaterno', { required: true })}
+            />
+          </Grid>
+        </Grid>
+        <Grid
+          container
           sx={{ mb: 1, justifyContent: 'space-around' }}
           spacing={2}
         >
-          <SelectForm
-            style={{ width: '49%' }}
-            placeholder="Dirección (opcional)"
-            value={getValues('comunaId')}
-            onChange={(evnt) => {
-              if (evnt.target.value) {
-                setValue('comunaId', evnt.target.value);
-              }
-            }}
-          >
-            <option value={''}>Dirección (opcional)</option>
-            {comunas.map((comuna) => (
-              <option key={comuna.id} value={comuna.id}>
-                {comuna.nombre}
-              </option>
-            ))}
-          </SelectForm>
-          <InputForm
-            id="phone"
-            type={'number'}
-            style={{ margin: '10px 0', width: '49%' }}
-            placeholder="Telefono (opcional)"
-            {...register('telefono')}
-          />
-        </Stack>
+          <Grid item xs={6}>
+            <FormControl
+              fullWidth
+              sx={{
+                p: 0,
+                m: 0,
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                mb: 1
+              }}
+            >
+              <InputLabel>Dirección (opcional)</InputLabel>
+              <SelectForm
+                style={{ width: '100%' }}
+                label="Categoria"
+                onChange={(evnt: any) => {
+                  if (evnt.target.value) {
+                    setValue('comunaId', evnt.target.value);
+                  }
+                }}
+              >
+                {comunas.map((categorie, index) => (
+                  <MenuItem key={index} value={categorie.id}>
+                    {categorie.nombre}
+                  </MenuItem>
+                ))}
+              </SelectForm>
+            </FormControl>
+          </Grid>
+          <Grid item xs={6}>
+            <InputForm
+              id="phone"
+              type={'number'}
+              style={{ width: '100%' }}
+              placeholder="Telefono (opcional)"
+              {...register('telefono')}
+            />
+          </Grid>
+        </Grid>
       </Container>
       <Box sx={{ display: 'flex', justifyContent: 'center', pt: 4 }}>
-        <BtnSubmit
-          type={'submit'}
-          variant="contained"
+        <button
+          className="text-white rounded-full py-2 px-10 cursor-pointer"
+          type="submit"
           style={{
-            fontSize: '18px',
-            padding: '3px 50px'
+            background:
+              'linear-gradient(90deg, rgba(0,10,255,1) 0%, rgba(0,191,232,1) 50%, rgba(0,233,186,1) 100%)'
           }}
         >
           Guardar
-        </BtnSubmit>
+        </button>
       </Box>
     </Box>
   );

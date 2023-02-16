@@ -4,6 +4,7 @@ import '../styles.css';
 import { BsChevronCompactLeft, BsChevronCompactRight } from 'react-icons/bs';
 import { Grid } from '@mui/material';
 import { FormContact } from './FormContact';
+import { LoadingComponent } from '../../../components';
 
 type DetailPublishType = {
   service: DetailService;
@@ -14,6 +15,7 @@ type DetailPublishType = {
 export const DetailPublish = (props: DetailPublishType) => {
   const modalRef = useRef<HTMLDivElement>(null!);
   const containerRef = useRef<HTMLDivElement>(null!);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (props.open) modalRef.current.style.display = 'flex';
@@ -62,7 +64,7 @@ export const DetailPublish = (props: DetailPublishType) => {
         ref={containerRef}
       >
         <div className="">
-          <div className="w-7/12 h-[500px] bg-no-repeat bg-center bg-cover flex justify-start">
+          <div className="w-7/12 h-[550px] bg-no-repeat bg-center bg-cover flex justify-start">
             {/* Aqui va el slider */}
             <div
               style={{
@@ -74,11 +76,11 @@ export const DetailPublish = (props: DetailPublishType) => {
             {props.service.imagenes.length > 1 && (
               <>
                 {/* Flecha izquierda */}
-                <div className=" absolute top-[50%] -translate-x-0 translate-y-[50%] left-5 text-2xl rounded-full p-2 bg-black/20 text-white cursor-pointer">
+                <div className=" absolute top-[40%] -translate-x-0 translate-y-[50%] left-5 text-2xl rounded-full p-2 bg-black/20 text-white cursor-pointer">
                   <BsChevronCompactLeft onClick={prevSlide} size={40} />
                 </div>
                 {/* Flecha derecha */}
-                <div className=" group-hover:block absolute top-[50%] -translate-x-[-22rem] translate-y-[50%]  text-2xl rounded-full p-2 bg-black/20 text-white cursor-pointer">
+                <div className=" group-hover:block absolute top-[40%] -translate-x-[-25rem] translate-y-[50%]  text-2xl rounded-full p-2 bg-black/20 text-white cursor-pointer">
                   <BsChevronCompactRight onClick={nextSlide} size={40} />
                 </div>
               </>
@@ -88,24 +90,29 @@ export const DetailPublish = (props: DetailPublishType) => {
             className="absolute top-0 right-0 w-6/12 h-full border-2 border-[#000aff] bg-white p-10"
             style={{ borderRadius: '70px' }}
           >
-            <Grid container className="gap-4">
-              <Grid item xs={7}>
-                <p className="text-2xl">{props.service.titulo}</p>
-                <p className="font-thin text-sm mt-2">
-                  {props.service.descripcion}
-                </p>
+            {loading ? (
+              <LoadingComponent />
+            ) : (
+              <Grid container className="gap-4">
+                <Grid item xs={7}>
+                  <p className="text-2xl">{props.service.titulo}</p>
+                  <p className="font-thin text-sm mt-2">
+                    {props.service.descripcion}
+                  </p>
+                </Grid>
+                <Grid item xs={4} className="pt-5">
+                  <p className="text-sm font-thin">{props.service.precio}</p>
+                  <p className="text-sm font-thin">{props.service.direccion}</p>
+                </Grid>
+                <Grid item xs={12}>
+                  <FormContact
+                    idService={String(props.service.id)}
+                    closeModal={closeModal}
+                    loading={setLoading}
+                  />
+                </Grid>
               </Grid>
-              <Grid item xs={4} className="pt-5">
-                <p className="text-sm font-thin">{props.service.precio}</p>
-                <p className="text-sm font-thin">{props.service.direccion}</p>
-              </Grid>
-              <Grid item xs={12}>
-                <FormContact
-                  idService={String(props.service.id)}
-                  closeModal={closeModal}
-                />
-              </Grid>
-            </Grid>
+            )}
           </div>
         </div>
       </div>

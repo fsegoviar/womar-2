@@ -117,7 +117,7 @@ export const ShipSectionPage = () => {
                 <div className="flex justify-center items-center w-full h-full">
                   <p className="text-white font-bold text-3xl">Embarcaciones</p>
                   <div
-                    className="bg-cover bg-no-repeat bg-center w-16 h-16 ml-2"
+                    className="bg-contain bg-no-repeat bg-center w-16 h-16 ml-2"
                     style={{
                       backgroundImage: `url(${require('../../assets/images/ico-embarcaciones-blanco.png')})`
                     }}

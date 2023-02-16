@@ -4,3 +4,4 @@ export * from './DialogRegister';
 export * from './ContainCategories';
 export * from './SmartPreviewService';
 export * from './DetailServiceComponent';
+export * from './LoadingComponent';

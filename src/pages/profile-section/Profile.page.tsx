@@ -45,7 +45,7 @@ export const ProfilePage = () => {
               backgroundColor: 'white',
               borderRadius: 10,
               p: 5,
-              border: '2px solid #0bafdd'
+              border: '2px solid #000aff'
             }}
           >
             <SkeletonLoader />
@@ -58,7 +58,7 @@ export const ProfilePage = () => {
               backgroundColor: 'white',
               borderRadius: 10,
               p: 5,
-              border: '2px solid #0bafdd'
+              border: '2px solid #000aff'
             }}
           >
             <FormProfile {...infoUser} />
