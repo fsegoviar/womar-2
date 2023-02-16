@@ -8,7 +8,7 @@ import {
   Select,
   Stack
 } from '@mui/material';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { RegisterUser } from '../interfaces';
 import { useEffect } from 'react';
@@ -53,12 +53,29 @@ export const DialogRegister = (props: PropsRegister) => {
   // const [open, setOpen] = useState(props.open);
   const { comunas } = ObtenerComunas();
   const [loading, setLoading] = useState(false);
+  const modalRef = useRef<HTMLDivElement>(null!);
+  const containerRef = useRef<HTMLDivElement>(null!);
 
   useEffect(() => {
     setValue('Role', 'Cliente');
     setValue('Origen', props.tipo);
+    if (props.open) modalRef.current.style.display = 'flex';
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const closeModal = (): void => {
+    containerRef.current.classList.add('close-register');
+    setTimeout(() => {
+      containerRef.current.classList.remove('close-register');
+      modalRef.current.style.display = 'none';
+      props.handleClose();
+    }, 1000);
+  };
+
+  window.addEventListener(
+    'click',
+    (e: any) => e.target === modalRef.current && closeModal()
+  );
 
   const handleClose = () => {
     // setOpen(false);
@@ -96,35 +113,37 @@ export const DialogRegister = (props: PropsRegister) => {
 
   return (
     <>
-      {/* Fondo blanco */}
-      <div className="fixed top-0 left-0 w-full h-screen bg-white z-50 opacity-75"></div>
       {/* Contendor Dialog */}
       <div
-        className="fixed top-0 left-0 w-full h-screen flex z-50 justify-end container items-center"
-        onClick={() => {
-          console.log('Padre');
-        }}
+        className="window-background-register"
+        id="window-background-register"
+        ref={modalRef}
       >
         <div
-          className="w-4/12 h-4/6 bg-white flex pt-5"
-          style={{ borderRadius: '70px', border: '3px solid #000aff' }}
-          onClick={() => {
-            console.log('Hijo');
-          }}
+          className="window-container-register"
+          id="window-container-register"
+          ref={containerRef}
         >
-          <div style={{ width: '500px' }}>
-            <h1
-              style={{ textAlign: 'center' }}
-              className="font text-xl mt-5 font-bold text-gray-500"
-            >
-              Registrar usuario{' '}
-            </h1>
-            <Box
-              component={'form'}
-              onSubmit={handleSubmit(onSubmitRegisterLocal)}
-            >
-              <Container>
-                {/* <Box
+          <div
+            className="w-12/12 h-6/6 bg-white flex pt-5"
+            style={{ borderRadius: '70px', border: '3px solid #000aff' }}
+            onClick={() => {
+              console.log('Hijo');
+            }}
+          >
+            <div style={{ width: '500px' }}>
+              <h1
+                style={{ textAlign: 'center' }}
+                className="font text-xl mt-5 font-bold text-gray-500"
+              >
+                Registrar usuario{' '}
+              </h1>
+              <Box
+                component={'form'}
+                onSubmit={handleSubmit(onSubmitRegisterLocal)}
+              >
+                <Container>
+                  {/* <Box
                   className="relative bg-center bg-cover bg-no-repeat my-5 rounded-full m-auto"
                   sx={{
                     backgroundImage: `url(${urlImage})`,
@@ -146,127 +165,128 @@ export const DialogRegister = (props: PropsRegister) => {
                     style={{ height: '100%' }}
                   />
                 </Box> */}
-                <InputForm
-                  className="font"
-                  error={!!errors.Nombre}
-                  id="name"
-                  style={{ margin: '10px 0', width: '100%' }}
-                  label="Nombres *"
-                  {...register('Nombre', { required: true })}
-                />
-                <Stack
-                  direction="row"
-                  sx={{ mb: 1, justifyContent: 'space-around' }}
-                  spacing={2}
-                >
                   <InputForm
-                    error={!!errors.ApellidoPaterno}
-                    style={{ margin: '10px 0', width: '49%' }}
-                    id="surname1"
-                    label="Apellido Paterno *"
-                    {...register('ApellidoPaterno', { required: true })}
+                    className="font"
+                    error={!!errors.Nombre}
+                    id="name"
+                    style={{ margin: '10px 0', width: '100%' }}
+                    label="Nombres *"
+                    {...register('Nombre', { required: true })}
                   />
-                  <InputForm
-                    error={!!errors.ApellidoMaterno}
-                    style={{ margin: '10px 0', width: '49%' }}
-                    label="Apellido Materno"
-                    {...register('ApellidoMaterno', { required: false })}
-                  />
-                </Stack>
-                <FormControl
-                  fullWidth
-                  sx={{
-                    p: 0,
-                    m: 0,
-                    display: 'flex',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    mb: 1
-                  }}
-                >
-                  <InputLabel>Dirección</InputLabel>
-                  <SelectForm
-                    style={{ width: '100%' }}
-                    label="Dirección"
-                    value={getValues('ComunaId')}
-                    onChange={(evnt) => {
-                      if (evnt.target.value) {
-                        setValue('ComunaId', Number(evnt.target.value));
-                      }
+                  <Stack
+                    direction="row"
+                    sx={{ mb: 1, justifyContent: 'space-around' }}
+                    spacing={2}
+                  >
+                    <InputForm
+                      error={!!errors.ApellidoPaterno}
+                      style={{ margin: '10px 0', width: '49%' }}
+                      id="surname1"
+                      label="Apellido Paterno *"
+                      {...register('ApellidoPaterno', { required: true })}
+                    />
+                    <InputForm
+                      error={!!errors.ApellidoMaterno}
+                      style={{ margin: '10px 0', width: '49%' }}
+                      label="Apellido Materno"
+                      {...register('ApellidoMaterno', { required: false })}
+                    />
+                  </Stack>
+                  <FormControl
+                    fullWidth
+                    sx={{
+                      p: 0,
+                      m: 0,
+                      display: 'flex',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      mb: 1
                     }}
                   >
-                    {comunas.map((comuna) => (
-                      <MenuItem key={comuna.id} value={comuna.id}>
-                        {comuna.nombre}
-                      </MenuItem>
-                    ))}
-                  </SelectForm>
-                </FormControl>
-                <Stack
-                  direction="row"
-                  sx={{ my: 1, justifyContent: 'space-around' }}
-                  spacing={2}
-                >
+                    <InputLabel>Dirección</InputLabel>
+                    <SelectForm
+                      style={{ width: '100%' }}
+                      label="Dirección"
+                      value={getValues('ComunaId')}
+                      onChange={(evnt) => {
+                        if (evnt.target.value) {
+                          setValue('ComunaId', Number(evnt.target.value));
+                        }
+                      }}
+                    >
+                      {comunas.map((comuna) => (
+                        <MenuItem key={comuna.id} value={comuna.id}>
+                          {comuna.nombre}
+                        </MenuItem>
+                      ))}
+                    </SelectForm>
+                  </FormControl>
+                  <Stack
+                    direction="row"
+                    sx={{ my: 1, justifyContent: 'space-around' }}
+                    spacing={2}
+                  >
+                    <InputForm
+                      id="dni"
+                      label="Rut"
+                      style={{ margin: '10px 0', width: '49%' }}
+                      onChange={(e: any) => {
+                        setValue('Rut', e.target.value);
+                      }}
+                    />
+                    <InputForm
+                      id="phone"
+                      type={'number'}
+                      style={{ margin: '10px 0', width: '49%' }}
+                      label="Telefono"
+                      {...register('Telefono')}
+                    />
+                  </Stack>
                   <InputForm
-                    id="dni"
-                    label="Rut"
-                    style={{ margin: '10px 0', width: '49%' }}
-                    onChange={(e: any) => {
-                      setValue('Rut', e.target.value);
-                    }}
+                    error={!!errors.Email}
+                    type={'email'}
+                    style={{ marginBottom: '10px', width: '100%' }}
+                    label="Correo electrónico *"
+                    {...register('Email', { required: true })}
                   />
                   <InputForm
-                    id="phone"
-                    type={'number'}
-                    style={{ margin: '10px 0', width: '49%' }}
-                    label="Telefono"
-                    {...register('Telefono')}
+                    error={!!errors.Password}
+                    type={'password'}
+                    style={{ margin: '10px 0', width: '100%' }}
+                    label="Contraseña *"
+                    {...register('Password', { required: true })}
                   />
-                </Stack>
-                <InputForm
-                  error={!!errors.Email}
-                  type={'email'}
-                  style={{ marginBottom: '10px', width: '100%' }}
-                  label="Correo electrónico *"
-                  {...register('Email', { required: true })}
-                />
-                <InputForm
-                  error={!!errors.Password}
-                  type={'password'}
-                  style={{ margin: '10px 0', width: '100%' }}
-                  label="Contraseña *"
-                  {...register('Password', { required: true })}
-                />
-                <Box
-                  className="flex justify-center"
-                  sx={{ '& > :not(style)': { m: 1 }, py: 1 }}
-                >
-                  <button
-                    className="text-white rounded-full py-2 px-10 cursor-pointer bg-[#D5278F]"
-                    onClick={handleClose}
+                  <Box
+                    className="flex justify-center"
+                    sx={{ '& > :not(style)': { m: 1 }, py: 1 }}
                   >
-                    Cancelar
-                  </button>
-                  <button
-                    className="text-white rounded-full py-2 px-10 cursor-pointer"
-                    type={'submit'}
-                    style={{
-                      background:
-                        'linear-gradient(90deg, rgba(0,10,255,1) 0%, rgba(0,191,232,1) 50%, rgba(0,233,186,1) 100%)'
-                    }}
-                  >
-                    Registrar
-                  </button>
-                </Box>
-              </Container>
-            </Box>
+                    <button
+                      className="text-white rounded-full py-2 px-10 cursor-pointer bg-[#D5278F]"
+                      onClick={handleClose}
+                    >
+                      Cancelar
+                    </button>
+                    <button
+                      className="text-white rounded-full py-2 px-10 cursor-pointer"
+                      type={'submit'}
+                      style={{
+                        background:
+                          'linear-gradient(90deg, rgba(0,10,255,1) 0%, rgba(0,191,232,1) 50%, rgba(0,233,186,1) 100%)'
+                      }}
+                    >
+                      Registrar
+                    </button>
+                  </Box>
+                </Container>
+              </Box>
+            </div>
+            {loading && (
+              <Box className="bg-white w-full h-full flex flex-col justify-center items-center absolute top-0 left-0">
+                <CircularProgress color="primary" value={25} />
+                <Typography>Cargando...</Typography>
+              </Box>
+            )}
           </div>
-          {loading && (
-            <Box className="bg-white w-full h-full flex flex-col justify-center items-center absolute top-0 left-0">
-              <CircularProgress color="primary" value={25} />
-              <Typography>Cargando...</Typography>
-            </Box>
-          )}
         </div>
       </div>
     </>
