@@ -45,7 +45,7 @@ export const HomePage = () => {
         className="flex flex-col justify-center items-center h-[600px]"
       >
         <h1 className="font-light text-white mt-10 text-2xl tracking-[.40em]">
-          SERVICIOS MARÍTIMOS MÁS POPULARES
+          SERVICIOS MARÍTIMOS MÁS RECIENTES
         </h1>
         <Carousel className="z-9 w-[80%] h-[550px]" responsive={responsive}>
           <CardItem

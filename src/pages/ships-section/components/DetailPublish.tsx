@@ -5,6 +5,8 @@ import { BsChevronCompactLeft, BsChevronCompactRight } from 'react-icons/bs';
 import { Grid } from '@mui/material';
 import { FormContact } from './FormContact';
 import { LoadingComponent } from '../../../components';
+import { SiCashapp } from 'react-icons/si';
+import { MdLocationOn } from 'react-icons/md';
 
 type DetailPublishType = {
   service: DetailService;
@@ -101,8 +103,14 @@ export const DetailPublish = (props: DetailPublishType) => {
                   </p>
                 </Grid>
                 <Grid item xs={4} className="pt-5">
-                  <p className="text-sm font-thin">{props.service.precio}</p>
-                  <p className="text-sm font-thin">{props.service.direccion}</p>
+                  <p className="text-sm font-thin flex">
+                    <SiCashapp size={16} color="gray" />
+                    <span className="pl-1">{props.service.precio}</span>
+                  </p>
+                  <p className="text-sm font-thin flex">
+                    <MdLocationOn size={32} color="gray" />
+                    <span className="pl-1">{props.service.direccion}</span>
+                  </p>
                 </Grid>
                 <Grid item xs={12}>
                   <FormContact
