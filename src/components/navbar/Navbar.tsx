@@ -99,7 +99,7 @@ export const Navbar = () => {
                     }}
                   >
                     <BtnNavbar onClick={() => navigate(`/publicar/${IdUser}`)}>
-                      Mis publicaciones
+                      Publicaciones
                     </BtnNavbar>
                     <UserMenu handleCloseSession={handleCloseSession} />
                   </Box>

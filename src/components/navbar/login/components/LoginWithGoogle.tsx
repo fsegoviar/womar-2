@@ -29,18 +29,18 @@ export const LoginWithGoogle = ({ response }: PropsGoogle) => {
     <GoogleLogin
       clientId={String(process.env.REACT_APP_KEY_GOOGLE)}
       buttonText="Login"
-      onSuccess={(value: any) =>
+      onSuccess={(value: any) => {
         response({
           accessToken: value.accessToken,
           tipo: TypeUser.GOOGLE
-        })
-      }
-      onFailure={(value: any) =>
+        });
+      }}
+      onFailure={(value: any) => {
         response({
           accessToken: value.accessToken,
           tipo: TypeUser.GOOGLE
-        })
-      }
+        });
+      }}
       render={(renderProps) => (
         <GoogleLoginButton
           onClick={renderProps.onClick}

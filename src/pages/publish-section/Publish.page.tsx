@@ -99,7 +99,7 @@ export const PublishPage = () => {
                 {publishUser.length > 0 &&
                   !loading &&
                   publishUser.map((publish) => (
-                    <Grid item xs={4} className="px-3">
+                    <Grid item xs={4} className="px-3 py-2">
                       <PublishComponent
                         key={publish.id}
                         publish={publish}
