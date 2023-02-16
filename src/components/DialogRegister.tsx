@@ -106,11 +106,6 @@ export const DialogRegister = (props: PropsRegister) => {
       .finally(() => setLoading(false));
   };
 
-  // const handleChangeImage = (e: any) => {
-  //   setUrlImage(URL.createObjectURL(e.target.files[0]));
-  //   setFileChange(e.target.files[0]);
-  // };
-
   return (
     <>
       {/* Contendor Dialog */}
