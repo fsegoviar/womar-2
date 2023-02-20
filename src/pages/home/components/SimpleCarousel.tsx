@@ -37,11 +37,11 @@ export const SimpleCarousel = () => {
   };
 
   return (
-    <div className="h-[520px] w-full m-auto relative xs:h-[300px] xs:w-screen xs:bg-red-500">
+    <div className=" m-auto relative h-[220px] sm:h-[520px] w-screen z-1">
       {/* Contenedor de imagene slide */}
       <div
         style={{ backgroundImage: `url(${slides[currentIndex].url})` }}
-        className="w-full h-full bg-center bg-no-repeat bg-contain duration-500 lg:bg-cover"
+        className="w-full h-full bg-center bg-no-repeat bg-cover sm:bg-contain duration-500 lg:bg-cover"
       ></div>
       {/* Flecha izquierda */}
       <div className=" absolute top-[50%] -translate-x-0 translate-y-[50%] left-5 text-2xl rounded-full p-2 bg-black/20 text-white cursor-pointer">

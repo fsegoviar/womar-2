@@ -110,21 +110,18 @@ export const DialogRegister = (props: PropsRegister) => {
     <>
       {/* Contendor Dialog */}
       <div
-        className="window-background-register"
+        className="window-background-register justify-center sm:justify-end"
         id="window-background-register"
         ref={modalRef}
       >
         <div
-          className="window-container-register"
+          className="window-container-register sm:mr-20"
           id="window-container-register"
           ref={containerRef}
         >
           <div
-            className="w-12/12 h-6/6 bg-white flex pt-5"
+            className="sm:w-12/12 h-6/6 bg-white flex pt-5 "
             style={{ borderRadius: '70px', border: '3px solid #000aff' }}
-            onClick={() => {
-              console.log('Hijo');
-            }}
           >
             <div style={{ width: '500px' }}>
               <h1
@@ -138,28 +135,6 @@ export const DialogRegister = (props: PropsRegister) => {
                 onSubmit={handleSubmit(onSubmitRegisterLocal)}
               >
                 <Container>
-                  {/* <Box
-                  className="relative bg-center bg-cover bg-no-repeat my-5 rounded-full m-auto"
-                  sx={{
-                    backgroundImage: `url(${urlImage})`,
-                    width: '150px',
-                    height: '150px'
-                  }}
-                >
-                  {!urlImage && (
-                    <p className="absolute top-0 left-0 h-full cursor-pointer flex flex-col justify-center items-center text-center border-2 rounded-xl border-[#0BAEDC]">
-                      <MdAddAPhoto size={54} />
-                      Ingresa tu imagen de perfil aqui
-                    </p>
-                  )}
-                  <input
-                    type="file"
-                    accept="image/*"
-                    onChange={handleChangeImage}
-                    className="w-full cursor-pointer opacity-0"
-                    style={{ height: '100%' }}
-                  />
-                </Box> */}
                   <InputForm
                     className="font"
                     error={!!errors.Nombre}

@@ -34,7 +34,6 @@
   z-index: 1;
   display: none;
   align-items: center;
-  justify-content: end;
   overflow: hidden;
 }
 
@@ -45,7 +44,6 @@
   border-radius: 20px;
   animation-name: modal-register;
   animation-duration: 0.5s;
-  margin-right: 50px;
   z-index: 10;
 }
 

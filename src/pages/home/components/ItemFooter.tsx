@@ -5,18 +5,16 @@ type PropsItem = {
 
 export const ItemFooter = (props: PropsItem) => {
   return (
-    <div className="flex flex-col justify-center items-center mx-20">
+    <div className="flex flex-col justify-center items-center mx-7">
       {/* Icono */}
       <div
-        className="bg-center bg-cover bg-no-repeat"
+        className="bg-center bg-contain bg-no-repeat w-16 h-16"
         style={{
-          background: `url(${props.img})`,
-          width: '100px',
-          height: '100px'
+          backgroundImage: `url(${props.img})`
         }}
       ></div>
       {/* Texto */}
-      <p style={{ width: '100px' }} className="text-center text-white">
+      <p style={{ width: '100px' }} className="text-center text-white pt-5">
         {props.text}
       </p>
     </div>

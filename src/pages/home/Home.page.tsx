@@ -1,10 +1,16 @@
-import { ContainCategories, PageBase } from '../../components';
+import {
+  CategoriesResponsive,
+  ContainCategories,
+  PageBase
+} from '../../components';
 import { SimpleCarousel } from './components/SimpleCarousel';
 import Carousel from 'react-multi-carousel';
-import { Carousel as Carousel3D } from 'react-configurable-carousel';
+// import { Carousel as Carousel3D } from 'react-configurable-carousel';
 import 'react-multi-carousel/lib/styles.css';
 import { CardItem } from './components/CardItem';
 import { ItemFooter } from './components/ItemFooter';
+import { useState } from 'react';
+import { Contactanos } from './components/Contactanos';
 
 export const HomePage = () => {
   const responsive = {
@@ -19,12 +25,23 @@ export const HomePage = () => {
     },
     tablet: {
       breakpoint: { max: 1024, min: 464 },
-      items: 2
+      items: 1
     },
     mobile: {
       breakpoint: { max: 464, min: 0 },
       items: 1
     }
+  };
+
+  const [openContact, setOpenContact] = useState(false);
+
+  const handleOpenContact = () => {
+    console.log('Open modal');
+    setOpenContact(true);
+  };
+
+  const handleCloseContact = () => {
+    setOpenContact(false);
   };
 
   return (
@@ -33,8 +50,11 @@ export const HomePage = () => {
 
       <SimpleCarousel />
       {/* Categorías */}
-      <section className="my-10 flex flex-col md:flex-row md:justify-center">
+      <section className="my-10 justify-center hidden sm:flex ">
         <ContainCategories />
+      </section>
+      <section className="my-10 flex justify-center  sm:hidden">
+        <CategoriesResponsive />
       </section>
       {/* Servicios maritimos más populares */}
       <section
@@ -44,10 +64,10 @@ export const HomePage = () => {
         }}
         className="flex flex-col justify-center items-center h-[600px]"
       >
-        <h1 className="font-light text-white mt-10 text-2xl tracking-[.40em]">
+        <h1 className="font-light text-white mt-10 text-lg text-center sm:text-2xl tracking-[.40em]">
           SERVICIOS MARÍTIMOS MÁS RECIENTES
         </h1>
-        <Carousel className="z-9 w-[80%] h-[550px]" responsive={responsive}>
+        <Carousel className="z-0 w-[80%] h-[550px]" responsive={responsive}>
           <CardItem
             img={require('../../assets/images/img-servicio1.png')}
             title="Servicio de turismo"
@@ -84,11 +104,11 @@ export const HomePage = () => {
       <section className="flex flex-col items-center py-4">
         <h2
           style={{ color: '#003BE9' }}
-          className="my-10 font-bold text-4xl tracking-[.30em]"
+          className="my-10 font-bold sm:text-4xl tracking-[.30em] text-lg text-center"
         >
           ¿CÓMO FUNCIONA WOMAR?
         </h2>
-        <Carousel3D
+        {/* <Carousel3D
           arrows={true}
           dotsNavigation={false}
           dotsNavigationInside={true}
@@ -97,35 +117,36 @@ export const HomePage = () => {
           carouselStyle={'3d'}
         >
           <div
-            className="bg-center bg-cover bg-no-repeat w-[100%] h-[100%]"
+            className="bg-center bg-cover bg-no-repeat w-[100%] h-[100%] "
             style={{
               backgroundImage: `url(${require('../../assets/images/comofunciona-1.png')})`
             }}
           ></div>
           <div
-            className="bg-center bg-cover bg-no-repeat w-[100%] h-[100%]"
+            className="bg-center bg-cover bg-no-repeat w-[100%] h-[100%] "
             style={{
               backgroundImage: `url(${require('../../assets/images/comofunciona-2.png')})`
             }}
           ></div>
           <div
-            className="bg-center bg-cover bg-no-repeat w-[100%] h-[100%]"
+            className="bg-center bg-cover bg-no-repeat w-[100%] h-[100%] "
             style={{
               backgroundImage: `url(${require('../../assets/images/comofunciona-3.png')})`
             }}
           ></div>
-        </Carousel3D>
+        </Carousel3D> */}
       </section>
       <footer
         className="relative bg-center bg-cover bg-no-repeat w-full h-72 mt-10"
         style={{
-          backgroundImage: `url(${require('../../assets/images/footer.jpg')})`,
-          zIndex: '-1'
+          backgroundImage: `url(${require('../../assets/images/footer.jpg')})`
         }}
       >
-        {/* fondo de color */}
-        <div className="absolute top-0 lef-0 w-full h-full"></div>
-        <div className="relative grid grid-cols-3" style={{ zIndex: '9999' }}>
+        {/* Footer Versión escritorio */}
+        <div
+          className="relative grid-cols-3 hidden sm:grid"
+          style={{ zIndex: '9999' }}
+        >
           <div className="grid-span-1 flex flex-col items-center pt-10">
             <h2
               className="text-white font-bold text-[2.8rem]"
@@ -147,17 +168,60 @@ export const HomePage = () => {
             </h2>
           </div>
           <div className="grid-span-2 flex items-center">
+            <div className="flex flex-col justify-center items-center mx-7">
+              <div
+                className="bg-center bg-contain bg-no-repeat w-16 h-16 cursor-pointer z-40"
+                style={{
+                  backgroundImage: `url(${require('../../assets/images/ico-avion.png')})`
+                }}
+                onClick={handleOpenContact}
+              ></div>
+              {/* Texto */}
+              <p
+                style={{ width: '100px' }}
+                className="text-center text-white pt-5"
+              >
+                Contáctanos
+              </p>
+            </div>
             <ItemFooter
-              img={require('../../assets/images/ico-avion.svg')}
-              text="Contáctanos"
+              img={require('../../assets/images/ico_wsp.png')}
+              text="Envianos un WhatsApp"
             />
+          </div>
+        </div>
+        {/* Footer version mobil */}
+        <div className="flex sm:hidden flex-col">
+          <h2 className="p-5 text-2xl text-white">¿Aún tienes dudas?</h2>
+          <div className="flex justify-center">
+            <div
+              className="flex flex-col justify-center items-center mx-7"
+              onClick={handleOpenContact}
+            >
+              <div
+                className="bg-center bg-contain bg-no-repeat w-16 h-16"
+                style={{
+                  backgroundImage: `url(${require('../../assets/images/ico-avion.png')})`
+                }}
+              ></div>
+              {/* Texto */}
+              <p
+                style={{ width: '100px' }}
+                className="text-center text-white pt-5"
+              >
+                Contáctanos
+              </p>
+            </div>
             <ItemFooter
-              img={require('../../assets/images/ico-wsp.svg')}
+              img={require('../../assets/images/ico_wsp.png')}
               text="Envianos un WhatsApp"
             />
           </div>
         </div>
       </footer>
+      {openContact && (
+        <Contactanos open={openContact} handleClose={handleCloseContact} />
+      )}
     </PageBase>
   );
 };

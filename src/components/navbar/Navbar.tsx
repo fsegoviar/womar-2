@@ -22,6 +22,7 @@ export const Navbar = () => {
   const [isLogged, setIsLogged] = useState(
     !!localStorage.getItem('tokenWomar')
   );
+  const [hiddenMenuResponsive, setHiddenMenuResponsive] = useState(true);
 
   console.log('Datos navbar =>', proveedor, openRegisterExternal);
 
@@ -79,7 +80,7 @@ export const Navbar = () => {
               <SearchBar />
             </Box>
             {/* Botones */}
-            <div className="xs:hidden sm:grow">
+            <div className="hidden sm:block">
               {!isLogged ? (
                 <>
                   <BtnNavbar onClick={() => navigate(`/publicar/${IdUser}`)}>
@@ -108,21 +109,28 @@ export const Navbar = () => {
               )}
             </div>
             {/* Botones responsive */}
-            <div className="xs:grow sm:hidden">
-              <GiHamburgerMenu size={32} color="#000aff" className="mx-5" />
+            <div className="grow sm:hidden">
+              <GiHamburgerMenu
+                size={32}
+                color="#000aff"
+                className="mx-5"
+                onClick={() => setHiddenMenuResponsive(!hiddenMenuResponsive)}
+              />
             </div>
           </Toolbar>
         </Container>
       </AppBar>
-      <div className="fixed top-0 left-0 w-full h-24 mt-24 flex justify-center items-center">
-        <BtnNavbar onClick={() => navigate(`/publicar/${IdUser}`)}>
-          Publicar
-        </BtnNavbar>
-        <BtnNavbar onClick={() => setOpenLogin(true)}>Ingresa</BtnNavbar>
-        <BtnNavbar onClick={() => setOpenRegisterLocal(true)}>
-          Registrate
-        </BtnNavbar>
-      </div>
+      {!hiddenMenuResponsive && (
+        <div className="fixed top-0 left-0 w-full h-24 mt-24 flex justify-center items-center z-50 bg-white">
+          <BtnNavbar onClick={() => navigate(`/publicar/${IdUser}`)}>
+            Publicar
+          </BtnNavbar>
+          <BtnNavbar onClick={() => setOpenLogin(true)}>Ingresa</BtnNavbar>
+          <BtnNavbar onClick={() => setOpenRegisterLocal(true)}>
+            Registrate
+          </BtnNavbar>
+        </div>
+      )}
       {openLogin && (
         // <DialogLogin
         // open={openLogin}
