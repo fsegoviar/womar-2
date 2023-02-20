@@ -16,18 +16,30 @@ type PropsGoogle = {
 export const LoginWithGoogle = ({ response }: PropsGoogle) => {
   useEffect(() => {
     const start = () => {
-      gapi.client.init({
-        clientId: String(process.env.REACT_APP_KEY_GOOGLE),
-        scope: 'email'
-      });
+      gapi.client
+        .init({
+          clientId:
+            '77647987925-k1b3meevc9cromf0bsd0nsrmrcoqkd5l.apps.googleusercontent.com',
+          scope: ''
+        })
+        .then((response: any) => console.log('Response GAPI =>', response.data))
+        .catch((error: any) => console.log('Error GAPI => ', error));
     };
 
     gapi.load('client:auth2', start);
   }, []);
 
+  // useEffect(() => {
+  //   gapi.load('client:auth2', () => {
+  //     gapi.auth2.init({ clientId: String(process.env.REACT_APP_KEY_GOOGLE) });
+  //   });
+  // }, []);
+
   return (
     <GoogleLogin
-      clientId={String(process.env.REACT_APP_KEY_GOOGLE)}
+      clientId={
+        '77647987925-k1b3meevc9cromf0bsd0nsrmrcoqkd5l.apps.googleusercontent.com'
+      }
       buttonText="Login"
       onSuccess={(value: any) => {
         response({
@@ -47,7 +59,7 @@ export const LoginWithGoogle = ({ response }: PropsGoogle) => {
           text={'Iniciar con Google'}
         />
       )}
-      cookiePolicy={'single_host_origin'}
+      cookiePolicy={'single_host_policy'}
     />
   );
 };

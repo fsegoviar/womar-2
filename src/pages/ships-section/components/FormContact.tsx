@@ -115,7 +115,7 @@ export const FormContact = ({
               'linear-gradient(90deg, rgba(0,10,255,1) 0%, rgba(0,191,232,1) 50%, rgba(0,233,186,1) 100%)'
           }}
         >
-          Contratar
+          Contactar
         </button>
       </Box>
     </Box>

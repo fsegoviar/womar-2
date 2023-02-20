@@ -10,6 +10,7 @@ import { parseJwt } from '../../utils';
 import { DialogRegister } from '../DialogRegister';
 import { TypeUser } from '../../interfaces/Login';
 import { DialogBase } from '../DialogBase';
+import { GiHamburgerMenu } from 'react-icons/gi';
 
 export const Navbar = () => {
   const navigate = useNavigate();
@@ -60,7 +61,7 @@ export const Navbar = () => {
           <Toolbar disableGutters className="h-24">
             {/* Logo Womar */}
             <Box
-              className="bg-center bg-no-repeat bg-contain my-2 cursor-pointer w-56 h-14"
+              className="bg-center bg-no-repeat bg-contain my-2 cursor-pointer w-56 h-14 xs:w-24"
               sx={{
                 flexGrow: 1,
                 backgroundImage: `url(${require('../../assets/images/logo-womar-2.png')})`
@@ -78,7 +79,7 @@ export const Navbar = () => {
               <SearchBar />
             </Box>
             {/* Botones */}
-            <Box sx={{ flexGrow: 1 }}>
+            <div className="xs:hidden sm:grow">
               {!isLogged ? (
                 <>
                   <BtnNavbar onClick={() => navigate(`/publicar/${IdUser}`)}>
@@ -105,10 +106,23 @@ export const Navbar = () => {
                   </Box>
                 </>
               )}
-            </Box>
+            </div>
+            {/* Botones responsive */}
+            <div className="xs:grow sm:hidden">
+              <GiHamburgerMenu size={32} color="#000aff" className="mx-5" />
+            </div>
           </Toolbar>
         </Container>
       </AppBar>
+      <div className="fixed top-0 left-0 w-full h-24 mt-24 flex justify-center items-center">
+        <BtnNavbar onClick={() => navigate(`/publicar/${IdUser}`)}>
+          Publicar
+        </BtnNavbar>
+        <BtnNavbar onClick={() => setOpenLogin(true)}>Ingresa</BtnNavbar>
+        <BtnNavbar onClick={() => setOpenRegisterLocal(true)}>
+          Registrate
+        </BtnNavbar>
+      </div>
       {openLogin && (
         // <DialogLogin
         // open={openLogin}

@@ -7,7 +7,7 @@ export const PageBase = ({ children }: { children: ReactNode }) => {
     <Box sx={{ minHeight: '100vh' }}>
       <Navbar />
       <div className="h-24"></div>
-      <Box component={'main'}>{children}</Box>
+      <main className="w-screen relative">{children}</main>
     </Box>
   );
 };

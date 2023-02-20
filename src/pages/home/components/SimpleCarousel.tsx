@@ -37,7 +37,7 @@ export const SimpleCarousel = () => {
   };
 
   return (
-    <div className="h-[520px] w-full m-auto relative">
+    <div className="h-[520px] w-full m-auto relative xs:h-[300px] xs:w-screen xs:bg-red-500">
       {/* Contenedor de imagene slide */}
       <div
         style={{ backgroundImage: `url(${slides[currentIndex].url})` }}
