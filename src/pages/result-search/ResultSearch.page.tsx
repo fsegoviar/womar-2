@@ -1,24 +1,22 @@
-import { Grid } from '@mui/material';
-import { ContainCategories, SmartPreviewService } from '../../components';
-import { useState } from 'react';
-import Box from '@mui/material/Box/Box';
-import { PageBase } from '../../components/PageBase';
-import { ObtenerPublicacionPorCategoria } from '../../services';
-import { DetailService } from '../../interfaces';
+import React, { useState } from 'react';
+import { useLocation } from 'react-router-dom';
+import {
+  ContainCategories,
+  PageBase,
+  SmartPreviewService
+} from '../../components';
+import { Box, Grid } from '@mui/material';
 import { DetailPublish } from '../ships-section/components/DetailPublish';
-import { SkeletonLoader } from '../ships-section/components/SkeletonLoader';
+import { DetailService } from '../../interfaces';
 
-export const MaritimePersonnelPage = () => {
-  const { publish: listPublish, loading } = ObtenerPublicacionPorCategoria({
-    categorias: [2],
-    orderBy: true,
-    tipoPublicacion: 1
-  });
+export const ResultSearch = () => {
+  const { state } = useLocation();
   const [openModal, setOpenModal] = useState(false);
   const [serviceSelected, setServiceSelected] = useState<DetailService>();
 
   const openModalContact = (service: DetailService) => {
     setOpenModal(true);
+    console.log('service', service);
     setServiceSelected(service);
   };
 
@@ -118,13 +116,11 @@ export const MaritimePersonnelPage = () => {
               </Grid>
               <Grid item xs={3}>
                 <div className="flex justify-center items-center w-full h-full">
-                  <p className="text-white font-bold text-3xl">
-                    Personal Marítimo
-                  </p>
+                  <p className="text-white font-bold text-3xl">Embarcaciones</p>
                   <div
                     className="bg-contain bg-no-repeat bg-center w-16 h-16 ml-2"
                     style={{
-                      backgroundImage: `url(${require('../../assets/images/ico-p-maritimo-blanco.png')})`
+                      backgroundImage: `url(${require('../../assets/images/ico-embarcaciones-blanco.png')})`
                     }}
                   ></div>
                 </div>
@@ -133,14 +129,8 @@ export const MaritimePersonnelPage = () => {
           </Grid>
           <Grid item xs={12} md={12} className="px-10">
             <Grid container sx={{ my: 5 }} spacing={2}>
-              {loading && (
-                <Grid item xs={12}>
-                  <SkeletonLoader />
-                </Grid>
-              )}
-              {listPublish!.length > 0 &&
-                !loading &&
-                listPublish!.map((ship, index) => (
+              {state!.length > 0 &&
+                state!.map((ship: any, index: any) => (
                   <Grid item xs={12} key={index} lg={4}>
                     <SmartPreviewService
                       key={index}
@@ -152,7 +142,7 @@ export const MaritimePersonnelPage = () => {
                     />
                   </Grid>
                 ))}
-              {listPublish.length === 0 && !loading && (
+              {state.length === 0 && (
                 <h1>No existen publicaciones para esta sección</h1>
               )}
               <section className="my-10 flex flex-col justify-center items-center w-full md:flex-row ">
@@ -168,28 +158,6 @@ export const MaritimePersonnelPage = () => {
             closeModal={() => setOpenModal(false)}
           />
         )}
-        {/* <Modal
-          open={openModal}
-          onClose={() => setOpenModal(false)}
-          closeAfterTransition
-        >
-          <Fade timeout={400} in={openModal}>
-            <Box
-              className="flex justify-center items-center w-full"
-              sx={{
-                height: '100vh'
-              }}
-            >
-              <Box>
-                <DetailServiceComponent
-                  service={serviceSelected!}
-                  closeModal={setOpenModal}
-                  contactPage={contactPage}
-                />
-              </Box>
-            </Box>
-          </Fade>
-        </Modal> */}
       </Box>
     </PageBase>
   );

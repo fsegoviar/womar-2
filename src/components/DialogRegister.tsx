@@ -115,15 +115,15 @@ export const DialogRegister = (props: PropsRegister) => {
         ref={modalRef}
       >
         <div
-          className="window-container-register sm:mr-20"
+          className="window-container-register mt-52 sm:mr-20"
           id="window-container-register"
           ref={containerRef}
         >
           <div
-            className="sm:w-12/12 h-6/6 bg-white flex pt-5 "
+            className="w-12/12 sm:w-4/12 sm:float-right h-6/6 bg-white flex pt-5 "
             style={{ borderRadius: '70px', border: '3px solid #000aff' }}
           >
-            <div style={{ width: '500px' }}>
+            <div className="w-12/12">
               <h1
                 style={{ textAlign: 'center' }}
                 className="font text-xl mt-5 font-bold text-gray-500"
@@ -136,6 +136,7 @@ export const DialogRegister = (props: PropsRegister) => {
               >
                 <Container>
                   <InputForm
+                    size="small"
                     className="font"
                     error={!!errors.Nombre}
                     id="name"
@@ -149,6 +150,7 @@ export const DialogRegister = (props: PropsRegister) => {
                     spacing={2}
                   >
                     <InputForm
+                      size="small"
                       error={!!errors.ApellidoPaterno}
                       style={{ margin: '10px 0', width: '49%' }}
                       id="surname1"
@@ -156,6 +158,7 @@ export const DialogRegister = (props: PropsRegister) => {
                       {...register('ApellidoPaterno', { required: true })}
                     />
                     <InputForm
+                      size="small"
                       error={!!errors.ApellidoMaterno}
                       style={{ margin: '10px 0', width: '49%' }}
                       label="Apellido Materno"
@@ -164,6 +167,7 @@ export const DialogRegister = (props: PropsRegister) => {
                   </Stack>
                   <FormControl
                     fullWidth
+                    size="small"
                     sx={{
                       p: 0,
                       m: 0,
@@ -198,6 +202,7 @@ export const DialogRegister = (props: PropsRegister) => {
                   >
                     <InputForm
                       id="dni"
+                      size="small"
                       label="Rut"
                       style={{ margin: '10px 0', width: '49%' }}
                       onChange={(e: any) => {
@@ -206,6 +211,7 @@ export const DialogRegister = (props: PropsRegister) => {
                     />
                     <InputForm
                       id="phone"
+                      size="small"
                       type={'number'}
                       style={{ margin: '10px 0', width: '49%' }}
                       label="Telefono"
@@ -215,6 +221,7 @@ export const DialogRegister = (props: PropsRegister) => {
                   <InputForm
                     error={!!errors.Email}
                     type={'email'}
+                    size="small"
                     style={{ marginBottom: '10px', width: '100%' }}
                     label="Correo electrónico *"
                     {...register('Email', { required: true })}
@@ -222,6 +229,7 @@ export const DialogRegister = (props: PropsRegister) => {
                   <InputForm
                     error={!!errors.Password}
                     type={'password'}
+                    size="small"
                     style={{ margin: '10px 0', width: '100%' }}
                     label="Contraseña *"
                     {...register('Password', { required: true })}

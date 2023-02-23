@@ -1,7 +1,6 @@
 import Grid from '@mui/material/Grid';
 import { Box, Container } from '@mui/system';
 import { PageBase } from '../../components/PageBase';
-import Card from '@mui/material/Card/Card';
 import { useState } from 'react';
 import { ObtenerPublicacionDeUsuario } from '../../services/Publicaciones';
 import { DetailService } from '../../interfaces';
@@ -12,6 +11,7 @@ import { SkeletonLoader } from './components/SkeletonLoader';
 import { CreateNewPublish } from './components/CreateNewPublish';
 import './styles.css';
 import { EditPublish } from './components/EditPublish';
+import { CreateNewPublishRes } from './components/CreateNewPublishRes';
 
 export const PublishPage = () => {
   const [openModal, setOpenModal] = useState(false);
@@ -64,11 +64,11 @@ export const PublishPage = () => {
                 '& > :not(style)': { m: 1 }
               }}
             >
-              <p className="text-2xl pb-3 md:text-[24px] text-[#545454]">
+              <p className="text-sm sm:text-2xl pb-3 md:text-[24px] text-[#545454]">
                 Nueva publicación
               </p>
               <button
-                className="text-white rounded-full py-5 px-20 text-xl"
+                className="text-white rounded-full text-sm px-10 sm:py-5 sm:px-20 sm:text-xl"
                 style={{
                   marginTop: '10px',
                   background:
@@ -83,40 +83,42 @@ export const PublishPage = () => {
           <Grid item xs={12}>
             <hr style={{ border: '1px solid #c1c1c1' }} />
           </Grid>
-          <Grid item xs={11} sx={{ mt: 5 }}>
-            <Card
-              className="scroll-action"
-              elevation={0}
-              sx={{
-                maxHeight: '60vh',
-                paddingTop: '20px',
-                overflowY: 'scroll',
-                backgroundColor: '#f7f7f7'
-              }}
-            >
-              <Grid container>
-                {loading && <SkeletonLoader />}
-                {publishUser.length > 0 &&
-                  !loading &&
-                  publishUser.map((publish) => (
-                    <Grid item xs={4} className="px-3 py-2">
-                      <PublishComponent
-                        key={publish.id}
-                        publish={publish}
-                        deletePublish={deletePublish}
-                        editPublish={editPublish}
-                      />
-                    </Grid>
-                  ))}
-                {publishUser.length === 0 && !loading && (
-                  <h1>No existen publicaciones para esta sección</h1>
-                )}
-              </Grid>
-            </Card>
+          <Grid item xs={12} sm={11} sx={{ mt: 5 }}>
+            <Grid container>
+              {loading && <SkeletonLoader />}
+              {publishUser.length > 0 &&
+                !loading &&
+                publishUser.map((publish) => (
+                  <Grid item xs={12} sm={4} className="sm:px-3 py-2">
+                    <PublishComponent
+                      key={publish.id}
+                      publish={publish}
+                      deletePublish={deletePublish}
+                      editPublish={editPublish}
+                    />
+                  </Grid>
+                ))}
+              {publishUser.length === 0 && !loading && (
+                <h1>No existen publicaciones para esta sección</h1>
+              )}
+            </Grid>
           </Grid>
         </Grid>
       </Container>
-      <CreateNewPublish open={openModal} userId={userId!} close={closeModal} />
+      <div className="hidden sm:block">
+        <CreateNewPublish
+          open={openModal}
+          userId={userId!}
+          close={closeModal}
+        />
+      </div>
+      <div className="block sm:hidden">
+        <CreateNewPublishRes
+          open={openModal}
+          userId={userId!}
+          close={closeModal}
+        />
+      </div>
       {openModalEdit && (
         <EditPublish
           open={openModalEdit}

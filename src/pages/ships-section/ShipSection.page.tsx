@@ -1,17 +1,56 @@
 import { Grid } from '@mui/material';
-import { ContainCategories, SmartPreviewService } from '../../components';
-import { useState } from 'react';
+import {
+  CategoriesResponsive,
+  ContainCategories,
+  SmartPreviewService
+} from '../../components';
+import { useEffect, useState } from 'react';
 import Box from '@mui/material/Box/Box';
 import { PageBase } from '../../components/PageBase';
-import { ObtenerPublicacionPorCategoria } from '../../services';
 import { DetailService } from '../../interfaces';
 import { SkeletonLoader } from './components/SkeletonLoader';
 import { DetailPublish } from './components/DetailPublish';
+import axios, { AxiosError } from 'axios';
 
 export const ShipSectionPage = () => {
   const [openModal, setOpenModal] = useState(false);
   const [serviceSelected, setServiceSelected] = useState<DetailService>();
-  const { publish: listShips, loading } = ObtenerPublicacionPorCategoria([1]);
+  const [listShips, setListShips] = useState<DetailService[]>([]);
+  const [load, setLoad] = useState(false);
+  const [filter, setFilter] = useState({
+    categorias: [1],
+    orderBy: true,
+    search: '',
+    tipoPublicacion: 1
+  });
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoad(true);
+      await axios
+        .post(
+          `${process.env.REACT_APP_URL_BACKEND}/Publicaciones/ObtenerFiltrados`,
+          filter,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem('tokenWomar')}`
+            }
+          }
+        )
+        .then((response: any) => {
+          console.log('Response =>', response.data);
+          setListShips(response.data);
+        })
+        .catch((error: AxiosError) => {
+          console.log(error);
+        })
+        .finally(() => setLoad(false));
+    };
+
+    fetchData();
+  }, [filter]);
+
+  const [selectedOffer, setSelectedOffer] = useState(true);
 
   const openModalContact = (service: DetailService) => {
     setOpenModal(true);
@@ -27,32 +66,61 @@ export const ShipSectionPage = () => {
           <Grid
             item
             xs={12}
-            className="w-full"
+            className="w-full h-auto relative"
             sx={{
-              height: '110px',
+              height: 'auto',
               background:
                 'linear-gradient(90deg, rgba(0,10,255,1) 0%, rgba(0,191,232,1) 50%, rgba(0,233,186,1) 100%)'
             }}
           >
             <Grid container className="h-full">
-              <Grid item xs={3}>
-                <div className="flex justify-center items-center w-full h-full">
-                  <p className="text-3xl font-thin pr-5 text-white">Filtros</p>
+              <Grid item xs={12} className="grid sm:hidden">
+                <div className="flex justify-center items-center w-full h-full pt-5">
+                  <p className="text-white font-bold text-xl">Embarcaciones</p>
+                  <div
+                    className="bg-contain bg-no-repeat bg-center w-12 h-12 ml-2"
+                    style={{
+                      backgroundImage: `url(${require('../../assets/images/ico-embarcaciones-blanco.png')})`
+                    }}
+                  ></div>
+                </div>
+              </Grid>
+              <Grid item xs={12} sm={3} className="pt-5">
+                <div className="flex  justify-center items-center w-full h-full">
+                  <p className="text-xl font-thin pr-5 text-white">Filtros</p>
                   <Box
                     className="rounded-full bg-white"
                     style={{ border: '1px solid #000aff' }}
                   >
-                    <button className="text-[#000aff] px-10 py-1 text-xl bg-[#00e9ba] rounded-full">
+                    <button
+                      className="text-[#000aff] px-5 sm:px-10 py-1 text-xl rounded-full"
+                      style={{
+                        backgroundColor: selectedOffer ? '#00e9ba' : 'white'
+                      }}
+                      onClick={() => {
+                        setSelectedOffer(true);
+                        setFilter({ ...filter, tipoPublicacion: 1 });
+                      }}
+                    >
                       Buscan
                     </button>
-                    <button className="text-[#000aff] px-10 py-1 text-xl rounded-full">
+                    <button
+                      className="text-[#000aff] px-5 sm:px-10 py-1 text-xl rounded-full"
+                      style={{
+                        backgroundColor: !selectedOffer ? '#00e9ba' : 'white'
+                      }}
+                      onClick={() => {
+                        setSelectedOffer(false);
+                        setFilter({ ...filter, tipoPublicacion: 2 });
+                      }}
+                    >
                       Ofrecen
                     </button>
                   </Box>
                 </div>
               </Grid>
-              <Grid item xs={6} className="h-full flex">
-                <div className="flex flex-col h-full justify-center">
+              <Grid item xs={12} sm={6} className="flex justify-center py-5">
+                <div className="flex flex-col h-full justify-center ">
                   <div className="flex items-center mb-4">
                     <input
                       id="default-checkbox"
@@ -113,7 +181,7 @@ export const ShipSectionPage = () => {
                   </div>
                 </div>
               </Grid>
-              <Grid item xs={3}>
+              <Grid item xs={3} className="hidden sm:grid">
                 <div className="flex justify-center items-center w-full h-full">
                   <p className="text-white font-bold text-3xl">Embarcaciones</p>
                   <div
@@ -126,15 +194,15 @@ export const ShipSectionPage = () => {
               </Grid>
             </Grid>
           </Grid>
-          <Grid item xs={12} md={12} className="px-10">
+          <Grid item xs={12} md={12} className="px-5 sm:px-10">
             <Grid container sx={{ my: 5 }} spacing={2}>
-              {loading && (
+              {load && (
                 <Grid item xs={12}>
                   <SkeletonLoader />
                 </Grid>
               )}
               {listShips!.length > 0 &&
-                !loading &&
+                !load &&
                 listShips!.map((ship, index) => (
                   <Grid item xs={12} key={index} lg={4}>
                     <SmartPreviewService
@@ -147,11 +215,14 @@ export const ShipSectionPage = () => {
                     />
                   </Grid>
                 ))}
-              {listShips.length === 0 && !loading && (
+              {listShips!.length === 0 && !load && (
                 <h1>No existen publicaciones para esta sección</h1>
               )}
-              <section className="my-10 flex flex-col justify-center items-center w-full md:flex-row ">
+              <section className="hidden sm:flex my-10 flex-col justify-center items-center w-full md:flex-row ">
                 <ContainCategories />
+              </section>
+              <section className="my-5 flex sm:hidden justify-center ">
+                <CategoriesResponsive />
               </section>
             </Grid>
           </Grid>
@@ -163,28 +234,6 @@ export const ShipSectionPage = () => {
             closeModal={() => setOpenModal(false)}
           />
         )}
-        {/* <Modal
-          open={openModal}
-          onClose={() => setOpenModal(false)}
-          closeAfterTransition
-        >
-          <Fade timeout={400} in={openModal}>
-            <Box
-              className="flex justify-center items-center w-full"
-              sx={{
-                height: '100vh'
-              }}
-            >
-              <Box>
-                <DetailServiceComponent
-                  service={serviceSelected!}
-                  closeModal={setOpenModal}
-                  contactPage={contactPage}
-                />
-              </Box>
-            </Box>
-          </Fade>
-        </Modal> */}
       </Box>
     </PageBase>
   );

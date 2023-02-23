@@ -65,8 +65,8 @@ export const DetailPublish = (props: DetailPublishType) => {
         id="window-container-login"
         ref={containerRef}
       >
-        <div className="">
-          <div className="w-7/12 h-[550px] bg-no-repeat bg-center bg-cover flex justify-start">
+        <div className="flex justify-center">
+          <div className="hidden w-7/12 h-[550px] bg-no-repeat bg-center bg-cover sm:flex justify-start">
             {/* Aqui va el slider */}
             <div
               style={{
@@ -89,7 +89,7 @@ export const DetailPublish = (props: DetailPublishType) => {
             )}
           </div>
           <div
-            className="absolute top-0 right-0 w-6/12 h-full border-2 border-[#000aff] bg-white p-10"
+            className="relative sm:absolute top-0 right-0 w-10/12 sm:w-6/12 mt-16 sm:mt-0 h-full border-2 border-[#000aff] bg-white p-10"
             style={{ borderRadius: '70px' }}
           >
             {loading ? (

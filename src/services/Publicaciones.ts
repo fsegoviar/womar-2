@@ -2,10 +2,14 @@ import axios, { AxiosError } from 'axios';
 import { useEffect, useState } from 'react';
 import { DetailService } from '../interfaces';
 
-export const ObtenerPublicacionPorCategoria = (
-  categorias: number[],
-  orderBy = true
-) => {
+type TypeSearchPublish = {
+  categorias: number[];
+  orderBy: boolean;
+  search?: string;
+  tipoPublicacion: number;
+};
+
+export const ObtenerPublicacionPorCategoria = (props: TypeSearchPublish) => {
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(true);
   const [publish, setPublish] = useState<DetailService[]>([]);
@@ -14,6 +18,7 @@ export const ObtenerPublicacionPorCategoria = (
     await axios
       .post(
         `${process.env.REACT_APP_URL_BACKEND}/Publicaciones/ObtenerFiltrados`,
+        props,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('tokenWomar')}`

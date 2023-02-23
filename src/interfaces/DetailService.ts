@@ -14,6 +14,7 @@ export type DetailService = {
   direccion: string;
   precio: number;
   titulo: string;
+  tipo: string;
   urlImagenPrincipal: string;
   usuarioPublicante: string;
 };

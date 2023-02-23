@@ -31,7 +31,7 @@ type CreateNewPublishType = {
 };
 
 type CreatePublishType = {
-  title: string
+  title: string;
   address: string;
   price: number;
   description: string;
@@ -74,8 +74,7 @@ const TextAreaForm = styled(TextField)`
     }
   }
 `;
-
-export const CreateNewPublish = (props: CreateNewPublishType) => {
+export const CreateNewPublishRes = (props: CreateNewPublishType) => {
   const modalRef = useRef<HTMLDivElement>(null!);
   const containerRef = useRef<HTMLDivElement>(null!);
   //-----
@@ -178,9 +177,9 @@ export const CreateNewPublish = (props: CreateNewPublishType) => {
   return (
     <div className="window-background" id="window-background" ref={modalRef}>
       <div
-        className="window-container"
-        id="window-container"
-        style={{ minHeight: '70vh' }}
+        className="window-container-responsive mt-20"
+        id="window-container-responsive"
+        style={{ height: '80vh' }}
         ref={containerRef}
       >
         {loading ? (
@@ -189,42 +188,7 @@ export const CreateNewPublish = (props: CreateNewPublishType) => {
           </div>
         ) : (
           <>
-            <Box className="flex items-center justify-between">
-              <h1 className="text-4xl py-5 text-[#000aff]">
-                Nueva publicación
-              </h1>
-              <Box>
-                <p className="text-md font-thin text-[#949494]">
-                  Tipo de publicación
-                </p>
-                <Box
-                  className="rounded-full "
-                  style={{ border: '1px solid #000aff' }}
-                >
-                  <button
-                    className="text-[#000aff] px-10 py-1 text-xl rounded-full"
-                    style={{
-                      backgroundColor: selectedOffer ? '#00e9ba' : 'transparent'
-                    }}
-                    onClick={() => setSelectedOffer(true)}
-                  >
-                    Buscan
-                  </button>
-                  <button
-                    className="text-[#000aff] px-10 py-1 text-xl rounded-full"
-                    onClick={() => setSelectedOffer(false)}
-                    style={{
-                      backgroundColor: !selectedOffer
-                        ? '#00e9ba'
-                        : 'transparent'
-                    }}
-                  >
-                    Ofrecen
-                  </button>
-                </Box>
-              </Box>
-            </Box>
-            <Grid container>
+            <div className="flex">
               <ImageUploading
                 multiple
                 value={images}
@@ -239,17 +203,54 @@ export const CreateNewPublish = (props: CreateNewPublishType) => {
                   dragProps
                 }: any) => (
                   // write your building UI
-                  <div className="upload__image-wrapper w-full flex">
-                    <Grid item xs={4}>
+                  <div className="upload__image-wrapper w-full flex flex-col">
+                    <Grid item xs={12} className="flex">
+                      <Box className=" flex flex-col items-center justify-center mr-1">
+                        <p className="text-md md:text-4xl md:py-5 text-[#000aff]">
+                          Nueva publicación
+                        </p>
+                        <Box>
+                          <p className="text-md font-thin text-[#949494]">
+                            Tipo de publicación
+                          </p>
+                          <Box
+                            className="rounded-full "
+                            style={{ border: '1px solid #000aff' }}
+                          >
+                            <button
+                              className="text-[#000aff] px-5 py-1 text-sm rounded-full"
+                              style={{
+                                backgroundColor: selectedOffer
+                                  ? '#00e9ba'
+                                  : 'transparent'
+                              }}
+                              onClick={() => setSelectedOffer(true)}
+                            >
+                              Buscan
+                            </button>
+                            <button
+                              className="text-[#000aff] px-5 py-1 text-sm rounded-full"
+                              onClick={() => setSelectedOffer(false)}
+                              style={{
+                                backgroundColor: !selectedOffer
+                                  ? '#00e9ba'
+                                  : 'transparent'
+                              }}
+                            >
+                              Ofrecen
+                            </button>
+                          </Box>
+                        </Box>
+                      </Box>
                       <button
                         style={{
                           backgroundColor: isDragging ? '#0BAEDC' : 'white',
                           border: '2px solid #c2c2c2',
                           borderRadius: '20px',
-                          width: '100%',
-                          height: '200px',
+                          width: '100px',
+                          height: '100px',
                           textAlign: 'center',
-                          fontSize: '16px',
+                          fontSize: '12px',
                           color: isDragging ? 'white' : 'black',
                           opacity: '0.7',
                           marginTop: '15px',
@@ -263,15 +264,15 @@ export const CreateNewPublish = (props: CreateNewPublishType) => {
                       </button>
                     </Grid>
                     &nbsp;
-                    <Grid xs={8} className="flex p-5 pl-0">
+                    <Grid xs={12} className="flex pl-0">
                       {imageList.map((image: ImageType, index: number) => (
                         <div
                           key={index}
                           className="image-item"
                           style={{
                             position: 'relative',
-                            width: '100px',
-                            height: '90px',
+                            width: '50px',
+                            height: '50px',
                             border: '1px solid #c2c2c2',
                             borderRadius: '10px',
                             marginLeft: '15px'
@@ -280,11 +281,13 @@ export const CreateNewPublish = (props: CreateNewPublishType) => {
                           <img
                             src={image.dataURL}
                             alt=""
-                            width="100px"
+                            width="100%"
                             height={'100%'}
+                            className="-mt-4"
                             style={{
-                              paddingTop: '10px',
-                              backgroundSize: 'cover'
+                              backgroundSize: 'cover',
+                              backgroundPosition: 'center',
+                              backgroundRepeat: 'no-repeat'
                             }}
                           />
                           <button
@@ -312,7 +315,9 @@ export const CreateNewPublish = (props: CreateNewPublishType) => {
                   </div>
                 )}
               </ImageUploading>
-              <Grid item xs={12} className="pt-10">
+            </div>
+            <Grid container>
+              <Grid item xs={12} className="">
                 <p className=" text-md font-thin text-[#949494]">
                   Datos de la publicacion
                 </p>
@@ -322,8 +327,9 @@ export const CreateNewPublish = (props: CreateNewPublishType) => {
                   onSubmit={handleSubmit(onSubmit)}
                 >
                   <Grid container>
-                    <Grid item xs={7} className="pr-4">
+                    <Grid item xs={12} className="pr-4">
                       <InputForm
+                        size="small"
                         error={!!errors.title}
                         id="title"
                         style={{
@@ -335,6 +341,7 @@ export const CreateNewPublish = (props: CreateNewPublishType) => {
                       />
                       <FormControl
                         fullWidth
+                        size="small"
                         sx={{
                           p: 0,
                           m: 0,
@@ -371,6 +378,7 @@ export const CreateNewPublish = (props: CreateNewPublishType) => {
                         spacing={2}
                       >
                         <FormControl
+                          size="small"
                           sx={{
                             p: 0,
                             m: 0,
@@ -404,8 +412,8 @@ export const CreateNewPublish = (props: CreateNewPublishType) => {
                         <InputForm
                           error={!!errors.price}
                           id="price"
+                          size="small"
                           style={{
-                            margin: '10px 0',
                             width: '49%'
                           }}
                           label="Precio *"
@@ -413,15 +421,15 @@ export const CreateNewPublish = (props: CreateNewPublishType) => {
                         />
                       </Stack>
                     </Grid>
-                    <Grid item xs={5}>
+                    <Grid item xs={11}>
                       <TextAreaForm
                         error={!!errors.description}
                         id="description"
                         fullWidth
-                        sx={{ my: 1 }}
+                        sx={{ mt: 1 }}
                         label="Descripción *"
                         multiline
-                        rows={7}
+                        rows={3}
                         variant="outlined"
                         {...register('description', { required: true })}
                       />
@@ -433,7 +441,7 @@ export const CreateNewPublish = (props: CreateNewPublishType) => {
                     sx={{ '& > :not(style)': { m: 1 } }}
                   >
                     <button
-                      className="text-white rounded-full py-2 px-10 cursor-pointer bg-[#D5278F]"
+                      className="text-white text-sm rounded-full px-5 cursor-pointer bg-[#D5278F]"
                       onClick={() => {
                         closeModal();
                         setImages([]);
@@ -444,14 +452,14 @@ export const CreateNewPublish = (props: CreateNewPublishType) => {
                       Cancelar
                     </button>
                     <button
-                      className="text-white rounded-full py-2 px-10 cursor-pointer"
+                      className="text-white rounded-full px-10 py-1 text-sm cursor-pointer"
                       type="submit"
                       style={{
                         background:
                           'linear-gradient(90deg, rgba(0,10,255,1) 0%, rgba(0,191,232,1) 50%, rgba(0,233,186,1) 100%)'
                       }}
                     >
-                      Crear Publicación
+                      Crear
                     </button>
                   </Box>
                 </form>

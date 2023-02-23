@@ -46,16 +46,9 @@ export const PublishComponent = (props: PropsPublish) => {
             alignItems: 'center'
           }}
         >
-          <Typography
-            component="div"
-            variant="h6"
-            sx={{
-              textAlign: 'center',
-              fontWeight: 'bold'
-            }}
-          >
+          <p className="block text-center font-bold sm:text-lg">
             {props.publish.titulo}
-          </Typography>
+          </p>
           <Typography
             variant="subtitle1"
             color="text.secondary"
@@ -71,18 +64,10 @@ export const PublishComponent = (props: PropsPublish) => {
             />
           </Typography>
         </CardContent>
-        <Box
-          sx={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            pl: 1,
-            pb: 1
-          }}
-        >
-          <Box sx={{ '& > :not(style)': { m: 1 } }}>
+        <div className="flex justify-center items-center">
+          <div className="flex sm:block">
             <button
-              className="text-white rounded-full text-sm py-1 px-3 cursor-pointer bg-[#D5278F]"
+              className="text-white rounded-full text-sm mx-1 py-1 px-3 cursor-pointer bg-[#D5278F]"
               onClick={() => props.deletePublish(String(props.publish.id))}
             >
               Dar de baja
@@ -98,8 +83,8 @@ export const PublishComponent = (props: PropsPublish) => {
             >
               Editar
             </button>
-          </Box>
-        </Box>
+          </div>
+        </div>
       </Box>
     </Card>
   );

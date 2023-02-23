@@ -1,5 +1,8 @@
 import { InputBase, alpha, styled } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
+import { useState } from 'react';
+import axios, { AxiosError } from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -44,8 +47,35 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 export const SearchBar = () => {
+  const [textSearch, setTextSearch] = useState('');
+  const navigate = useNavigate();
+
+  const searchPublish = async () => {
+    await axios
+      .post(
+        `${process.env.REACT_APP_URL_BACKEND}/Publicaciones/ObtenerFiltrados`,
+        {
+          search: textSearch,
+          orderBy: true,
+          tipoPublicacion: 1
+        }
+      )
+      .then((response: any) => {
+        navigate('/resultados_busqueda', { state: response.data });
+      })
+      .catch((error: AxiosError) => console.log('error =>', error));
+  };
+
   return (
-    <Search style={{ width: '60%' }}>
+    <Search
+      style={{ width: '60%' }}
+      onKeyUp={(e: any) => {
+        if (e.keyCode === 13 && textSearch !== '') {
+          searchPublish();
+        }
+      }}
+      onChange={(e: any) => setTextSearch(e.target.value)}
+    >
       <SearchIconWrapper>
         <SearchIcon />
       </SearchIconWrapper>

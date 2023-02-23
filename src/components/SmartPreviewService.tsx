@@ -13,12 +13,11 @@ interface PropsPreview {
 export const SmartPreviewService = (props: PropsPreview) => {
   return (
     <Card
-      className="flex w-full cursor-pointer"
+      className="flex w-full cursor-pointer h-40"
       sx={{
         border: '3px solid #000aff',
         transition: 'all 0.4s',
         borderRadius: '35px',
-        height: '200px',
         '&:hover': {
           boxShadow: '1px 1px 24px grey',
           transform: 'scale(1.01)'
@@ -27,24 +26,20 @@ export const SmartPreviewService = (props: PropsPreview) => {
       onClick={props.openContact}
     >
       <Box
-        className="bg-center bg-no-repeat bg-cover w-7/12"
+        className="bg-center bg-no-repeat bg-cover w-5/12 sm:w-7/12"
         sx={{
-          height: '200px',
           backgroundImage: `url(${props.urlImgCover})`,
           borderRadius: '30px'
         }}
       ></Box>
-      <Box className="flex flex-col justify-center w-5/12">
+      <Box className="flex flex-col justify-center w-7/12 sm:w-5/12">
         <CardContent className="flex flex-col justify-center items-center">
-          <h6 className="text-center font-bold text-[20px]">{props.title}</h6>
-          <Typography
-            className="flex justify-center py-2"
-            variant="subtitle1"
-            color="text.secondary"
-            component="div"
-          >
+          <h6 className="text-center font-bold text-sm sm:text-[20px]">
+            {props.title}
+          </h6>
+          <p className="flex justify-center py-2 text-gray-500 text-sm font-thin sm:font-normal">
             <LocationOnIcon /> {props.direccion}
-          </Typography>
+          </p>
           <Typography component="div" className="text-center">
             <Chip icon={<AttachMoneyIcon />} label={String(props.price)} />
           </Typography>

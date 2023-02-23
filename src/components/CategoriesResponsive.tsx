@@ -48,7 +48,7 @@ export const CategoriesResponsive = () => {
   return (
     <>
       {dataNavigation.map((item, index) => (
-        <div key={index} className="items-center mx-5 w-screen relative">
+        <div key={index} className="items-center w-full mx-5 relative">
           {/* Version Desktop */}
           <Link
             to={item.site}

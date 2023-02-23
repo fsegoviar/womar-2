@@ -103,7 +103,7 @@ export const DialogBase = (props: PropsLogin) => {
         >
           <div>
             <div
-              className="w-9/12 h-[450px] bg-no-repeat bg-center bg-cover flex justify-end xs:hidden sm:block sm:w-9/12"
+              className="hidden h-[450px] bg-no-repeat bg-center bg-cover  justify-end xs:hidden sm:flex sm:w-9/12"
               style={{
                 backgroundImage: `url(${require('../assets/images/img-login.png')})`,
                 borderRadius: '70px 0 0 70px'
